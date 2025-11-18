@@ -7,7 +7,7 @@ public class Bishop extends Piece {
         this.color = color;
     }
 
-    HashSet<Position> getAllMoves(Position p, GameBoard gb) {
+    public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
         int x = p.getX();

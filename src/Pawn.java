@@ -11,7 +11,7 @@ public class Pawn extends Piece{
         isFirstMove = true;
     }
 
-    HashSet<Position> getAllMoves(Position p, GameBoard gb) {
+    public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
         int x = p.getX();
