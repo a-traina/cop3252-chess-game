@@ -36,12 +36,12 @@ public class Pawn extends Piece{
             //black hostile moves
 
             //right diagonal attack
-            if (!gb.getPieceAt(x + 1, y + 1).color.equals(this.color)) {
+            if (gb.getPieceAt(x + 1, y + 1) != null && !gb.getPieceAt(x + 1, y + 1).color.equals(this.color)) {
                 moveSet.add(new Position(x + 1, y + 1));
             }
 
             //left diagonal attack
-            if (!gb.getPieceAt(x + 1, y - 1).color.equals(this.color)) {
+            if (gb.getPieceAt(x + 1, y - 1) != null && !gb.getPieceAt(x + 1, y - 1).color.equals(this.color)) {
                 moveSet.add(new Position(x + 1, y - 1));
             }
         }
@@ -64,12 +64,12 @@ public class Pawn extends Piece{
             //white hostile moves
 
             //right diagonal attack
-            if (!gb.getPieceAt(x - 1, y + 1).color.equals(this.color)) {
+            if (gb.getPieceAt(x - 1, y + 1) != null && !gb.getPieceAt(x - 1, y + 1).color.equals(this.color)) {
                 moveSet.add(new Position(x - 1, y + 1));
             }
 
             //left diagonal attack
-            if (!gb.getPieceAt(x - 1, y - 1).color.equals(this.color)) {
+            if (gb.getPieceAt(x - 1, y - 1) != null && !gb.getPieceAt(x - 1, y - 1).color.equals(this.color)) {
                 moveSet.add(new Position(x - 1, y - 1));
             }
         }
