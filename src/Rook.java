@@ -6,7 +6,7 @@ public class Rook extends Piece {
     public Rook(String color) {
         pointValue = 5;
         this.color = color;
-        isFirstMove = false;
+        isFirstMove = true;
     }
 
     @Override
