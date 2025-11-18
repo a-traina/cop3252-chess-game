@@ -1,3 +1,0 @@
-# Ignore VS Code workspace settings and compiled binaries
-.vscode/
-bin/
