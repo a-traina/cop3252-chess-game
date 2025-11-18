@@ -13,4 +13,8 @@ public class GameBoard {
             }
         }
     }
+
+    public Piece getPieceAt(int x, int y) {
+        return board[x][y];
+    }
 }
