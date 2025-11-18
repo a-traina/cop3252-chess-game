@@ -24,7 +24,7 @@ public class Pawn extends Piece{
         if (this.color.equals("black")) {
 
             //black passive moves
-            if (gb.getPieceAt(x + 1, y) == null) {
+            if (x + 1 < 8 && gb.getPieceAt(x + 1, y) == null) {
                 moveSet.add(new Position(x + 1, y));
 
                 //two space move
@@ -52,7 +52,7 @@ public class Pawn extends Piece{
         if (this.color.equals("white")) {
 
             //white passive moves
-            if (gb.getPieceAt(x - 1, y) == null) {
+            if (x - 1 >= 0 && gb.getPieceAt(x - 1, y) == null) {
                 moveSet.add(new Position(x - 1, y));
 
                 //two space move
