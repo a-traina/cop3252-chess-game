@@ -17,4 +17,18 @@ public class GameBoard {
     public Piece getPieceAt(int x, int y) {
         return board[x][y];
     }
+
+    public Position getKingPosition(String color) {
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                /*
+                if(board[i][j] instanceof King) {
+                    return new Position(i, j);
+                }
+                */
+            }
+        }
+
+        return new Position(0, 0);
+    }
 }
