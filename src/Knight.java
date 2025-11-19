@@ -19,7 +19,8 @@ public class Knight extends Piece {
         pointValue = 3;
     }
 
-    HashSet<Position> getAllMoves(Position p, GameBoard gb) {
+    @Override
+    public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
         int x = p.getX();
