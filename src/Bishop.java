@@ -23,9 +23,8 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
-            else if (pieceAt.color.equals(this.color)) {
+            else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
                 break;
             }
@@ -39,9 +38,8 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
-            else if (pieceAt.color.equals(this.color)) {
+            else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
                 break;
             }
@@ -55,9 +53,8 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
-            else if (pieceAt.color.equals(this.color)) {
+            else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
                 break;
             }
@@ -71,9 +68,8 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
-            else if (pieceAt.color.equals(this.color)) {
+            else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
                 break;
             }
