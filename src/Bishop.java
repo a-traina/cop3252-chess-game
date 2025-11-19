@@ -7,6 +7,7 @@ public class Bishop extends Piece {
         this.color = color;
     }
 
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
@@ -14,7 +15,7 @@ public class Bishop extends Piece {
         int y = p.getY();
 
         //output set
-        HashSet<Position> moveSet = new HashSet<Position>();
+        HashSet<Position> moveSet = new HashSet<>();
 
         //check for NE moves
         for (int i = x + 1, j = y + 1; i < 8 && j < 8; i++, j++) {
@@ -22,7 +23,6 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
             else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
@@ -38,7 +38,6 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
             else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
@@ -54,7 +53,6 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
             else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));
@@ -70,7 +68,6 @@ public class Bishop extends Piece {
 
             if (pieceAt == null) {
                 moveSet.add(new Position(i, j));
-                continue;
             }
             else if (!pieceAt.color.equals(this.color)) {
                 moveSet.add(new Position(i, j));

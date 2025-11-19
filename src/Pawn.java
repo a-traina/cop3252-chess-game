@@ -5,12 +5,13 @@ public class Pawn extends Piece{
     //unique data members
     boolean isFirstMove;
 
-    Pawn(String color) {
+    public Pawn(String color) {
         this.color = color;
         pointValue = 1;
         isFirstMove = true;
     }
 
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
@@ -18,7 +19,7 @@ public class Pawn extends Piece{
         int y = p.getY();
 
         //output set
-        HashSet<Position> moveSet = new HashSet<Position>();
+        HashSet<Position> moveSet = new HashSet<>();
 
         //black moves
         if (this.color.equals("black")) {
