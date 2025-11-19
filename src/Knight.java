@@ -13,6 +13,11 @@ public class Knight extends Piece {
     }
 
     @Override
+    public char getChar() {
+        return 'N';
+    }
+
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables

@@ -8,6 +8,11 @@ public class Bishop extends Piece {
     }
 
     @Override
+    public char getChar() {
+        return 'B';
+    }
+
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables

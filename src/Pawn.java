@@ -12,6 +12,11 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public char getChar() {
+        return 'P';
+    }
+
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
         //local variables
