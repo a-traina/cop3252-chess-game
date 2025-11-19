@@ -6,6 +6,7 @@ public class Bishop extends Piece {
         pointValue = 3;
         this.color = color;
     }
+
     @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
 
@@ -14,7 +15,7 @@ public class Bishop extends Piece {
         int y = p.getY();
 
         //output set
-        HashSet<Position> moveSet = new HashSet<Position>();
+        HashSet<Position> moveSet = new HashSet<>();
 
         //check for NE moves
         for (int i = x + 1, j = y + 1; i < 8 && j < 8; i++, j++) {
