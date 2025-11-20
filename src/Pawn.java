@@ -5,6 +5,11 @@ public class Pawn extends Piece{
     //unique data members
     boolean isFirstMove;
 
+    private boolean realSquare(int v1, int v2) {
+        return v1 >= 0 && v1 <= 7 && v2 >= 0 && v2 <= 7;
+
+    }
+
     public Pawn(String color) {
         this.color = color;
         pointValue = 1;
@@ -42,12 +47,12 @@ public class Pawn extends Piece{
             //black hostile moves
 
             //right diagonal attack
-            if (gb.getPieceAt(x + 1, y + 1) != null && !gb.getPieceAt(x + 1, y + 1).color.equals(this.color)) {
+            if (realSquare(x + 1, y + 1) && gb.getPieceAt(x + 1, y + 1) != null && !gb.getPieceAt(x + 1, y + 1).color.equals(this.color)) {
                 moveSet.add(new Position(x + 1, y + 1));
             }
 
             //left diagonal attack
-            if (gb.getPieceAt(x + 1, y - 1) != null && !gb.getPieceAt(x + 1, y - 1).color.equals(this.color)) {
+            if (realSquare(x + 1, y - 1) && gb.getPieceAt(x + 1, y - 1) != null && !gb.getPieceAt(x + 1, y - 1).color.equals(this.color)) {
                 moveSet.add(new Position(x + 1, y - 1));
             }
         }
@@ -70,12 +75,12 @@ public class Pawn extends Piece{
             //white hostile moves
 
             //right diagonal attack
-            if (gb.getPieceAt(x - 1, y + 1) != null && !gb.getPieceAt(x - 1, y + 1).color.equals(this.color)) {
+            if (realSquare(x - 1, y + 1) && gb.getPieceAt(x - 1, y + 1) != null && !gb.getPieceAt(x - 1, y + 1).color.equals(this.color)) {
                 moveSet.add(new Position(x - 1, y + 1));
             }
 
             //left diagonal attack
-            if (gb.getPieceAt(x - 1, y - 1) != null && !gb.getPieceAt(x - 1, y - 1).color.equals(this.color)) {
+            if (realSquare(x - 1, y - 1) && gb.getPieceAt(x - 1, y - 1) != null && !gb.getPieceAt(x - 1, y - 1).color.equals(this.color)) {
                 moveSet.add(new Position(x - 1, y - 1));
             }
         }

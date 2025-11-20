@@ -23,7 +23,7 @@ public class Bishop extends Piece {
         HashSet<Position> moveSet = new HashSet<>();
 
         //check for NE moves
-        for (int i = x + 1, j = y + 1; i < 8 && j < 8; i++, j++) {
+        for (int i = x - 1, j = y + 1; i >= 0 && j < 8; i--, j++) {
             Piece pieceAt = gb.getPieceAt(i, j);
 
             if (pieceAt == null) {
@@ -38,7 +38,7 @@ public class Bishop extends Piece {
         }
 
         //check for NW moves
-        for (int i = x + 1, j = y + 1; i < 8 && j >= 0; i++, j--) {
+        for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
             Piece pieceAt = gb.getPieceAt(i, j);
 
             if (pieceAt == null) {
@@ -53,7 +53,7 @@ public class Bishop extends Piece {
         }
 
         //check for SE moves
-        for (int i = x + 1, j = y + 1; i >= 0 && j < 8; i--, j++) {
+        for (int i = x + 1, j = y + 1; i < 8 && j < 8; i++, j++) {
             Piece pieceAt = gb.getPieceAt(i, j);
 
             if (pieceAt == null) {
@@ -68,7 +68,7 @@ public class Bishop extends Piece {
         }
 
         //check for SW moves
-        for (int i = x + 1, j = y + 1; i >= 0 && j >= 0; i--, j--) {
+        for (int i = x + 1, j = y - 1; i < 8 && j >= 0; i++, j--) {
             Piece pieceAt = gb.getPieceAt(i, j);
 
             if (pieceAt == null) {
