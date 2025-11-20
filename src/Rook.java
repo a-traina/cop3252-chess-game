@@ -10,6 +10,11 @@ public class Rook extends Piece {
     }
 
     @Override
+    public char getChar() {
+        return 'R';    
+    }
+
+    @Override
     public HashSet<Position> getAllMoves(Position p, GameBoard gb) {
         HashSet<Position> moveSet = new HashSet<>();
 
