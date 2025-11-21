@@ -176,6 +176,35 @@ public class GameBoard {
 
     }
 
+    //0 = game on; 1 = draw; 2 = currPlayer is lose
+    public int gameOver() {
+
+        //get current player
+        Player currPlayer = currTurn.equals("white") ? player1 : player2;
+
+        //get current players pieces
+        LinkedList<Piece> currPieces = currPlayer.getPieces();
+
+        //iterate through pieces
+        for (Piece p : currPieces) {
+
+            Position piecePos = this.getPosition(p);
+
+            if (piecePos == null) continue;
+
+            HashSet<Position> moves = p.getValidMoves(piecePos, this);
+
+            //if piece has any valid move game continues
+            if (!moves.isEmpty()) return 0;
+        }
+
+        //if no piece has a valid move and player is in check, they have been checkmated
+        if (isInCheck(this.board)) return 2;
+
+        //else they have been stalemated
+        return 1;
+    }
+
     public boolean makeMove(Position oldPos, Position newPos) {
         Piece piece = getPieceAt(oldPos.getX(), oldPos.getY());
         
