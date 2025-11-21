@@ -146,6 +146,10 @@ public class GameBoard {
         return new Position(0, 0);
     }
 
+    public Player getTurn() {
+        return currTurn.equals("white") ? player1 : player2;
+    }
+
     public boolean isInCheck(Piece[][] board) {
         // Get opponent
         Player opponent = currTurn.equals("white") ? player2 : player1;

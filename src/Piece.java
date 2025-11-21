@@ -8,6 +8,7 @@ public abstract class Piece {
 
     public HashSet<Position> getValidMoves(Position p, GameBoard gb) {
         HashSet<Position> moves = getAllMoves(p, gb);
+        HashSet<Position> validMoves = new HashSet<>();
         Piece piece = gb.getPieceAt(p.getX(), p.getY());
         Piece[][] board = new Piece[8][8];
         
@@ -28,14 +29,16 @@ public abstract class Piece {
             board[p.getX()][p.getY()] = null;
 
             // Check for inCheck
-            gb.isInCheck(board);
+            if(!gb.isInCheck(board)) {
+                validMoves.add(move);
+            }
 
             // Reset board for next move
             board[p.getX()][p.getY()] = piece;
             board[move.getX()][move.getY()] = tmp;
         }
 
-        return moves;
+        return validMoves;
     }
 
 
