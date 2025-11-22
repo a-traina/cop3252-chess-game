@@ -137,7 +137,8 @@ public class GameBoard {
     public Position getKingPosition(String color) {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                if(board[i][j] instanceof King) {
+                if(board[i][j] == null) continue;
+                if(board[i][j].getChar() == 'K' && board[i][j].getColor().equals(color)) {
                     return new Position(i, j);
                 }
             }
