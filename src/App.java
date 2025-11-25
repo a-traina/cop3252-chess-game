@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -23,15 +24,15 @@ public class App {
                 continue;
             }
 
-            System.out.println("Valid Moves:");
-            for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getValidMoves(new Position(piecex, piecey), app.gameBoard)) {
-                System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
-            }
+            // System.out.println("Valid Moves:");
+            // for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getValidMoves(new Position(piecex, piecey), app.gameBoard)) {
+            //     System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
+            // }
 
-            System.out.println("ALL Moves (some invalid):");
-            for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getAllMoves(new Position(piecex, piecey), app.gameBoard)) {
-                System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
-            }
+            // System.out.println("ALL Moves (some invalid):");
+            // for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getAllMoves(new Position(piecex, piecey), app.gameBoard)) {
+            //     System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
+            // }
 
             System.out.print("Make your move (row, column) >> ");
             int movex = in.nextInt();
@@ -39,7 +40,12 @@ public class App {
 
             if(app.gameBoard.makeMove(new Position(piecex, piecey), new Position(movex, movey)) != true) {
                 System.out.print("Invalid move. Try again.");
+                continue;
             }
+
+            System.out.println("Move History: ");
+            ArrayList<String> moveHistory = app.gameBoard.getMoveHistory();
+            moveHistory.forEach( item -> System.out.println(item));
         }
         
     }
