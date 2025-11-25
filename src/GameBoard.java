@@ -1,5 +1,6 @@
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.lang.Math;
 
 public class GameBoard {
     private final Player player1;
@@ -233,6 +234,48 @@ public class GameBoard {
                 else {
                     player2.capturePiece(board[newPos.getX()][newPos.getY()]);
                     player1.deletePiece(board[newPos.getX()][newPos.getY()]);
+                }
+            }
+
+            //castle logic
+            if (piece.getChar() == 'K') {
+
+                //reset first move
+                King king = (King) getPieceAt(oldPos.getX(), oldPos.getY());
+                king.setIsFirstMove(false);
+
+                if (Math.abs(newPos.getY() - oldPos.getY()) > 1) {
+                    //Queenside
+                    if (newPos.getY() < oldPos.getY()) {
+                        board[newPos.getX()][newPos.getY()] = piece;
+                        board[i][j] = null;
+
+                        Piece rook = getPieceAt(newPos.getX(), 0);
+                        board[newPos.getX()][3] = rook;
+                        board[newPos.getX()][0] = null;
+                        Rook r = (Rook) rook;
+                        r.setIsFirstMove(false);
+
+                        // Change current player turn
+                        currTurn = currTurn.equals("white") ? "black" : "white";
+                        return true;
+                    }
+
+                    //Kingside
+                    if (newPos.getY() > oldPos.getY()) {
+                        board[newPos.getX()][newPos.getY()] = piece;
+                        board[i][j] = null;
+
+                        Piece rook = getPieceAt(newPos.getX(), 7);
+                        board[newPos.getX()][5] = rook;
+                        board[newPos.getX()][7] = null;
+                        Rook r = (Rook) rook;
+                        r.setIsFirstMove(false);
+
+                        // Change current player turn
+                        currTurn = currTurn.equals("white") ? "black" : "white";
+                        return true;
+                    }
                 }
             }
 

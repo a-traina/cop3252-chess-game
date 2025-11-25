@@ -93,22 +93,122 @@ public class Rook extends Piece {
         int kingy = gb.getKingPosition(this.color).getY();
 
         if(isFirstMove) {
-            if(y < kingy) {
-                for(int j = y; j < kingy; j++) {
+
+            //Queen side castle
+            if (y < kingy) {
+
+                //check for clear path
+                for(int j = y + 1; j < kingy; j++) {
                     if(gb.getPieceAt(x, j) != null) {
                         return false;
                     }
                 }
-            }
-            else {
-                for(int j = y; j > kingy; j--) {
-                    if(gb.getPieceAt(x, j) != null) {
+
+                //check if king moves through attack
+                for (int k = 1; k < 3; k++) {
+
+                    Piece[][] board = new Piece[8][8];
+
+                    // Copy game board
+                    for(int i = 0; i < 8; i++) {
+                        for(int j = 0; j < 8; j++) {
+                            if (gb.getPieceAt(i, j) != null) {
+                                if (gb.getPieceAt(i, j).getChar() == 'K' && gb.getPieceAt(i, j).getColor().equals(this.color)) {
+                                    continue;
+                                }
+                            }
+
+                            Piece piece = gb.getPieceAt(i, j);
+
+                            // If it's a rook, create a new rook with isFirstMove = false
+                            if (piece != null && piece.getChar() == 'R') {
+                                Rook tempRook = new Rook(piece.getColor());
+                                tempRook.setIsFirstMove(false);
+                                board[i][j] = tempRook;
+                            } else {
+                                board[i][j] = piece;
+                            }
+                        }
+                    }
+
+                    //for black king
+                    if (this.color.equals("black")) {
+                        King king = new King("black");
+                        king.setIsFirstMove(false);
+                        board[0][4 - k] = king;
+                    }
+
+                    //for white king
+                    if (this.color.equals("white")) {
+                        King king = new King("white");
+                        king.setIsFirstMove(false);
+                        board[7][4 - k] = king;
+                    }
+
+                    if (gb.isInCheck(board)) {
                         return false;
                     }
                 }
+                return true;
             }
 
-            return true;
+            //King side castle
+            else {
+
+                //check for clear path
+                for(int j = y - 1; j > kingy; j--) {
+                    if(gb.getPieceAt(x, j) != null) {
+                        return false;
+                    }
+                }
+
+                //check if king moves through attack
+                for (int k = 1; k < 3; k++) {
+
+                    Piece[][] board = new Piece[8][8];
+
+                    // Copy game board
+                    for(int i = 0; i < 8; i++) {
+                        for(int j = 0; j < 8; j++) {
+                            if (gb.getPieceAt(i, j) != null) {
+                                if (gb.getPieceAt(i, j).getChar() == 'K' && gb.getPieceAt(i, j).getColor().equals(this.color)) {
+                                    continue;
+                                }
+                            }
+
+                            Piece piece = gb.getPieceAt(i, j);
+
+                            // If it's a rook, create a new rook with isFirstMove = false
+                            if (piece != null && piece.getChar() == 'R') {
+                                Rook tempRook = new Rook(piece.getColor());
+                                tempRook.setIsFirstMove(false);
+                                board[i][j] = tempRook;
+                            } else {
+                                board[i][j] = piece;
+                            }
+                        }
+                    }
+
+                    //for black king
+                    if (this.color.equals("black")) {
+                        King king = new King("black");
+                        king.setIsFirstMove(false);
+                        board[0][4 + k] = king;
+                    }
+
+                    //for white king
+                    if (this.color.equals("white")) {
+                        King king = new King("white");
+                        king.setIsFirstMove(false);
+                        board[7][4 + k] = king;
+                    }
+
+                    if (gb.isInCheck(board)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         return false;
     }
