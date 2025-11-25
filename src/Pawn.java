@@ -36,11 +36,11 @@ public class Pawn extends Piece{
         if (this.color.equals("black")) {
 
             //black passive moves
-            if (x + 1 < 8 && gb.getPieceAt(x + 1, y) == null) {
+            if (realSquare(x + 1, y) && gb.getPieceAt(x + 1, y) == null) {
                 moveSet.add(new Position(x + 1, y));
 
                 //two space move
-                if (gb.getPieceAt(x + 2, y) == null && isFirstMove) {
+                if (realSquare(x + 2, y) && gb.getPieceAt(x + 2, y) == null && isFirstMove) {
                     moveSet.add(new Position(x + 2, y));
                 }
             }
@@ -64,11 +64,11 @@ public class Pawn extends Piece{
         if (this.color.equals("white")) {
 
             //white passive moves
-            if (x - 1 >= 0 && gb.getPieceAt(x - 1, y) == null) {
+            if (realSquare(x - 1, y) && gb.getPieceAt(x - 1, y) == null) {
                 moveSet.add(new Position(x - 1, y));
 
                 //two space move
-                if (gb.getPieceAt(x - 2, y) == null && isFirstMove) {
+                if (realSquare(x - 2, y) && gb.getPieceAt(x - 2, y) == null && isFirstMove) {
                     moveSet.add(new Position(x - 2, y));
                 }
             }
