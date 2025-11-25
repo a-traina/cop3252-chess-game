@@ -10,6 +10,7 @@ public class Knight extends Piece {
     public Knight(String color) {
         this.color = color;
         pointValue = 3;
+        this.imagePath = color.equals("white") ? "/assets/Chess_nlt60.png" : "/assets/Chess_ndt60.png";
     }
 
     @Override

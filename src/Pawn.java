@@ -14,6 +14,7 @@ public class Pawn extends Piece{
         this.color = color;
         pointValue = 1;
         isFirstMove = true;
+        this.imagePath = color.equals("white") ? "/assets/Chess_plt60.png" : "/assets/Chess_pdt60.png";
     }
 
     @Override
