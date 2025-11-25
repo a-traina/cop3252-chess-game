@@ -137,7 +137,8 @@ public class GameBoard {
     public Position getKingPosition(String color) {
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                if(board[i][j] instanceof King) {
+                if(board[i][j] == null) continue;
+                if(board[i][j].getChar() == 'K' && board[i][j].getColor().equals(color)) {
                     return new Position(i, j);
                 }
             }
@@ -146,16 +147,20 @@ public class GameBoard {
         return new Position(0, 0);
     }
 
+    public Player getPlayer(String color) {
+        return color.equals("white") ? player1 : player2;
+    }
+
     public Player getTurn() {
         return currTurn.equals("white") ? player1 : player2;
     }
 
     public boolean isInCheck(Piece[][] board) {
-        // Get opponent
-        Player opponent = currTurn.equals("white") ? player2 : player1;
-
         // Make game board object for board passed in
         GameBoard simulate = new GameBoard(board);
+
+        // Get opponent
+        Player opponent = currTurn.equals("white") ? simulate.getPlayer("black") : simulate.getPlayer("white");
 
         // Get current player's king position
         Position kingPos = simulate.getKingPosition(currTurn);

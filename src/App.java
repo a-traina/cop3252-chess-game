@@ -10,7 +10,7 @@ public class App {
         App app = new App();
         Scanner in = new Scanner(System.in);
         
-        while (true) { 
+        while (app.gameBoard.gameOver() == 0) { 
             System.out.println();
             System.out.println();
             app.printBoard();
@@ -18,6 +18,20 @@ public class App {
             System.out.printf("Player %s : select your piece (row, column) >> ", player.getColor());
             int piecex = in.nextInt();
             int piecey = in.nextInt();
+
+            if(app.gameBoard.getPieceAt(piecex, piecey) == null) {
+                continue;
+            }
+
+            System.out.println("Valid Moves:");
+            for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getValidMoves(new Position(piecex, piecey), app.gameBoard)) {
+                System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
+            }
+
+            System.out.println("ALL Moves (some invalid):");
+            for(Position pos : app.gameBoard.getPieceAt(piecex, piecey).getAllMoves(new Position(piecex, piecey), app.gameBoard)) {
+                System.out.printf("(%d, %d)\n", pos.getX(), pos.getY());
+            }
 
             System.out.print("Make your move (row, column) >> ");
             int movex = in.nextInt();
