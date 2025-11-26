@@ -19,7 +19,6 @@ public class GridJPanel extends JPanel {
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
 
-    // Cache images by path to avoid reloading each paint
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
     public GridJPanel(GameBoard gameBoard, DefaultListModel<String> gameHistory) {
@@ -107,11 +106,11 @@ public class GridJPanel extends JPanel {
             }
 
             if (selectedPosition != null && selectedPosition.getX() == row && selectedPosition.getY() == col) {
-                g.setColor(new Color(255, 215, 0, 180)); // translucent gold
-                g.fillRect(0, 0, getWidth(), 6); // top bar
-                g.fillRect(0, 0, 6, getHeight()); // left bar
-                g.fillRect(getWidth() - 6, 0, 6, getHeight()); // right bar
-                g.fillRect(0, getHeight() - 6, getWidth(), 6); // bottom bar
+                g.setColor(new Color(255, 215, 0, 180)); 
+                g.fillRect(0, 0, getWidth(), 6);
+                g.fillRect(0, 0, 6, getHeight()); 
+                g.fillRect(getWidth() - 6, 0, 6, getHeight());
+                g.fillRect(0, getHeight() - 6, getWidth(), 6); 
             }
 
             Piece piece = gameBoard.getPieceAt(row, col);
