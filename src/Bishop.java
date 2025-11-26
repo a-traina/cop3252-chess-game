@@ -5,6 +5,7 @@ public class Bishop extends Piece {
     public Bishop(String color) {
         pointValue = 3;
         this.color = color;
+        this.imagePath = color.equals("white") ? "/assets/Chess_blt60.png" : "/assets/Chess_bdt60.png";
     }
 
     @Override

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.lang.Math;
@@ -7,10 +8,12 @@ public class GameBoard {
     private final Player player2;
     private final Piece[][] board = new Piece[8][8];
     private String currTurn;
+    private final ArrayList<String> moveHistory;
 
     public GameBoard() {
         player1 = new Player("white");
         player2 = new Player("black");
+        moveHistory = new ArrayList<>();
 
         currTurn = "white";
 
@@ -37,6 +40,7 @@ public class GameBoard {
 
         player1 = new Player("white");
         player2 = new Player("black");
+        moveHistory = new ArrayList<>();
 
         currTurn = "white";
         
@@ -156,6 +160,10 @@ public class GameBoard {
         return currTurn.equals("white") ? player1 : player2;
     }
 
+    public ArrayList<String> getMoveHistory() {
+        return moveHistory;
+    }
+
     public boolean isInCheck(Piece[][] board) {
         // Make game board object for board passed in
         GameBoard simulate = new GameBoard(board);
@@ -215,6 +223,29 @@ public class GameBoard {
         return 1;
     }
 
+    private String moveRecord(char piece, Position oldPos, Position newPos, boolean isCapture) {
+        StringBuilder str = new StringBuilder();
+        String cols = "abcdefgh";
+
+        str.append("Player ").append(currTurn).append(": ");
+
+        if(piece != 'P') {
+            str.append(piece);
+        }
+
+        if(isCapture) {
+            if(piece == 'P') {
+                str.append(cols.charAt(oldPos.getY()));
+            }
+            str.append('x').append(cols.charAt(newPos.getY())).append(newPos.getX() + 1);
+        }
+        else {
+            str.append(cols.charAt(newPos.getY())).append(newPos.getX() + 1);
+        }
+        
+        return str.toString();
+    }
+
     public boolean makeMove(Position oldPos, Position newPos) {
         Piece piece = getPieceAt(oldPos.getX(), oldPos.getY());
         
@@ -223,6 +254,8 @@ public class GameBoard {
 
         int i = oldPos.getX();
         int j = oldPos.getY();
+
+        boolean isCapture = false;
 
         HashSet<Position> moveSet = piece.getValidMoves(oldPos, this);
         if(moveSet.contains(newPos)) {
@@ -235,6 +268,7 @@ public class GameBoard {
                     player2.capturePiece(board[newPos.getX()][newPos.getY()]);
                     player1.deletePiece(board[newPos.getX()][newPos.getY()]);
                 }
+                isCapture = true;
             }
 
             //castle logic
@@ -289,6 +323,9 @@ public class GameBoard {
         }
         else return false;
         
+        // Log move in move history
+        moveHistory.addLast(moveRecord(piece.getChar(), oldPos, newPos, isCapture));
+
         // Change current player turn
         currTurn = currTurn.equals("white") ? "black" : "white";
         return true;
