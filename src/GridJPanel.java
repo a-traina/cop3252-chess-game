@@ -53,9 +53,9 @@ public class GridJPanel extends JPanel {
             col = j;
 
             if (squareColor.equals("black")) {
-                setBackground(new Color(125, 135, 150));
+                setBackground(new Color(185, 134, 99));
             } else {
-                setBackground(new Color(232, 235, 239));
+                setBackground(new Color(236, 214, 177));
             }
 
             addMouseListener(new MouseAdapter() {

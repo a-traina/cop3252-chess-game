@@ -10,6 +10,10 @@ public class Pawn extends Piece{
 
     }
 
+    public void setIsFirstMove(boolean b) {
+        isFirstMove = b;
+    }
+
     public Pawn(String color) {
         this.color = color;
         pointValue = 1;

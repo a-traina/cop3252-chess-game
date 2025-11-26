@@ -55,6 +55,32 @@ public class King extends Piece {
             moveSet.add(new Position(x - 1, y - 1));
         }
 
+        //castle
+        //Queenside
+        Piece piece;
+        if (gb.getPieceAt(p.getX(), 0) != null) {
+            piece = gb.getPieceAt(p.getX(), 0);
+            if (piece.getChar() == 'R') {
+                System.out.println("Queenside Castle Check Entered.");
+                Rook r = (Rook) piece;
+                if (r.canCastle(new Position(p.getX(), 0), gb) && this.canCastle(gb)) {
+                    moveSet.add(new Position(p.getX(), p.getY() - 2));
+                }
+            }
+        }
+
+        //Kingside
+        if (gb.getPieceAt(p.getX(), 7) != null) {
+            piece = gb.getPieceAt(p.getX(), 7);
+            if (piece.getChar() == 'R') {
+                System.out.println("Kingside Castle Check Entered");
+                Rook r = (Rook) piece;
+                if (r.canCastle(new Position(p.getX(), 7), gb) && this.canCastle(gb)) {
+                    moveSet.add(new Position(p.getX(), p.getY() + 2));
+                }
+            }
+        }
+
         return moveSet;
     }
 

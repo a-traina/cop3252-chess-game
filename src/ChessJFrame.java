@@ -1,4 +1,4 @@
-import java.awt.BorderLayout;
+import java.awt.*;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -18,7 +18,19 @@ public class ChessJFrame extends JFrame{
 
         DefaultListModel<String> gameHistory = new DefaultListModel<>();
         moveJList = new JList<>(gameHistory);
+
+        //color formatting for move history
+        moveJList.setBackground(Color.DARK_GRAY);
+        moveJList.setForeground(Color.WHITE);
+        moveJList.setSelectionBackground(Color.GRAY);
+        moveJList.setSelectionForeground(Color.WHITE);
+
         JScrollPane scrollPane = new JScrollPane(moveJList);
+
+        //color formattng for scroll pane
+        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+        scrollPane.setBackground(Color.DARK_GRAY);
+
         add(scrollPane, BorderLayout.EAST);
 
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistory);
@@ -26,6 +38,10 @@ public class ChessJFrame extends JFrame{
 
     }
     public static void main(String[] args) {
+
+        //testing dark mode
+        System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
+
         ChessJFrame chessJFrame = new ChessJFrame();
         chessJFrame.setSize(800, 600);
         chessJFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);

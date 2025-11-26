@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.lang.Math;
 
 public class GameBoard {
     private final Player player1;
@@ -270,8 +271,65 @@ public class GameBoard {
                 isCapture = true;
             }
 
+            //castle logic
+            if (piece.getChar() == 'K') {
+
+                //reset first move
+                King king = (King) getPieceAt(oldPos.getX(), oldPos.getY());
+                king.setIsFirstMove(false);
+
+                if (Math.abs(newPos.getY() - oldPos.getY()) > 1) {
+                    //Queenside
+                    if (newPos.getY() < oldPos.getY()) {
+                        board[newPos.getX()][newPos.getY()] = piece;
+                        board[i][j] = null;
+
+                        Piece rook = getPieceAt(newPos.getX(), 0);
+                        board[newPos.getX()][3] = rook;
+                        board[newPos.getX()][0] = null;
+                        Rook r = (Rook) rook;
+                        r.setIsFirstMove(false);
+
+                        // Change current player turn
+                        moveHistory.addLast("Player " + currTurn + ": O-O-O");
+                        currTurn = currTurn.equals("white") ? "black" : "white";
+                        return true;
+                    }
+
+                    //Kingside
+                    if (newPos.getY() > oldPos.getY()) {
+                        board[newPos.getX()][newPos.getY()] = piece;
+                        board[i][j] = null;
+
+                        Piece rook = getPieceAt(newPos.getX(), 7);
+                        board[newPos.getX()][5] = rook;
+                        board[newPos.getX()][7] = null;
+                        Rook r = (Rook) rook;
+                        r.setIsFirstMove(false);
+
+                        // Change current player turn
+                        moveHistory.addLast("Player " + currTurn + ": O-O");
+                        currTurn = currTurn.equals("white") ? "black" : "white";
+                        return true;
+                    }
+                }
+            }
+
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
+
+            if (piece.getChar() == 'P') {
+                Pawn pawn = (Pawn) piece;
+                pawn.setIsFirstMove(false);
+            }
+            else if (piece.getChar() == 'R') {
+                Rook rook = (Rook) piece;
+                rook.setIsFirstMove(false);
+            }
+            else if (piece.getChar() == 'K') {
+                King king = (King) piece;
+                king.setIsFirstMove(false);
+            }
         }
         else return false;
         
