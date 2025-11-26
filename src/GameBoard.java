@@ -281,6 +281,11 @@ public class GameBoard {
 
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
+
+            if (piece.getChar() == 'P' && Math.abs(oldPos.getX() - newPos.getX()) > 1) {
+                Pawn pawn = (Pawn) piece;
+                pawn.setIsFirstMove(false);
+            }
         }
         else return false;
         
