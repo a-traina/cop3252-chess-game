@@ -7,6 +7,7 @@ public class King extends Piece {
         pointValue = 0;
         this.color = color;
         isFirstMove = true;
+        this.imagePath = color.equals("white") ? "/assets/Chess_klt60.png" : "/assets/Chess_kdt60.png";
     }
 
     @Override
