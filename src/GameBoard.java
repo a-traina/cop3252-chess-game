@@ -291,6 +291,7 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
+                        moveHistory.addLast("Player " + currTurn + ": O-O-O");
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
@@ -307,6 +308,7 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
+                        moveHistory.addLast("Player " + currTurn + ": O-O");
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
@@ -316,9 +318,17 @@ public class GameBoard {
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
 
-            if (piece.getChar() == 'P' && Math.abs(oldPos.getX() - newPos.getX()) > 1) {
+            if (piece.getChar() == 'P') {
                 Pawn pawn = (Pawn) piece;
                 pawn.setIsFirstMove(false);
+            }
+            else if (piece.getChar() == 'R') {
+                Rook rook = (Rook) piece;
+                rook.setIsFirstMove(false);
+            }
+            else if (piece.getChar() == 'K') {
+                King king = (King) piece;
+                king.setIsFirstMove(false);
             }
         }
         else return false;
