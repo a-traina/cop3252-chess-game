@@ -83,6 +83,17 @@ public class GridJPanel extends JPanel {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
                                     gameHistory.addElement(gameBoard.getMoveHistory().getLast());
 
+                                    if(gameBoard.canPawnPromote()) {
+                                        String choice = new PieceJOptionPane(gameBoard.getPawnPromoteColor()).showDialog(GridJPanel.this);
+
+                                        switch(choice) {
+                                            case "queen" -> {gameBoard.promotePawn(new Queen(gameBoard.getPawnPromoteColor()));}
+                                            case "knight" -> {gameBoard.promotePawn(new Knight(gameBoard.getPawnPromoteColor()));}
+                                            case "bishop" -> {gameBoard.promotePawn(new Bishop(gameBoard.getPawnPromoteColor()));}
+                                            case "rook" -> {gameBoard.promotePawn(new Rook(gameBoard.getPawnPromoteColor()));}
+                                        }
+                                    }
+
                                 }
                             }
 

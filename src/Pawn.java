@@ -4,6 +4,7 @@ public class Pawn extends Piece{
 
     //unique data members
     boolean isFirstMove;
+    boolean canPromote;
 
     private boolean realSquare(int v1, int v2) {
         return v1 >= 0 && v1 <= 7 && v2 >= 0 && v2 <= 7;
@@ -14,10 +15,19 @@ public class Pawn extends Piece{
         isFirstMove = b;
     }
 
+    public boolean getCanPromote() {
+        return canPromote;
+    }
+
+    public void setCanPromote(boolean canPromote) {
+        this.canPromote = canPromote;
+    }
+
     public Pawn(String color) {
         this.color = color;
         pointValue = 1;
         isFirstMove = true;
+        canPromote = false;
         this.imagePath = color.equals("white") ? "/assets/Chess_plt60.png" : "/assets/Chess_pdt60.png";
     }
 
