@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.lang.Math;
 
 public class GameBoard {
     private final Player player1;
@@ -9,6 +8,12 @@ public class GameBoard {
     private final Piece[][] board = new Piece[8][8];
     private String currTurn;
     private final ArrayList<String> moveHistory;
+    private PawnPromoteData pawnPromoteData;
+    private class PawnPromoteData {
+        public Position pawnPos;
+        public String pawnColor;
+        public Pawn pawn;
+    }
 
     public GameBoard() {
         player1 = new Player("white");
@@ -16,7 +21,7 @@ public class GameBoard {
         moveHistory = new ArrayList<>();
 
         currTurn = "white";
-
+        pawnPromoteData = null;
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 board[i][j] = null;
@@ -43,6 +48,7 @@ public class GameBoard {
         moveHistory = new ArrayList<>();
 
         currTurn = "white";
+        pawnPromoteData = null;
         
         for(int i = 0; i < 8; i++) {
             System.arraycopy(board[i], 0, this.board[i], 0, board[i].length);
@@ -162,6 +168,25 @@ public class GameBoard {
 
     public ArrayList<String> getMoveHistory() {
         return moveHistory;
+    }
+
+    public boolean canPawnPromote() {
+        return pawnPromoteData != null;
+    }
+
+    public String getPawnPromoteColor() {
+        return pawnPromoteData.pawnColor;
+    }
+
+    public void promotePawn(Piece piece) {
+        if(!canPawnPromote()) return;
+
+        Player player = pawnPromoteData.pawnColor.equals("white") ? player1 : player2;
+        player.deletePiece(pawnPromoteData.pawn);
+        board[pawnPromoteData.pawnPos.getX()][pawnPromoteData.pawnPos.getY()] = piece;
+        player.addPiece(piece);
+
+        pawnPromoteData = null;
     }
 
     public boolean isInCheck(Piece[][] board) {
@@ -321,6 +346,20 @@ public class GameBoard {
             if (piece.getChar() == 'P') {
                 Pawn pawn = (Pawn) piece;
                 pawn.setIsFirstMove(false);
+
+                if(pawn.getColor().equals("black") && newPos.getX() == 7) {
+                    pawn.setCanPromote(true);
+                }
+                else if(pawn.getColor().equals("white") && newPos.getX() == 0) {
+                    pawn.setCanPromote(true);
+                }
+
+                if(pawn.getCanPromote()) {
+                    pawnPromoteData = new PawnPromoteData();
+                    pawnPromoteData.pawnColor = currTurn;
+                    pawnPromoteData.pawnPos = newPos;
+                    pawnPromoteData.pawn = pawn;
+                }
             }
             else if (piece.getChar() == 'R') {
                 Rook rook = (Rook) piece;
