@@ -1,8 +1,5 @@
 import java.awt.*;
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 public class ChessJFrame extends JFrame{
     private final JList<String> moveJList;
@@ -16,30 +13,40 @@ public class ChessJFrame extends JFrame{
         BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
+        //Move History
         DefaultListModel<String> gameHistory = new DefaultListModel<>();
         moveJList = new JList<>(gameHistory);
 
-        //color formatting for move history
+        //Move History Visual Formatting
         moveJList.setBackground(Color.DARK_GRAY);
         moveJList.setForeground(Color.WHITE);
         moveJList.setSelectionBackground(Color.GRAY);
         moveJList.setSelectionForeground(Color.WHITE);
 
+        //Scroll Pane
         JScrollPane scrollPane = new JScrollPane(moveJList);
 
-        //color formattng for scroll pane
-        scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+        //Scroll Pane Visual Formatting
+        scrollPane.setBorder(null);
         scrollPane.setBackground(Color.DARK_GRAY);
 
         add(scrollPane, BorderLayout.EAST);
 
-        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistory);
+        //Grid Panel (Game Board)
+        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistory, this);
+        gridJPanel.setBackground(Color.DARK_GRAY);
+
         add(gridJPanel, BorderLayout.CENTER);
 
     }
+
+    public void scrollToBottom() {
+        moveJList.ensureIndexIsVisible(moveJList.getModel().getSize() - 1);
+    }
+
     public static void main(String[] args) {
 
-        //testing dark mode
+        //dark mode for macOS
         System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
 
         ChessJFrame chessJFrame = new ChessJFrame();
