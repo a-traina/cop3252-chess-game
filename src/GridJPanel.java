@@ -16,16 +16,18 @@ import javax.swing.JPanel;
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
     private final DefaultListModel<String> gameHistory;
+    private final ChessJFrame parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
-    public GridJPanel(GameBoard gameBoard, DefaultListModel<String> gameHistory) {
+    public GridJPanel(GameBoard gameBoard, DefaultListModel<String> gameHistory, ChessJFrame parentFrame) {
         super();
 
         this.gameBoard = gameBoard;
         this.gameHistory = gameHistory;
+        this.parentFrame = parentFrame;
 
         setLayout(new GridLayout(8, 8));
 
@@ -82,7 +84,7 @@ public class GridJPanel extends JPanel {
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
                                     gameHistory.addElement(gameBoard.getMoveHistory().getLast());
-
+                                    parentFrame.scrollToBottom();
                                 }
                             }
 

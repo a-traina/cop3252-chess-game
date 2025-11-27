@@ -86,7 +86,6 @@ public class Rook extends Piece {
     }
 
     public boolean canCastle(Position p, GameBoard gb) {
-        // TODO: Implement the logic to check if King will be in check
 
         int x = p.getX();
         int y = p.getY();
@@ -121,11 +120,11 @@ public class Rook extends Piece {
 
                             Piece piece = gb.getPieceAt(i, j);
 
-                            // If it's a rook, create a new rook with isFirstMove = false
+                            //copy rooks but remove ability to castle
                             if (piece != null && piece.getChar() == 'R') {
-                                Rook tempRook = new Rook(piece.getColor());
-                                tempRook.setIsFirstMove(false);
-                                board[i][j] = tempRook;
+                                Rook temp = new Rook(piece.getColor());
+                                temp.setIsFirstMove(false);
+                                board[i][j] = temp;
                             } else {
                                 board[i][j] = piece;
                             }
@@ -179,11 +178,11 @@ public class Rook extends Piece {
 
                             Piece piece = gb.getPieceAt(i, j);
 
-                            // If it's a rook, create a new rook with isFirstMove = false
+                            //copy rooks but remove ability to castle
                             if (piece != null && piece.getChar() == 'R') {
-                                Rook tempRook = new Rook(piece.getColor());
-                                tempRook.setIsFirstMove(false);
-                                board[i][j] = tempRook;
+                                Rook temp = new Rook(piece.getColor());
+                                temp.setIsFirstMove(false);
+                                board[i][j] = temp;
                             } else {
                                 board[i][j] = piece;
                             }
