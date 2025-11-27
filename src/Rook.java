@@ -86,8 +86,6 @@ public class Rook extends Piece {
     }
 
     public boolean canCastle(Position p, GameBoard gb) {
-        // TODO: Implement the logic to check if King will be in check
-
         int x = p.getX();
         int y = p.getY();
 
