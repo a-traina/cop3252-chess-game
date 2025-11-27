@@ -84,7 +84,6 @@ public class GridJPanel extends JPanel {
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
                                     gameHistory.addElement(gameBoard.getMoveHistory().getLast());
-<<<<<<< HEAD
 
                                     if(gameBoard.canPawnPromote()) {
                                         String choice = new PieceJOptionPane(gameBoard.getPawnPromoteColor()).showDialog(GridJPanel.this);
@@ -97,9 +96,7 @@ public class GridJPanel extends JPanel {
                                         }
                                     }
 
-=======
                                     parentFrame.scrollToBottom();
->>>>>>> origin/dev
                                 }
                             }
 
