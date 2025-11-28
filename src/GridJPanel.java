@@ -1,5 +1,7 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -119,6 +121,27 @@ public class GridJPanel extends JPanel {
             super.paintComponent(g);
 
             Graphics2D g2d = (Graphics2D) g;
+
+            if(col == 0) {
+                String rowNum = Integer.toString(8 - row);
+                g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
+                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+
+                FontMetrics fontMetrics = g2d.getFontMetrics();
+
+                g2d.drawString(rowNum, 1, fontMetrics.getAscent());
+            }
+
+            if(row == 7) {
+                String colLetters = "abcdefgh";
+                g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
+                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+
+                FontMetrics fontMetrics = g2d.getFontMetrics();
+
+                String letter = Character.toString(colLetters.charAt(col));
+                g2d.drawString(letter, getWidth() - fontMetrics.stringWidth(letter) - 1, getHeight() - fontMetrics.getDescent());
+            }
 
             if (highlightedMoves.contains(new Position(row, col))) {
                 g2d.setColor(new Color(0, 255, 0, 120));

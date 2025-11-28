@@ -262,10 +262,10 @@ public class GameBoard {
             if(piece == 'P') {
                 str.append(cols.charAt(oldPos.getY()));
             }
-            str.append('x').append(cols.charAt(newPos.getY())).append(newPos.getX() + 1);
+            str.append('x').append(cols.charAt(newPos.getY())).append(8 - newPos.getX());
         }
         else {
-            str.append(cols.charAt(newPos.getY())).append(newPos.getX() + 1);
+            str.append(cols.charAt(newPos.getY())).append(8 - newPos.getX());
         }
         
         return str.toString();
