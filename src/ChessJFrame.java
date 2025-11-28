@@ -13,30 +13,22 @@ public class ChessJFrame extends JFrame{
         getContentPane().setBackground(Color.DARK_GRAY);
         ((JComponent)getRootPane().getContentPane()).setBorder(new EmptyBorder(16, 16, 16, 16)); // top, left, bottom, right
 
-
         gameBoard = new GameBoard();
 
-        BorderLayout borderLayout = new BorderLayout(10, 10);
+        BorderLayout borderLayout = new BorderLayout();
         setLayout(borderLayout);
 
         //Move History
         DefaultListModel<String> gameHistory = new DefaultListModel<>();
         moveJList = new JList<>(gameHistory);
-
-        //Move History Visual Formatting
-        moveJList.setBackground(Color.DARK_GRAY);
+        moveJList.setBackground(new Color(51, 50, 48));
         moveJList.setForeground(Color.WHITE);
-        moveJList.setSelectionBackground(Color.GRAY);
-        moveJList.setSelectionForeground(Color.WHITE);
 
         //Scroll Pane
         JScrollPane scrollPane = new JScrollPane(moveJList);
-        // Keep the move history at a consistent width so the center board doesn't jump
-        scrollPane.setPreferredSize(new Dimension(240, 600));
-
-        //Scroll Pane Visual Formatting
+        scrollPane.setPreferredSize(new Dimension(350, 600));
         scrollPane.setBorder(null);
-        scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setBackground(new Color(51, 50, 48));
 
         add(scrollPane, BorderLayout.EAST);
 
@@ -46,6 +38,7 @@ public class ChessJFrame extends JFrame{
 
         add(gridJPanel, BorderLayout.CENTER);
 
+        // Player Banners
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
         add(player1Banner, BorderLayout.SOUTH);
@@ -64,9 +57,6 @@ public class ChessJFrame extends JFrame{
         else if(color.equals("black")) {
             player2Banner.updateCapturedPieces();
         }
-
-        // revalidate();
-        // repaint();
     }
 
     public static void main(String[] args) {

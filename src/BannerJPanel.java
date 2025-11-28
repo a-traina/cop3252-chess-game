@@ -16,15 +16,16 @@ public class BannerJPanel extends JPanel {
 
         playerJLabel = new JLabel(player.toString());
         playerJLabel.setForeground(Color.WHITE);
+        add(playerJLabel);
+
         capturedPiecesPanel = new CapturedPiecesPanel();
+        add(capturedPiecesPanel);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         setPreferredSize(new Dimension(400, 45));
-        add(playerJLabel);
-        add(capturedPiecesPanel);
 
-        setBackground(new Color(51, 50, 48));
+        setBackground(Color.DARK_GRAY);
     }
 
     private class CapturedPiecesPanel extends JPanel {

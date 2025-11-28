@@ -156,4 +156,12 @@ public class GridJPanel extends JPanel {
             }
         }
     }
+
+    @Override
+    public void doLayout() {
+        int size = Math.min(getWidth(), getHeight());
+        setSize(size, size);
+        super.doLayout();
+    }
+
 }
