@@ -11,6 +11,11 @@ public class Player {
         capturedPieces = new LinkedList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Player " + color;
+    }
+
     public String getColor() {
         return color;
     }

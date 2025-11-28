@@ -96,6 +96,8 @@ public class GridJPanel extends JPanel {
                                         }
                                     }
 
+                                    parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor().equals("white") ? "black" : "white");
+
                                     parentFrame.scrollToBottom();
                                 }
                             }

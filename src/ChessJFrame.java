@@ -1,16 +1,22 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class ChessJFrame extends JFrame{
     private final JList<String> moveJList;
+    private final BannerJPanel player1Banner;
+    private final BannerJPanel player2Banner;
     private final GameBoard gameBoard;
     public ChessJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.DARK_GRAY);
+        ((JComponent)getRootPane().getContentPane()).setBorder(new EmptyBorder(16, 16, 16, 16)); // top, left, bottom, right
+
 
         gameBoard = new GameBoard();
 
-        BorderLayout borderLayout = new BorderLayout();
+        BorderLayout borderLayout = new BorderLayout(10, 10);
         setLayout(borderLayout);
 
         //Move History
@@ -25,6 +31,8 @@ public class ChessJFrame extends JFrame{
 
         //Scroll Pane
         JScrollPane scrollPane = new JScrollPane(moveJList);
+        // Keep the move history at a consistent width so the center board doesn't jump
+        scrollPane.setPreferredSize(new Dimension(240, 600));
 
         //Scroll Pane Visual Formatting
         scrollPane.setBorder(null);
@@ -38,10 +46,27 @@ public class ChessJFrame extends JFrame{
 
         add(gridJPanel, BorderLayout.CENTER);
 
+        player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
+        player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
+        add(player1Banner, BorderLayout.SOUTH);
+        add(player2Banner, BorderLayout.NORTH);
+
     }
 
     public void scrollToBottom() {
         moveJList.ensureIndexIsVisible(moveJList.getModel().getSize() - 1);
+    }
+
+    public void updatedCapturedPieces(String color) {
+        if(color.equals("white")) {
+            player1Banner.updateCapturedPieces();
+        }
+        else if(color.equals("black")) {
+            player2Banner.updateCapturedPieces();
+        }
+
+        // revalidate();
+        // repaint();
     }
 
     public static void main(String[] args) {
