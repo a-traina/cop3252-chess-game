@@ -340,12 +340,41 @@ public class GameBoard {
                 }
             }
 
+            //en passant logic
+            if (piece.getChar() == 'P') {
+                if (currTurn.equals("white") && getPieceAt(newPos.getX(), newPos.getY()) == null && oldPos.getY() != newPos.getY()) {
+                    player1.capturePiece(board[newPos.getX() + 1][newPos.getY()]);
+                    player2.deletePiece(board[newPos.getX() + 1][newPos.getY()]);
+                    board[newPos.getX() + 1][newPos.getY()] = null;
+                    isCapture = true;
+                }
+
+                if (currTurn.equals("black") && getPieceAt(newPos.getX(), newPos.getY()) == null && oldPos.getY() != newPos.getY()) {
+                    player2.capturePiece(board[newPos.getX() - 1][newPos.getY()]);
+                    player1.deletePiece(board[newPos.getX() - 1][newPos.getY()]);
+                    board[newPos.getX() - 1][newPos.getY()] = null;
+                    isCapture = true;
+                }
+            }
+
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
+
+            Player tempPlayer = currTurn.equals("white") ? player1 : player2;
+            for (Piece x : tempPlayer.getPieces()) {
+                if (x.getChar() == 'P') {
+                    Pawn pawn = (Pawn) x;
+                    pawn.enPassantable = false;
+                }
+            }
 
             if (piece.getChar() == 'P') {
                 Pawn pawn = (Pawn) piece;
                 pawn.setIsFirstMove(false);
+
+                if (Math.abs(newPos.getX() - oldPos.getX()) > 1) {
+                    pawn.enPassantable = true;
+                }
 
                 if(pawn.getColor().equals("black") && newPos.getX() == 7) {
                     pawn.setCanPromote(true);
