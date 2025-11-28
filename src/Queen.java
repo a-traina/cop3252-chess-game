@@ -4,6 +4,12 @@ public class Queen extends Piece {
     public Queen(String color) {
         pointValue = 9;
         this.color = color;
+        this.imagePath = color.equals("white") ? "/assets/Chess_qlt60.png" : "/assets/Chess_qdt60.png";
+    }
+
+    @Override
+    public char getChar() {
+        return 'Q';
     }
 
     @Override
