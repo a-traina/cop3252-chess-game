@@ -45,10 +45,6 @@ public class ChessJFrame extends JFrame{
     }
 
     public static void main(String[] args) {
-
-        //dark mode for macOS
-        System.setProperty("apple.awt.application.appearance", "NSAppearanceNameDarkAqua");
-
         ChessJFrame chessJFrame = new ChessJFrame();
         chessJFrame.setSize(800, 600);
         chessJFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
