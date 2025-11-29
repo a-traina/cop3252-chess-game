@@ -35,7 +35,7 @@ public class ChessJFrame extends JFrame{
         moveTable.setCellSelectionEnabled(false);
         moveTable.setFocusable(false);
         moveTable.setTableHeader(null);
-        moveTable.setRowHeight(20);
+        moveTable.setRowHeight(25);
         moveTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -44,7 +44,9 @@ public class ChessJFrame extends JFrame{
                 if(row % 2 == 0) setBackground(new Color(51, 50, 48));
                 else setBackground(new Color(78, 77, 76));
 
-                setForeground(Color.WHITE);
+                setForeground(Color.LIGHT_GRAY);
+                setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+                setBorder(new EmptyBorder(0, 7, 0, 0));
 
                 return this;
             }
@@ -54,7 +56,7 @@ public class ChessJFrame extends JFrame{
         JScrollPane scrollPane = new JScrollPane(moveTable);
         scrollPane.setPreferredSize(new Dimension(450, 600));
         scrollPane.getViewport().setBackground(new Color(51, 50, 48));
-        scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
         //add move history to box
         historyBox.add(scrollPane);
