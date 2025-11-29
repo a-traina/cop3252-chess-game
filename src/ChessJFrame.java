@@ -15,8 +15,10 @@ public class ChessJFrame extends JFrame{
 
         gameBoard = new GameBoard();
 
-        BorderLayout borderLayout = new BorderLayout();
-        setLayout(borderLayout);
+        Box horizontalBox = new Box(BoxLayout.X_AXIS);
+
+        Box boardBox = new Box(BoxLayout.Y_AXIS);
+        Box historyBox = new Box(BoxLayout.Y_AXIS);
 
         //Move History
         DefaultListModel<String> gameHistory = new DefaultListModel<>();
@@ -30,19 +32,35 @@ public class ChessJFrame extends JFrame{
         scrollPane.setBorder(null);
         scrollPane.setBackground(new Color(51, 50, 48));
 
-        add(scrollPane, BorderLayout.EAST);
+        //add move history to box
+        historyBox.add(scrollPane);
 
         //Grid Panel (Game Board)
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistory, this);
         gridJPanel.setBackground(Color.DARK_GRAY);
 
-        add(gridJPanel, BorderLayout.CENTER);
 
         // Player Banners
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
-        add(player1Banner, BorderLayout.SOUTH);
-        add(player2Banner, BorderLayout.NORTH);
+
+
+        //add player banners and board to box
+        boardBox.add(player1Banner);
+        player1Banner.setAlignmentX(LEFT_ALIGNMENT);
+        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
+        boardBox.add(gridJPanel);
+        gridJPanel.setAlignmentX(LEFT_ALIGNMENT);
+        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
+        boardBox.add(player2Banner);
+        player2Banner.setAlignmentX(LEFT_ALIGNMENT);
+
+        horizontalBox.add(boardBox);
+        horizontalBox.add(Box.createRigidArea(new Dimension(10, 0)));
+        horizontalBox.add(Box.createHorizontalGlue());
+        horizontalBox.add(historyBox);
+
+        add(horizontalBox);
 
     }
 
