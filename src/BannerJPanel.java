@@ -1,6 +1,4 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -14,8 +12,9 @@ public class BannerJPanel extends JPanel {
     public BannerJPanel(Player player) {
         this.player = player;
 
-        playerJLabel = new JLabel(player.toString());
-        playerJLabel.setForeground(Color.WHITE);
+        playerJLabel = new JLabel(player.toString() + ":");
+        playerJLabel.setForeground(Color.LIGHT_GRAY);
+        playerJLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
         add(playerJLabel);
 
         capturedPiecesPanel = new CapturedPiecesPanel();
