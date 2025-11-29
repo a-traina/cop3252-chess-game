@@ -67,7 +67,12 @@ public class GridJPanel extends JPanel {
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (gameBoard.gameOver() != 0) return;
+                    if (gameBoard.gameOver() != 0) {
+                        selectedPosition = null;
+                        highlightedMoves.clear();
+                        GridJPanel.this.repaint();
+                        return;
+                    }
 
                     Piece clickedPiece = gameBoard.getPieceAt(row, col);
 

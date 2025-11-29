@@ -10,6 +10,8 @@ public class GameBoard {
     private int moveNumber;
     private final ArrayList<String> moveHistory;
     private PawnPromoteData pawnPromoteData;
+    private boolean isDraw;
+    private String resigned;
     private class PawnPromoteData {
         public Position pawnPos;
         public String pawnColor;
@@ -24,6 +26,8 @@ public class GameBoard {
         currTurn = "white";
         moveNumber = 0;
         pawnPromoteData = null;
+        isDraw = false;
+        resigned = null;
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
@@ -53,6 +57,8 @@ public class GameBoard {
         currTurn = "white";
         moveNumber = 0;
         pawnPromoteData = null;
+        isDraw = false;
+        resigned = null;
         
         for(int i = 0; i < 8; i++) {
             System.arraycopy(board[i], 0, this.board[i], 0, board[i].length);
@@ -186,6 +192,14 @@ public class GameBoard {
         return pawnPromoteData.pawnColor;
     }
 
+    public void setDraw(boolean drawStatus) {
+        isDraw = drawStatus;
+    }
+
+    public void setResigned(String resignee) {
+        resigned = resignee;
+    }
+
     public void promotePawn(Piece piece) {
         if(!canPawnPromote()) return;
 
@@ -229,6 +243,10 @@ public class GameBoard {
 
     //0 = game on; 1 = draw; 2 = currPlayer is lose
     public int gameOver() {
+        if(isDraw)
+            return 1;
+        if(resigned != null)
+            return 2;
 
         //get current player
         Player currPlayer = currTurn.equals("white") ? player1 : player2;
