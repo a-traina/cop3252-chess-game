@@ -1,9 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class ChessJFrame extends JFrame{
-    private final JList<String> moveJList;
+    private final JTable moveTable;
     private final BannerJPanel player1Banner;
     private final BannerJPanel player2Banner;
     private final GameBoard gameBoard;
@@ -21,22 +23,46 @@ public class ChessJFrame extends JFrame{
         Box historyBox = new Box(BoxLayout.Y_AXIS);
 
         //Move History
-        DefaultListModel<String> gameHistory = new DefaultListModel<>();
-        moveJList = new JList<>(gameHistory);
-        moveJList.setBackground(new Color(51, 50, 48));
-        moveJList.setForeground(Color.WHITE);
+        DefaultTableModel gameHistoryTable = new DefaultTableModel(new String[]{"Turn", "White", "Black"}, 0);
+        moveTable = new JTable(gameHistoryTable) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        moveTable.setShowGrid(false);
+        moveTable.setIntercellSpacing(new Dimension(0, 0));
+        moveTable.setCellSelectionEnabled(false);
+        moveTable.setFocusable(false);
+        moveTable.setTableHeader(null);
+        moveTable.setRowHeight(25);
+        moveTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if(row % 2 == 0) setBackground(new Color(51, 50, 48));
+                else setBackground(new Color(78, 77, 76));
+
+                setForeground(Color.LIGHT_GRAY);
+                setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+                setBorder(new EmptyBorder(0, 7, 0, 0));
+
+                return this;
+            }
+        });
 
         //Scroll Pane
-        JScrollPane scrollPane = new JScrollPane(moveJList);
-        scrollPane.setPreferredSize(new Dimension(350, 600));
-        scrollPane.setBorder(null);
-        scrollPane.setBackground(new Color(51, 50, 48));
+        JScrollPane scrollPane = new JScrollPane(moveTable);
+        scrollPane.setPreferredSize(new Dimension(450, 600));
+        scrollPane.getViewport().setBackground(new Color(51, 50, 48));
+        scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
         //add move history to box
         historyBox.add(scrollPane);
 
         //Grid Panel (Game Board)
-        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistory, this);
+        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
         gridJPanel.setBackground(Color.DARK_GRAY);
 
 
@@ -65,7 +91,11 @@ public class ChessJFrame extends JFrame{
     }
 
     public void scrollToBottom() {
-        moveJList.ensureIndexIsVisible(moveJList.getModel().getSize() - 1);
+        int rows = moveTable.getRowCount();
+        if(rows > 0) {
+            Rectangle rect = new Rectangle(moveTable.getCellRect(rows - 1, 0, true));
+            moveTable.scrollRectToVisible(rect);
+        }
     }
 
     public void updatedCapturedPieces(String color) {

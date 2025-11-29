@@ -14,19 +14,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
-    private final DefaultListModel<String> gameHistory;
+    private final DefaultTableModel gameHistory;
     private final ChessJFrame parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
-    public GridJPanel(GameBoard gameBoard, DefaultListModel<String> gameHistory, ChessJFrame parentFrame) {
+    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJFrame parentFrame) {
         super();
 
         this.gameBoard = gameBoard;
@@ -87,7 +87,16 @@ public class GridJPanel extends JPanel {
                             Position target = new Position(row, col);
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
-                                    gameHistory.addElement(gameBoard.getMoveHistory().getLast());
+                                    if (gameBoard.getTurn().getColor().equals("black")) {
+                                        String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
+                                        String[] row = move.split(" ");
+                                        gameHistory.addRow(row);
+                                    } else {
+                                        int lastIndex = gameHistory.getRowCount() - 1;
+                                        String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber() - 1);
+                                        String[] row = move.split(" ");
+                                        gameHistory.setValueAt(row[2], lastIndex, 2);
+                                    }
 
                                     if(gameBoard.canPawnPromote()) {
                                         String choice = new PieceJOptionPane(gameBoard.getPawnPromoteColor()).showDialog(GridJPanel.this);
