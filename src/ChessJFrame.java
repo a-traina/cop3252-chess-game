@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -9,6 +10,8 @@ public class ChessJFrame extends JFrame{
     private final BannerJPanel player1Banner;
     private final BannerJPanel player2Banner;
     private final GameBoard gameBoard;
+    private final JButton drawButton;
+    private final JButton resignButton;
     public ChessJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,10 +20,10 @@ public class ChessJFrame extends JFrame{
 
         gameBoard = new GameBoard();
 
-        Box horizontalBox = new Box(BoxLayout.X_AXIS);
+        Box horizontalBox = Box.createHorizontalBox();
 
-        Box boardBox = new Box(BoxLayout.Y_AXIS);
-        Box historyBox = new Box(BoxLayout.Y_AXIS);
+        Box boardBox = Box.createVerticalBox();
+        Box historyBox = Box.createVerticalBox();
 
         //Move History
         DefaultTableModel gameHistoryTable = new DefaultTableModel(new String[]{"Turn", "White", "Black"}, 0);
@@ -54,12 +57,46 @@ public class ChessJFrame extends JFrame{
 
         //Scroll Pane
         JScrollPane scrollPane = new JScrollPane(moveTable);
-        scrollPane.setPreferredSize(new Dimension(450, 600));
         scrollPane.getViewport().setBackground(new Color(51, 50, 48));
         scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
+         // Draw Button
+        drawButton = new JButton("Offer Draw");
+        drawButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION);
+
+                if(result == JOptionPane.YES_OPTION) {
+                    gameBoard.setDraw(true);
+                }
+            }
+        });
+
+        // Resign Button
+        resignButton = new JButton("Resign");
+        resignButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION);
+
+                if(result == JOptionPane.YES_OPTION) {
+                    gameBoard.setResigned(gameBoard.getTurn().getColor());
+                }
+            }
+        });
+
+        // Button formatting
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(2, 1));
+        buttonPanel.setBackground(Color.DARK_GRAY);
+        buttonPanel.add(drawButton);
+        buttonPanel.add(resignButton);
+
         //add move history to box
         historyBox.add(scrollPane);
+        historyBox.add(Box.createRigidArea(new Dimension(0, 5)));
+        historyBox.add(buttonPanel);
 
         //Grid Panel (Game Board)
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
