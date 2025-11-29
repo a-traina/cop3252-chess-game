@@ -1,26 +1,45 @@
 import java.awt.*;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 public class BannerJPanel extends JPanel {
     private final JLabel playerJLabel;
     private final Player player;
     private final CapturedPiecesPanel capturedPiecesPanel;
+    private final JLabel clockLabel;
     
     public BannerJPanel(Player player) {
         this.player = player;
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        JPanel topRow = new JPanel();
+        topRow.setLayout(new BoxLayout(topRow, BoxLayout.X_AXIS));
+        topRow.setAlignmentX(LEFT_ALIGNMENT);
+        topRow.setBackground(Color.DARK_GRAY);
 
         playerJLabel = new JLabel(player.toString() + ":");
         playerJLabel.setForeground(Color.LIGHT_GRAY);
         playerJLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
         add(playerJLabel);
 
+        clockLabel = new JLabel(player.timeToString());
+        clockLabel.setForeground(Color.LIGHT_GRAY);
+        clockLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
+        clockLabel.setOpaque(true);
+        clockLabel.setBackground(new Color(51, 50, 48));
+        clockLabel.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)), new EmptyBorder(5, 5, 5, 5)));
+
+
+        topRow.add(playerJLabel);
+        topRow.add(Box.createHorizontalGlue());
+        topRow.add(clockLabel);
+
+        add(topRow);
+
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
         setPreferredSize(new Dimension(400, 45));
 
@@ -52,6 +71,10 @@ public class BannerJPanel extends JPanel {
 
     public void updateCapturedPieces() {
         capturedPiecesPanel.updateCapturedPieces();
+    }
+
+    public JLabel getClockLabel() {
+        return clockLabel;
     }
     
 }

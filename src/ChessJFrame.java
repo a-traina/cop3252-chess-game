@@ -9,6 +9,8 @@ public class ChessJFrame extends JFrame{
     private final BannerJPanel player1Banner;
     private final BannerJPanel player2Banner;
     private final GameBoard gameBoard;
+    private final Timer clock;
+
     public ChessJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,16 +72,19 @@ public class ChessJFrame extends JFrame{
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
 
+        JLabel player1Clock = new JLabel(gameBoard.getPlayer("white").timeToString());
+        JLabel player2Clock = new JLabel(gameBoard.getPlayer("black").timeToString());
+
 
         //add player banners and board to box
-        boardBox.add(player1Banner);
-        player1Banner.setAlignmentX(LEFT_ALIGNMENT);
+        boardBox.add(player2Banner);
+        player2Banner.setAlignmentX(LEFT_ALIGNMENT);
         boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
         boardBox.add(gridJPanel);
         gridJPanel.setAlignmentX(LEFT_ALIGNMENT);
         boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        boardBox.add(player2Banner);
-        player2Banner.setAlignmentX(LEFT_ALIGNMENT);
+        boardBox.add(player1Banner);
+        player1Banner.setAlignmentX(LEFT_ALIGNMENT);
 
         horizontalBox.add(boardBox);
         horizontalBox.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -88,6 +93,22 @@ public class ChessJFrame extends JFrame{
 
         add(horizontalBox);
 
+        clock = new Timer(1000, e -> {
+            long time = gameBoard.getTurn().getTimeRemaining() - 1000;
+            gameBoard.getTurn().setTimeRemaining(time);
+            if (gameBoard.getTurn().getColor().equals("white")) {
+                player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+            }
+            else {
+                player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+            }
+
+            if (time <= 0) {
+                ((Timer) e.getSource()).stop();
+                gameBoard.gameOver();
+            }
+        });
+        clock.start();
     }
 
     public void scrollToBottom() {
