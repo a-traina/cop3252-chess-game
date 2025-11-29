@@ -13,7 +13,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player " + color;
+        return "Player " + capitalizeFirst(color);
     }
 
     public String getColor() {
@@ -43,5 +43,11 @@ public class Player {
 
     public void capturePiece(Piece p) {
         capturedPieces.add(p);
+    }
+
+    public static String capitalizeFirst(String s) {
+        if (s == null || s.isEmpty())
+            return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 }
