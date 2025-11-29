@@ -7,6 +7,7 @@ public class GameBoard {
     private final Player player2;
     private final Piece[][] board = new Piece[8][8];
     private String currTurn;
+    private int moveNumber;
     private final ArrayList<String> moveHistory;
     private PawnPromoteData pawnPromoteData;
     private class PawnPromoteData {
@@ -21,7 +22,9 @@ public class GameBoard {
         moveHistory = new ArrayList<>();
 
         currTurn = "white";
+        moveNumber = 0;
         pawnPromoteData = null;
+
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 board[i][j] = null;
@@ -48,6 +51,7 @@ public class GameBoard {
         moveHistory = new ArrayList<>();
 
         currTurn = "white";
+        moveNumber = 0;
         pawnPromoteData = null;
         
         for(int i = 0; i < 8; i++) {
@@ -166,6 +170,10 @@ public class GameBoard {
         return currTurn.equals("white") ? player1 : player2;
     }
 
+    public int getMoveNumber() {
+        return moveNumber;
+    }
+
     public ArrayList<String> getMoveHistory() {
         return moveHistory;
     }
@@ -251,8 +259,6 @@ public class GameBoard {
     private String moveRecord(char piece, Position oldPos, Position newPos, boolean isCapture) {
         StringBuilder str = new StringBuilder();
         String cols = "abcdefgh";
-
-        str.append("Player ").append(currTurn).append(": ");
 
         if(piece != 'P') {
             str.append(piece);
@@ -402,7 +408,17 @@ public class GameBoard {
         else return false;
         
         // Log move in move history
-        moveHistory.addLast(moveRecord(piece.getChar(), oldPos, newPos, isCapture));
+        if(currTurn.equals("white")) {
+            String prefix = Integer.toString(moveNumber + 1) + ". ";
+            moveHistory.add(moveNumber, prefix + moveRecord(piece.getChar(), oldPos, newPos, isCapture));
+        }
+
+        if(currTurn.equals("black")) {
+            String prevRecord = moveHistory.get(moveNumber);
+            String updateRecord = prevRecord + " " + moveRecord(piece.getChar(), oldPos, newPos, isCapture);
+            moveHistory.set(moveNumber, updateRecord);
+            moveNumber++;
+        }
 
         // Change current player turn
         currTurn = currTurn.equals("white") ? "black" : "white";
