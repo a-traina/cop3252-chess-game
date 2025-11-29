@@ -251,6 +251,10 @@ public class GameBoard {
         //get current player
         Player currPlayer = currTurn.equals("white") ? player1 : player2;
 
+        if (currPlayer.getTimeRemaining() <= 0) {
+            return 2;
+        }
+
         //get current players pieces
         LinkedList<Piece> currPieces = currPlayer.getPieces();
 
