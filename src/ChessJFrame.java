@@ -18,6 +18,7 @@ public class ChessJFrame extends JFrame{
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.DARK_GRAY);
+        ((JComponent)getContentPane()).setBorder(new EmptyBorder(10, 10, 10, 10));
 
         gameBoard = new GameBoard();
 
@@ -96,7 +97,7 @@ public class ChessJFrame extends JFrame{
         historyBox.add(scrollPane);
         historyBox.add(Box.createRigidArea(new Dimension(0, 5)));
         historyBox.add(buttonPanel);
-        historyBox.setBorder(new EmptyBorder(0, 45, 0, 0));
+        // historyBox.setBorder(new EmptyBorder(0, 45, 0, 0));
 
         //Grid Panel (Game Board)
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
@@ -118,18 +119,22 @@ public class ChessJFrame extends JFrame{
         player1Banner.setAlignmentX(LEFT_ALIGNMENT);
 
         // Use split pane to control spacing and sizing
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setOneTouchExpandable(false);
-        splitPane.setLeftComponent(boardBox);
-        splitPane.setRightComponent(historyBox);
-        splitPane.setResizeWeight(0.85);
-        splitPane.setDividerLocation(0.85);
-        splitPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-        splitPane.setOpaque(false);
-        splitPane.setEnabled(false);
-        splitPane.setDividerSize(0);
+        // JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        // splitPane.setOneTouchExpandable(false);
+        // splitPane.setLeftComponent(boardBox);
+        // splitPane.setRightComponent(historyBox);
+        // splitPane.setResizeWeight(0.85);
+        // splitPane.setDividerLocation(0.85);
+        // splitPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+        // splitPane.setOpaque(false);
+        // splitPane.setEnabled(false);
+        // splitPane.setDividerSize(0);
 
-        add(splitPane);
+        // add(splitPane);
+
+        setLayout(new GridLayout(1, 2, 20, 0));
+        add(boardBox);
+        add(historyBox);
 
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
