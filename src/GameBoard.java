@@ -396,35 +396,37 @@ public class GameBoard {
                 }
             }
 
-            if (piece.getChar() == 'P') {
-                Pawn pawn = (Pawn) piece;
-                pawn.setIsFirstMove(false);
+            switch(piece.getChar()) {
+                case 'P' -> {
+                    Pawn pawn = (Pawn) piece;
+                    pawn.setIsFirstMove(false);
 
-                if (Math.abs(newPos.getX() - oldPos.getX()) > 1) {
-                    pawn.enPassantable = true;
-                }
+                    if (Math.abs(newPos.getX() - oldPos.getX()) > 1) {
+                        pawn.enPassantable = true;
+                    }
 
-                if(pawn.getColor().equals("black") && newPos.getX() == 7) {
-                    pawn.setCanPromote(true);
-                }
-                else if(pawn.getColor().equals("white") && newPos.getX() == 0) {
-                    pawn.setCanPromote(true);
-                }
+                    if(pawn.getColor().equals("black") && newPos.getX() == 7) {
+                        pawn.setCanPromote(true);
+                    }
+                    else if(pawn.getColor().equals("white") && newPos.getX() == 0) {
+                        pawn.setCanPromote(true);
+                    }
 
-                if(pawn.getCanPromote()) {
-                    pawnPromoteData = new PawnPromoteData();
-                    pawnPromoteData.pawnColor = currTurn;
-                    pawnPromoteData.pawnPos = newPos;
-                    pawnPromoteData.pawn = pawn;
+                    if(pawn.getCanPromote()) {
+                        pawnPromoteData = new PawnPromoteData();
+                        pawnPromoteData.pawnColor = currTurn;
+                        pawnPromoteData.pawnPos = newPos;
+                        pawnPromoteData.pawn = pawn;
+                    }
                 }
-            }
-            else if (piece.getChar() == 'R') {
-                Rook rook = (Rook) piece;
-                rook.setIsFirstMove(false);
-            }
-            else if (piece.getChar() == 'K') {
-                King king = (King) piece;
-                king.setIsFirstMove(false);
+                case 'R' -> {
+                    Rook rook = (Rook) piece;
+                    rook.setIsFirstMove(false);
+                }
+                case 'K' -> {
+                     King king = (King) piece;
+                    king.setIsFirstMove(false);
+                }
             }
         }
         else return false;
