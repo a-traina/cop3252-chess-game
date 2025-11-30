@@ -118,24 +118,36 @@ public class ChessJFrame extends JFrame{
         boardBox.add(player1Banner);
         player1Banner.setAlignmentX(LEFT_ALIGNMENT);
 
-        // Use split pane to control spacing and sizing
-        // JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        // splitPane.setOneTouchExpandable(false);
-        // splitPane.setLeftComponent(boardBox);
-        // splitPane.setRightComponent(historyBox);
-        // splitPane.setResizeWeight(0.85);
-        // splitPane.setDividerLocation(0.85);
-        // splitPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-        // splitPane.setOpaque(false);
-        // splitPane.setEnabled(false);
-        // splitPane.setDividerSize(0);
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 10, 0, 10);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 3;
+        constraints.weightx = 0.8;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(boardBox, constraints);
+        
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 2;
+        constraints.weightx = 0.2;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(scrollPane, constraints);
 
-        // add(splitPane);
-
-        setLayout(new GridLayout(1, 2, 20, 0));
-        add(boardBox);
-        add(historyBox);
-
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 0.2;
+        constraints.weighty = 0.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(buttonPanel, constraints);
+    
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
             gameBoard.getTurn().setTimeRemaining(time);
