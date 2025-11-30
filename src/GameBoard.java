@@ -344,7 +344,17 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
-                        moveHistory.addLast("Player " + currTurn + ": O-O-O");
+                        if(currTurn.equals("white")) {
+                            String prefix = Integer.toString(moveNumber + 1) + ". ";
+                            moveHistory.add(prefix + "O-O-O");
+                        }
+
+                        if(currTurn.equals("black")) {
+                            String prevRecord = moveHistory.get(moveNumber);
+                            String updateRecord = prevRecord + " " + "O-O-O";
+                            moveHistory.set(moveNumber, updateRecord);
+                            moveNumber++;
+                        }
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
@@ -361,7 +371,17 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
-                        moveHistory.addLast("Player " + currTurn + ": O-O");
+                        if(currTurn.equals("white")) {
+                            String prefix = Integer.toString(moveNumber + 1) + ". ";
+                            moveHistory.add(prefix + "O-O");
+                        }
+
+                        if(currTurn.equals("black")) {
+                            String prevRecord = moveHistory.get(moveNumber);
+                            String updateRecord = prevRecord + " " + "O-O";
+                            moveHistory.set(moveNumber, updateRecord);
+                            moveNumber++;
+                        }
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
