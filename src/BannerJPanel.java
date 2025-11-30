@@ -40,9 +40,6 @@ public class BannerJPanel extends JPanel {
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
 
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        setPreferredSize(new Dimension(400, 45));
-
         setBackground(Color.DARK_GRAY);
     }
 
@@ -51,6 +48,7 @@ public class BannerJPanel extends JPanel {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             setAlignmentX(LEFT_ALIGNMENT);
             setBackground(Color.DARK_GRAY);
+            setPreferredSize(new Dimension(2, 30));
         }
 
         public void updateCapturedPieces() {
