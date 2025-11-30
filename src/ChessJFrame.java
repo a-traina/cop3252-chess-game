@@ -103,6 +103,9 @@ public class ChessJFrame extends JFrame{
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
 
+        player1Banner.getClockLabel().setForeground(Color.WHITE);
+        player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
+
         setLayout(new BorderLayout(10, 10));
         JPanel center = new JPanel();
         center.setLayout(new BorderLayout());
@@ -117,20 +120,22 @@ public class ChessJFrame extends JFrame{
         east.add(buttonPanel, BorderLayout.SOUTH);
         east.setOpaque(false);
         add(east, BorderLayout.EAST);
+
     
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
             gameBoard.getTurn().setTimeRemaining(time);
+
+            if (gameBoard.gameOver() != 0) {
+                ((Timer) e.getSource()).stop();
+                player1Banner.getClockLabel().setForeground(Color.GRAY);
+                player2Banner.getClockLabel().setForeground(Color.GRAY);
+            }
             if (gameBoard.getTurn().getColor().equals("white")) {
                 player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
             }
             else {
                 player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
-            }
-
-            if (time <= 0) {
-                ((Timer) e.getSource()).stop();
-                gameBoard.gameOver();
             }
         });
         clock.start();
@@ -150,6 +155,21 @@ public class ChessJFrame extends JFrame{
         }
         else if(color.equals("black")) {
             player2Banner.updateCapturedPieces();
+        }
+    }
+
+    public void updateClockColors() {
+        if (gameBoard.getTurn().getColor().equals("white")) {
+            player1Banner.getClockLabel().setForeground(Color.WHITE);
+            player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
+            player2Banner.getClockLabel().setForeground(Color.GRAY);
+            player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
+        }
+        else {
+            player2Banner.getClockLabel().setForeground(Color.WHITE);
+            player2Banner.getPlayerJLabel().setForeground(Color.WHITE);
+            player1Banner.getClockLabel().setForeground(Color.GRAY);
+            player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
         }
     }
 
