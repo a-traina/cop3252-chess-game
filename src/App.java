@@ -9,7 +9,7 @@ public class App {
     }
     public static void main(String[] args) throws Exception {
         App app = new App();
-        Scanner in = new Scanner(System.in);
+        try(Scanner in = new Scanner(System.in)) {
         
         while (app.gameBoard.gameOver() == 0) { 
             System.out.println();
@@ -47,6 +47,8 @@ public class App {
             ArrayList<String> moveHistory = app.gameBoard.getMoveHistory();
             moveHistory.forEach( item -> System.out.println(item));
         }
+    }
+
         
     }
 
