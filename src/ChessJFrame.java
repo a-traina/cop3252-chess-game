@@ -22,7 +22,6 @@ public class ChessJFrame extends JFrame{
 
         gameBoard = new GameBoard();
 
-        Box boardBox = Box.createVerticalBox();
         Box historyBox = Box.createVerticalBox();
 
         //Move History
@@ -108,45 +107,20 @@ public class ChessJFrame extends JFrame{
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
 
-        //add player banners and board to box
-        boardBox.add(player2Banner);
-        player2Banner.setAlignmentX(LEFT_ALIGNMENT);
-        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        boardBox.add(gridJPanel);
-        gridJPanel.setAlignmentX(LEFT_ALIGNMENT);
-        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        boardBox.add(player1Banner);
-        player1Banner.setAlignmentX(LEFT_ALIGNMENT);
+        setLayout(new BorderLayout(10, 10));
+        JPanel center = new JPanel();
+        center.setLayout(new BorderLayout());
+        center.add(gridJPanel, BorderLayout.CENTER);
+        center.add(player1Banner, BorderLayout.SOUTH);
+        center.add(player2Banner, BorderLayout.NORTH);
+        center.setOpaque(false);
+        add(center, BorderLayout.CENTER);
 
-        setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(0, 10, 0, 10);
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 3;
-        constraints.weightx = 0.8;
-        constraints.weighty = 1;
-        constraints.fill = GridBagConstraints.BOTH;
-        add(boardBox, constraints);
-        
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 2;
-        constraints.weightx = 0.2;
-        constraints.weighty = 1;
-        constraints.fill = GridBagConstraints.BOTH;
-        add(scrollPane, constraints);
-
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = 0.2;
-        constraints.weighty = 0.0;
-        constraints.fill = GridBagConstraints.BOTH;
-        add(buttonPanel, constraints);
+        JPanel east = new JPanel(new BorderLayout());
+        east.add(scrollPane, BorderLayout.CENTER);
+        east.add(buttonPanel, BorderLayout.SOUTH);
+        east.setOpaque(false);
+        add(east, BorderLayout.EAST);
     
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
