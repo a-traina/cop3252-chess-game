@@ -61,29 +61,25 @@ public class ChessJFrame extends JFrame{
 
          // Draw Button
         drawButton = new JButton("Offer Draw");
-        drawButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        drawButton.addActionListener((ActionEvent e) -> {
                 int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION);
 
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setDraw(true);
                 }
             }
-        });
+        );
 
         // Resign Button
         resignButton = new JButton("Resign");
-        resignButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        resignButton.addActionListener((ActionEvent e) -> {
                 int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION);
 
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                 }
             }
-        });
+        );
 
         // Button formatting
         JPanel buttonPanel = new JPanel();
