@@ -60,6 +60,10 @@ public class ChessJFrame extends JFrame{
         scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
          // Draw Button
+        ImageIcon icon = new ImageIcon(getClass().getResource("assets/drawIcon.png"));
+        Image scaledDrawIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+        final ImageIcon drawIcon = new ImageIcon(scaledDrawIcon);
+
         drawButton = new JButton("Offer Draw");
         drawButton.addActionListener((ActionEvent e) -> {
                 int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION);
@@ -74,6 +78,10 @@ public class ChessJFrame extends JFrame{
         );
 
         // Resign Button
+        icon = new ImageIcon(getClass().getResource("assets/resignIcon.png"));
+        Image scaledResignIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
+        final ImageIcon resignIcon = new ImageIcon(scaledResignIcon);
+
         resignButton = new JButton("Resign");
         resignButton.addActionListener((ActionEvent e) -> {
                 int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION);
