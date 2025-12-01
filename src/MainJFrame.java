@@ -24,7 +24,6 @@ public class MainJFrame extends JFrame {
     public void showGameOver(boolean flag) {
         String result = gameBoard.getGameOverMsg();
         gameOverJPanel.setGameResult(result);
-        gameOverJPanel.revalidate();
         gameOverJPanel.setVisible(flag);
     }
 
