@@ -17,6 +17,7 @@ public class GameBoard {
         public String pawnColor;
         public Pawn pawn;
     }
+    private String gameOverMsg;
 
     public GameBoard() {
         player1 = new Player("white");
@@ -28,6 +29,7 @@ public class GameBoard {
         pawnPromoteData = null;
         isDraw = false;
         resigned = null;
+        gameOverMsg = "";
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
@@ -59,6 +61,7 @@ public class GameBoard {
         pawnPromoteData = null;
         isDraw = false;
         resigned = null;
+        gameOverMsg = "";
         
         for(int i = 0; i < 8; i++) {
             System.arraycopy(board[i], 0, this.board[i], 0, board[i].length);
@@ -180,6 +183,10 @@ public class GameBoard {
         return moveNumber;
     }
 
+    public String getGameOverMsg() {
+        return gameOverMsg;
+    }
+
     public ArrayList<String> getMoveHistory() {
         return moveHistory;
     }
@@ -258,15 +265,20 @@ public class GameBoard {
 
     //0 = game on; 1 = draw; 2 = currPlayer is lose
     public int gameOver() {
-        if(isDraw)
+        if(isDraw) {
+            gameOverMsg = "Draw";
             return 1;
-        if(resigned != null)
+        }
+        if(resigned != null) {
+            gameOverMsg = (resigned.equals("white") ? "Black" : "White");
             return 2;
+        }
 
         //get current player
         Player currPlayer = currTurn.equals("white") ? player1 : player2;
 
         if (currPlayer.getTimeRemaining() <= 0) {
+            gameOverMsg = (currPlayer.getColor().equals("white") ? "Black" : "White");
             return 2;
         }
 
@@ -287,9 +299,13 @@ public class GameBoard {
         }
 
         //if no piece has a valid move and player is in check, they have been checkmated
-        if (isInCheck(this.board)) return 2;
+        if (isInCheck(this.board)) {
+            gameOverMsg = (currPlayer.getColor().equals("white") ? "Black" : "White");
+            return 2;
+        }
 
         //else they have been stalemated
+        gameOverMsg = "Draw";
         return 1;
     }
 

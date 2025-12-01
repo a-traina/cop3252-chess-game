@@ -5,7 +5,7 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class ChessJFrame extends JFrame{
+public class ChessJPanel extends JPanel{
     private final JTable moveTable;
     private final BannerJPanel player1Banner;
     private final BannerJPanel player2Banner;
@@ -14,15 +14,14 @@ public class ChessJFrame extends JFrame{
     private final JButton resignButton;
     private final Timer clock;
     private final EvalBar evalBar;
+    private MainJFrame mainFrame;
 
-    public ChessJFrame() {
-        super("Chess");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(Color.DARK_GRAY);
-        ((JComponent)getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
+    public ChessJPanel(GameBoard gb, MainJFrame mainFrame) {
+        setOpaque(false);
+        setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        gameBoard = new GameBoard();
-
+        gameBoard = gb;
+        this.mainFrame = mainFrame;
         Box historyBox = Box.createVerticalBox();
 
         //Move History
@@ -75,7 +74,7 @@ public class ChessJFrame extends JFrame{
         resignButton = new JButton("Resign");
 
         drawButton.addActionListener((ActionEvent e) -> {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, 
+                int result = JOptionPane.showConfirmDialog(ChessJPanel.this, 
                     "Confirm Draw", 
                     "Draw", 
                     JOptionPane.YES_NO_OPTION, 
@@ -87,11 +86,12 @@ public class ChessJFrame extends JFrame{
                     gameBoard.setDraw(true);
                     drawButton.setEnabled(false);
                     resignButton.setEnabled(false);
+                    showGameOver();
                 }
             }
         );
         resignButton.addActionListener((ActionEvent e) -> {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, 
+                int result = JOptionPane.showConfirmDialog(ChessJPanel.this, 
                     gameBoard.getTurn().toString() + ": Confirm Resign", 
                     "Resign", 
                     JOptionPane.YES_NO_OPTION,
@@ -103,6 +103,7 @@ public class ChessJFrame extends JFrame{
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                     resignButton.setEnabled(false);
                     drawButton.setEnabled(false);
+                    showGameOver();
                 }
             }
         );
@@ -110,7 +111,7 @@ public class ChessJFrame extends JFrame{
         // Button formatting
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(2, 1));
-        buttonPanel.setBackground(Color.DARK_GRAY);
+        buttonPanel.setOpaque(false);
         buttonPanel.add(drawButton);
         buttonPanel.add(resignButton);
 
@@ -122,7 +123,7 @@ public class ChessJFrame extends JFrame{
 
         //Grid Panel (Game Board)
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
-        gridJPanel.setBackground(Color.DARK_GRAY);
+        gridJPanel.setOpaque(false);
 
 
         // Player Banners
@@ -161,6 +162,8 @@ public class ChessJFrame extends JFrame{
                 player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
                 player2Banner.getClockLabel().setForeground(Color.GRAY);
                 player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
+                deactivateButtons();
+                showGameOver();
             }
             if (gameBoard.getTurn().getColor().equals("white")) {
                 player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
@@ -178,6 +181,10 @@ public class ChessJFrame extends JFrame{
             Rectangle rect = new Rectangle(moveTable.getCellRect(rows - 1, 0, true));
             moveTable.scrollRectToVisible(rect);
         }
+    }
+
+    public void showGameOver() {
+        mainFrame.showGameOver(true);
     }
 
     public void updatedCapturedPieces(String color) {
@@ -204,15 +211,13 @@ public class ChessJFrame extends JFrame{
         }
     }
 
-    public void updateEvalBar() {
-        evalBar.setEval(gameBoard.calculateEval());
+    public void deactivateButtons() {
+        resignButton.setEnabled(false);
+        drawButton.setEnabled(false);
     }
 
-    public static void main(String[] args) {
-        ChessJFrame chessJFrame = new ChessJFrame();
-        chessJFrame.setSize(800, 600);
-        chessJFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        chessJFrame.setVisible(true);
+    public void updateEvalBar() {
+        evalBar.setEval(gameBoard.calculateEval());
     }
 
     private class EvalBar extends JPanel {
