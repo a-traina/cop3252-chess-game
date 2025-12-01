@@ -86,7 +86,8 @@ public class ChessJPanel extends JPanel{
                     gameBoard.setDraw(true);
                     drawButton.setEnabled(false);
                     resignButton.setEnabled(false);
-                    showGameOver();
+                    if(gameBoard.gameOver() != 0)
+                        showGameOver();
                 }
             }
         );
@@ -103,7 +104,8 @@ public class ChessJPanel extends JPanel{
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                     resignButton.setEnabled(false);
                     drawButton.setEnabled(false);
-                    showGameOver();
+                    if(gameBoard.gameOver() != 0)
+                        showGameOver();
                 }
             }
         );
