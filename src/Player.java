@@ -65,6 +65,6 @@ public class Player {
         long totalSeconds = timeRemaining / 1000;
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
-        return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        return (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
 }

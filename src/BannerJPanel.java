@@ -19,13 +19,13 @@ public class BannerJPanel extends JPanel {
         topRow.setBackground(Color.DARK_GRAY);
 
         playerJLabel = new JLabel(player.toString() + ":");
-        playerJLabel.setForeground(Color.LIGHT_GRAY);
+        playerJLabel.setForeground(Color.GRAY);
         playerJLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
         add(playerJLabel);
 
         clockLabel = new JLabel(player.timeToString());
-        clockLabel.setForeground(Color.LIGHT_GRAY);
         clockLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
+        clockLabel.setForeground(Color.GRAY);
         clockLabel.setOpaque(true);
         clockLabel.setBackground(new Color(51, 50, 48));
         clockLabel.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)), new EmptyBorder(5, 5, 5, 5)));
@@ -40,9 +40,6 @@ public class BannerJPanel extends JPanel {
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
 
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
-        setPreferredSize(new Dimension(400, 45));
-
         setBackground(Color.DARK_GRAY);
     }
 
@@ -51,6 +48,7 @@ public class BannerJPanel extends JPanel {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             setAlignmentX(LEFT_ALIGNMENT);
             setBackground(Color.DARK_GRAY);
+            setPreferredSize(new Dimension(2, 30));
         }
 
         public void updateCapturedPieces() {
@@ -75,6 +73,10 @@ public class BannerJPanel extends JPanel {
 
     public JLabel getClockLabel() {
         return clockLabel;
+    }
+
+    public JLabel getPlayerJLabel() {
+        return playerJLabel;
     }
     
 }

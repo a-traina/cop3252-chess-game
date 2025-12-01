@@ -344,7 +344,17 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
-                        moveHistory.addLast("Player " + currTurn + ": O-O-O");
+                        if(currTurn.equals("white")) {
+                            String prefix = Integer.toString(moveNumber + 1) + ". ";
+                            moveHistory.add(prefix + "O-O-O");
+                        }
+
+                        if(currTurn.equals("black")) {
+                            String prevRecord = moveHistory.get(moveNumber);
+                            String updateRecord = prevRecord + " " + "O-O-O";
+                            moveHistory.set(moveNumber, updateRecord);
+                            moveNumber++;
+                        }
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
@@ -361,7 +371,17 @@ public class GameBoard {
                         r.setIsFirstMove(false);
 
                         // Change current player turn
-                        moveHistory.addLast("Player " + currTurn + ": O-O");
+                        if(currTurn.equals("white")) {
+                            String prefix = Integer.toString(moveNumber + 1) + ". ";
+                            moveHistory.add(prefix + "O-O");
+                        }
+
+                        if(currTurn.equals("black")) {
+                            String prevRecord = moveHistory.get(moveNumber);
+                            String updateRecord = prevRecord + " " + "O-O";
+                            moveHistory.set(moveNumber, updateRecord);
+                            moveNumber++;
+                        }
                         currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
@@ -396,35 +416,37 @@ public class GameBoard {
                 }
             }
 
-            if (piece.getChar() == 'P') {
-                Pawn pawn = (Pawn) piece;
-                pawn.setIsFirstMove(false);
+            switch(piece.getChar()) {
+                case 'P' -> {
+                    Pawn pawn = (Pawn) piece;
+                    pawn.setIsFirstMove(false);
 
-                if (Math.abs(newPos.getX() - oldPos.getX()) > 1) {
-                    pawn.enPassantable = true;
-                }
+                    if (Math.abs(newPos.getX() - oldPos.getX()) > 1) {
+                        pawn.enPassantable = true;
+                    }
 
-                if(pawn.getColor().equals("black") && newPos.getX() == 7) {
-                    pawn.setCanPromote(true);
-                }
-                else if(pawn.getColor().equals("white") && newPos.getX() == 0) {
-                    pawn.setCanPromote(true);
-                }
+                    if(pawn.getColor().equals("black") && newPos.getX() == 7) {
+                        pawn.setCanPromote(true);
+                    }
+                    else if(pawn.getColor().equals("white") && newPos.getX() == 0) {
+                        pawn.setCanPromote(true);
+                    }
 
-                if(pawn.getCanPromote()) {
-                    pawnPromoteData = new PawnPromoteData();
-                    pawnPromoteData.pawnColor = currTurn;
-                    pawnPromoteData.pawnPos = newPos;
-                    pawnPromoteData.pawn = pawn;
+                    if(pawn.getCanPromote()) {
+                        pawnPromoteData = new PawnPromoteData();
+                        pawnPromoteData.pawnColor = currTurn;
+                        pawnPromoteData.pawnPos = newPos;
+                        pawnPromoteData.pawn = pawn;
+                    }
                 }
-            }
-            else if (piece.getChar() == 'R') {
-                Rook rook = (Rook) piece;
-                rook.setIsFirstMove(false);
-            }
-            else if (piece.getChar() == 'K') {
-                King king = (King) piece;
-                king.setIsFirstMove(false);
+                case 'R' -> {
+                    Rook rook = (Rook) piece;
+                    rook.setIsFirstMove(false);
+                }
+                case 'K' -> {
+                     King king = (King) piece;
+                    king.setIsFirstMove(false);
+                }
             }
         }
         else return false;

@@ -68,9 +68,6 @@ public class GridJPanel extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (gameBoard.gameOver() != 0) {
-                        selectedPosition = null;
-                        highlightedMoves.clear();
-                        GridJPanel.this.repaint();
                         return;
                     }
 
@@ -117,6 +114,7 @@ public class GridJPanel extends JPanel {
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor().equals("white") ? "black" : "white");
 
                                     parentFrame.scrollToBottom();
+                                    parentFrame.updateClockColors();
                                 }
                             }
 

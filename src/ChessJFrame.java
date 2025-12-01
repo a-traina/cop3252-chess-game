@@ -18,13 +18,10 @@ public class ChessJFrame extends JFrame{
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.DARK_GRAY);
-        ((JComponent)getRootPane().getContentPane()).setBorder(new EmptyBorder(16, 16, 16, 16)); // top, left, bottom, right
+        ((JComponent)getContentPane()).setBorder(new EmptyBorder(10, 10, 10, 10));
 
         gameBoard = new GameBoard();
 
-        Box horizontalBox = Box.createHorizontalBox();
-
-        Box boardBox = Box.createVerticalBox();
         Box historyBox = Box.createVerticalBox();
 
         //Move History
@@ -68,16 +65,17 @@ public class ChessJFrame extends JFrame{
         final ImageIcon drawIcon = new ImageIcon(scaledDrawIcon);
 
         drawButton = new JButton("Offer Draw");
-        drawButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, drawIcon);
+        drawButton.addActionListener((ActionEvent e) -> {
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION);
 
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setDraw(true);
                 }
+
+                drawButton.setEnabled(false);
+                drawButton.setEnabled(false);
             }
-        });
+        );
 
         // Resign Button
         icon = new ImageIcon(getClass().getResource("assets/resignIcon.png"));
@@ -85,16 +83,17 @@ public class ChessJFrame extends JFrame{
         final ImageIcon resignIcon = new ImageIcon(scaledResignIcon);
 
         resignButton = new JButton("Resign");
-        resignButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, resignIcon);
+        resignButton.addActionListener((ActionEvent e) -> {
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION);
 
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                 }
+
+                resignButton.setEnabled(false);
+                drawButton.setEnabled(false);
             }
-        });
+        );
 
         // Button formatting
         JPanel buttonPanel = new JPanel();
@@ -107,6 +106,7 @@ public class ChessJFrame extends JFrame{
         historyBox.add(scrollPane);
         historyBox.add(Box.createRigidArea(new Dimension(0, 5)));
         historyBox.add(buttonPanel);
+        // historyBox.setBorder(new EmptyBorder(0, 45, 0, 0));
 
         //Grid Panel (Game Board)
         GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
@@ -117,40 +117,41 @@ public class ChessJFrame extends JFrame{
         player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
         player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
 
-        JLabel player1Clock = new JLabel(gameBoard.getPlayer("white").timeToString());
-        JLabel player2Clock = new JLabel(gameBoard.getPlayer("black").timeToString());
+        player1Banner.getClockLabel().setForeground(Color.WHITE);
+        player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
 
+        setLayout(new BorderLayout(10, 10));
+        JPanel center = new JPanel();
+        center.setLayout(new BorderLayout());
+        center.add(gridJPanel, BorderLayout.CENTER);
+        center.add(player1Banner, BorderLayout.SOUTH);
+        center.add(player2Banner, BorderLayout.NORTH);
+        center.setOpaque(false);
+        add(center, BorderLayout.CENTER);
 
-        //add player banners and board to box
-        boardBox.add(player2Banner);
-        player2Banner.setAlignmentX(LEFT_ALIGNMENT);
-        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        boardBox.add(gridJPanel);
-        gridJPanel.setAlignmentX(LEFT_ALIGNMENT);
-        boardBox.add(Box.createRigidArea(new Dimension(0, 10)));
-        boardBox.add(player1Banner);
-        player1Banner.setAlignmentX(LEFT_ALIGNMENT);
+        JPanel east = new JPanel(new BorderLayout());
+        east.add(scrollPane, BorderLayout.CENTER);
+        east.add(buttonPanel, BorderLayout.SOUTH);
+        east.setOpaque(false);
+        add(east, BorderLayout.EAST);
 
-        horizontalBox.add(boardBox);
-        horizontalBox.add(Box.createRigidArea(new Dimension(10, 0)));
-        horizontalBox.add(Box.createHorizontalGlue());
-        horizontalBox.add(historyBox);
-
-        add(horizontalBox);
-
+    
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
             gameBoard.getTurn().setTimeRemaining(time);
+
+            if (gameBoard.gameOver() != 0) {
+                ((Timer) e.getSource()).stop();
+                player1Banner.getClockLabel().setForeground(Color.GRAY);
+                player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
+                player2Banner.getClockLabel().setForeground(Color.GRAY);
+                player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
+            }
             if (gameBoard.getTurn().getColor().equals("white")) {
                 player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
             }
             else {
                 player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
-            }
-
-            if (time <= 0) {
-                ((Timer) e.getSource()).stop();
-                gameBoard.gameOver();
             }
         });
         clock.start();
@@ -170,6 +171,21 @@ public class ChessJFrame extends JFrame{
         }
         else if(color.equals("black")) {
             player2Banner.updateCapturedPieces();
+        }
+    }
+
+    public void updateClockColors() {
+        if (gameBoard.getTurn().getColor().equals("white")) {
+            player1Banner.getClockLabel().setForeground(Color.WHITE);
+            player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
+            player2Banner.getClockLabel().setForeground(Color.GRAY);
+            player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
+        }
+        else {
+            player2Banner.getClockLabel().setForeground(Color.WHITE);
+            player2Banner.getPlayerJLabel().setForeground(Color.WHITE);
+            player1Banner.getClockLabel().setForeground(Color.GRAY);
+            player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
         }
     }
 
