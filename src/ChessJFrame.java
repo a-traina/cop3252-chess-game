@@ -65,17 +65,6 @@ public class ChessJFrame extends JFrame{
         final ImageIcon drawIcon = new ImageIcon(scaledDrawIcon);
 
         drawButton = new JButton("Offer Draw");
-        drawButton.addActionListener((ActionEvent e) -> {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, "Confirm Draw", "Draw", JOptionPane.YES_NO_OPTION);
-
-                if(result == JOptionPane.YES_OPTION) {
-                    gameBoard.setDraw(true);
-                }
-
-                drawButton.setEnabled(false);
-                drawButton.setEnabled(false);
-            }
-        );
 
         // Resign Button
         icon = new ImageIcon(getClass().getResource("assets/resignIcon.png"));
@@ -83,15 +72,37 @@ public class ChessJFrame extends JFrame{
         final ImageIcon resignIcon = new ImageIcon(scaledResignIcon);
 
         resignButton = new JButton("Resign");
+
+        drawButton.addActionListener((ActionEvent e) -> {
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, 
+                    "Confirm Draw", 
+                    "Draw", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, 
+                    drawIcon
+                );
+
+                if(result == JOptionPane.YES_OPTION) {
+                    gameBoard.setDraw(true);
+                    drawButton.setEnabled(false);
+                    resignButton.setEnabled(false);
+                }
+            }
+        );
         resignButton.addActionListener((ActionEvent e) -> {
-                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, gameBoard.getTurn().toString() + ": Confirm Resign", "Resign", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(ChessJFrame.this, 
+                    gameBoard.getTurn().toString() + ": Confirm Resign", 
+                    "Resign", 
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    resignIcon
+                );
 
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
+                    resignButton.setEnabled(false);
+                    drawButton.setEnabled(false);
                 }
-
-                resignButton.setEnabled(false);
-                drawButton.setEnabled(false);
             }
         );
 
