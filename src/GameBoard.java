@@ -211,6 +211,22 @@ public class GameBoard {
         pawnPromoteData = null;
     }
 
+    public int calculateEval() {
+        int p1 = 0;
+        int p2 = 0;
+        int eval;
+
+        for (Piece x : player1.getPieces()) {
+            p1 += x.pointValue;
+        }
+
+        for (Piece x : player2.getPieces()) {
+            p2 += x.pointValue;
+        }
+
+        return p1 - p2;
+    }
+
     public boolean isInCheck(Piece[][] board) {
         // Make game board object for board passed in
         GameBoard simulate = new GameBoard(board);
@@ -407,6 +423,8 @@ public class GameBoard {
 
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
+
+
 
             Player tempPlayer = currTurn.equals("white") ? player1 : player2;
             for (Piece x : tempPlayer.getPieces()) {

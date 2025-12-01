@@ -13,12 +13,13 @@ public class ChessJFrame extends JFrame{
     private final JButton drawButton;
     private final JButton resignButton;
     private final Timer clock;
+    private final EvalBar evalBar;
 
     public ChessJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.DARK_GRAY);
-        ((JComponent)getContentPane()).setBorder(new EmptyBorder(10, 10, 10, 10));
+        ((JComponent)getContentPane()).setBorder(new EmptyBorder(15, 15, 15, 15));
 
         gameBoard = new GameBoard();
 
@@ -146,6 +147,9 @@ public class ChessJFrame extends JFrame{
         east.setOpaque(false);
         add(east, BorderLayout.EAST);
 
+        evalBar = new EvalBar();
+        add(evalBar, BorderLayout.WEST);
+
     
         clock = new Timer(1000, e -> {
             long time = gameBoard.getTurn().getTimeRemaining() - 1000;
@@ -200,10 +204,67 @@ public class ChessJFrame extends JFrame{
         }
     }
 
+    public void updateEvalBar() {
+        evalBar.setEval(gameBoard.calculateEval());
+    }
+
     public static void main(String[] args) {
         ChessJFrame chessJFrame = new ChessJFrame();
         chessJFrame.setSize(800, 600);
         chessJFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         chessJFrame.setVisible(true);
+    }
+
+    private class EvalBar extends JPanel {
+        //local variables
+        private int evaluation;
+        private final int barWidth = 50;
+
+        public EvalBar() {
+            evaluation = 0;
+            setPreferredSize(new Dimension(barWidth, getHeight()));
+            setOpaque(false);
+        }
+
+        public void setEval(int eval) {
+            evaluation = eval;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+
+            int height = getHeight();
+            int width = getWidth();
+            int rangedEval = Math.max(-20, Math.min(20, evaluation));
+            double percentage = (rangedEval + 20) / 40.0;
+
+            int whiteSection = (int) (height * percentage);
+
+            //draw white section
+            g2d.setColor(Color.WHITE);
+            g2d.fillRect(0, getHeight() - whiteSection, barWidth, whiteSection);
+
+            //draw black section
+            g2d.setColor(new Color(40, 40, 40));
+            g2d.fillRect(0, 0, barWidth, getHeight() - whiteSection);
+
+            //draw point value
+            if (evaluation > 0) {
+                g2d.setColor(Color.DARK_GRAY);
+                g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
+                String textEval = "+" + ((Integer) evaluation);
+                g2d.drawString(textEval, ((int) (width * 0.3)), ((int) (this.getHeight() * 0.99)));
+            }
+
+            if (evaluation < 0) {
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
+                String textEval = "+" + ((Integer) (evaluation * -1));
+                g2d.drawString(textEval, ((int) (width * 0.3)), ((int) (this.getHeight() * 0.025)));
+            }
+        }
     }
 }

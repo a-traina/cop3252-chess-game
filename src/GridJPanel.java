@@ -124,6 +124,7 @@ public class GridJPanel extends JPanel {
                     }
 
                     GridJPanel.this.repaint();
+                    parentFrame.updateEvalBar();
                 }
             });
         }
