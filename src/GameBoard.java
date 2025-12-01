@@ -214,7 +214,6 @@ public class GameBoard {
     public int calculateEval() {
         int p1 = 0;
         int p2 = 0;
-        int eval;
 
         for (Piece x : player1.getPieces()) {
             p1 += x.pointValue;
