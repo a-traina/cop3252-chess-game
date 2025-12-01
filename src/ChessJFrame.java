@@ -67,6 +67,9 @@ public class ChessJFrame extends JFrame{
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setDraw(true);
                 }
+
+                drawButton.setEnabled(false);
+                drawButton.setEnabled(false);
             }
         );
 
@@ -78,6 +81,9 @@ public class ChessJFrame extends JFrame{
                 if(result == JOptionPane.YES_OPTION) {
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                 }
+
+                resignButton.setEnabled(false);
+                drawButton.setEnabled(false);
             }
         );
 
@@ -129,7 +135,9 @@ public class ChessJFrame extends JFrame{
             if (gameBoard.gameOver() != 0) {
                 ((Timer) e.getSource()).stop();
                 player1Banner.getClockLabel().setForeground(Color.GRAY);
+                player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
                 player2Banner.getClockLabel().setForeground(Color.GRAY);
+                player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
             }
             if (gameBoard.getTurn().getColor().equals("white")) {
                 player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
