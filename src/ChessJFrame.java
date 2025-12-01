@@ -132,9 +132,9 @@ public class ChessJFrame extends JFrame{
         player1Banner.getClockLabel().setForeground(Color.WHITE);
         player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
 
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(20, 20));
         JPanel center = new JPanel();
-        center.setLayout(new BorderLayout());
+        center.setLayout(new BorderLayout(5, 5));
         center.add(gridJPanel, BorderLayout.CENTER);
         center.add(player1Banner, BorderLayout.SOUTH);
         center.add(player2Banner, BorderLayout.NORTH);
@@ -256,14 +256,18 @@ public class ChessJFrame extends JFrame{
                 g2d.setColor(Color.DARK_GRAY);
                 g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
                 String textEval = "+" + ((Integer) evaluation);
-                g2d.drawString(textEval, ((int) (width * 0.3)), ((int) (this.getHeight() * 0.99)));
+                FontMetrics fm = g2d.getFontMetrics();
+                int textHeight = fm.getDescent();
+                g2d.drawString(textEval, ((int) (width * 0.3)), this.getHeight() - textHeight - 5);
             }
 
             if (evaluation < 0) {
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
                 String textEval = "+" + ((Integer) (evaluation * -1));
-                g2d.drawString(textEval, ((int) (width * 0.3)), ((int) (this.getHeight() * 0.025)));
+                FontMetrics fm = g2d.getFontMetrics();
+                int textHeight = fm.getAscent();
+                g2d.drawString(textEval, ((int) (width * 0.3)), textHeight + 5);
             }
         }
     }
