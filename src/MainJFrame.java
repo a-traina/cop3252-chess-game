@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
@@ -40,6 +41,24 @@ public class MainJFrame extends JFrame {
             settingsMenu = new JMenu("Settings");
             appearanceMenu = new JMenu("Appearance");
             colorMenu = new JMenu("Board Colors");
+
+            JRadioButton evalBarToggleButton = new JRadioButton("Toggle Evaluation Bar");
+            evalBarToggleButton.setSelected(true);
+            evalBarToggleButton.addItemListener((ItemEvent e) -> {
+                settings.setToggleEvalBar(!settings.getToggleEvalBar());
+                chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
+            });
+
+            settingsMenu.add(evalBarToggleButton);
+
+            JRadioButton timerToggleButton = new JRadioButton("Toggle Timer");
+            timerToggleButton.setSelected(true);
+            timerToggleButton.addItemListener((ItemEvent e) -> {
+                settings.setToggleTimer(!settings.getToggleTimer());
+                chessJPanel.toggleTimer(settings.getToggleTimer());
+            });
+
+            settingsMenu.add(timerToggleButton);
 
             JColorChooser whiteColorChooser = new JColorChooser();
             AbstractColorChooserPanel[] panels = whiteColorChooser.getChooserPanels();

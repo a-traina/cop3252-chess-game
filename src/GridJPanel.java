@@ -122,7 +122,7 @@ public class GridJPanel extends JPanel {
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor().equals("white") ? "black" : "white");
 
                                     parentFrame.scrollToBottom();
-                                    parentFrame.updateClockColors();
+                                    parentFrame.updateBannerLabels();
 
                                     if(gameBoard.gameOver() != 0) {
                                         parentFrame.deactivateButtons();

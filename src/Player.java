@@ -10,7 +10,7 @@ public class Player {
         this.color = color;
         pieces = new LinkedList<>();
         capturedPieces = new LinkedList<>();
-        timeRemaining = 1000 * 60 * 10;
+        timeRemaining = 1000 * 60 * 1/6;
     }
 
     @Override

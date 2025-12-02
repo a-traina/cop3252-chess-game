@@ -12,8 +12,8 @@ public class ChessJPanel extends JPanel{
     private final GameBoard gameBoard;
     private final JButton drawButton;
     private final JButton resignButton;
-    private final Timer clock;
-    private final EvalBar evalBar;
+    private Timer clock;
+    private EvalBar evalBar;
     private MainJFrame mainFrame;
     private final GridJPanel gridJPanel;
 
@@ -64,11 +64,11 @@ public class ChessJPanel extends JPanel{
         gridJPanel.setOpaque(false);
 
         // Player Banners
-        player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
-        player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
+        player1Banner = new BannerJPanel(gameBoard.getPlayer("white"), settings.getToggleTimer());
+        player2Banner = new BannerJPanel(gameBoard.getPlayer("black"), settings.getToggleTimer());
 
-        player1Banner.getClockLabel().setForeground(Color.WHITE);
         player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
+        player1Banner.getClockLabel().setForeground(Color.WHITE);
 
          // Draw Button
         ImageIcon icon = new ImageIcon(getClass().getResource("assets/drawIcon.png"));
@@ -145,32 +145,36 @@ public class ChessJPanel extends JPanel{
         east.setOpaque(false);
         add(east, BorderLayout.EAST);
 
-        evalBar = new EvalBar();
-        add(evalBar, BorderLayout.WEST);
-
+        if(settings.getToggleEvalBar()) {
+            evalBar = new EvalBar();
+            add(evalBar, BorderLayout.WEST);
+        }
+        else 
+            evalBar = null;
     
-        clock = new Timer(1000, e -> {
-            long time = gameBoard.getTurn().getTimeRemaining() - 1000;
-            gameBoard.getTurn().setTimeRemaining(time);
+        if(settings.getToggleTimer()) {
+            clock = new Timer(1000, e -> {
+                long time = gameBoard.getTurn().getTimeRemaining() - 1000;
+                gameBoard.getTurn().setTimeRemaining(time);
 
-            if (gameBoard.gameOver() != 0) {
-                ((Timer) e.getSource()).stop();
-                player1Banner.getClockLabel().setForeground(Color.GRAY);
-                player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
-                player2Banner.getClockLabel().setForeground(Color.GRAY);
-                player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
-                deactivateButtons();
-                gridJPanel.clearCellHighlighting();
-                showGameOver();
-            }
-            if (gameBoard.getTurn().getColor().equals("white")) {
-                player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
-            }
-            else {
-                player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
-            }
-        });
-        clock.start();
+                if (gameBoard.gameOver() != 0) {
+                    ((Timer) e.getSource()).stop();
+                    deactivateButtons();
+                    gridJPanel.clearCellHighlighting();
+                    showGameOver();
+                }
+                if (gameBoard.getTurn().getColor().equals("white")) {
+                    player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+                }
+                else {
+                    player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+                }
+            });
+            clock.start();
+        }
+        else {
+            clock = null;
+        }
 
     }
 
@@ -203,7 +207,13 @@ public class ChessJPanel extends JPanel{
         }
     }
 
-    public void updateClockColors() {
+    public void updateBannerLabels() {
+        if(gameBoard.gameOver() != 0) {
+            player1Banner.getClockLabel().setForeground(Color.GRAY);
+            player1Banner.getPlayerJLabel().setForeground(Color.GRAY);
+            player2Banner.getClockLabel().setForeground(Color.GRAY);
+            player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
+        }
         if (gameBoard.getTurn().getColor().equals("white")) {
             player1Banner.getClockLabel().setForeground(Color.WHITE);
             player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
@@ -224,7 +234,65 @@ public class ChessJPanel extends JPanel{
     }
 
     public void updateEvalBar() {
-        evalBar.setEval(gameBoard.calculateEval());
+        if(evalBar != null)
+            evalBar.setEval(gameBoard.calculateEval());
+    }
+
+    public void toggleEvalBar(boolean flag) {
+        if(flag && evalBar != null || !flag && evalBar == null) {
+            return;
+        }
+        if(!flag && evalBar != null) {
+            remove(evalBar);
+            evalBar = null;
+        }
+        else if(flag && evalBar == null) {
+            evalBar = new EvalBar();
+            evalBar.setEval(gameBoard.calculateEval());
+            add(evalBar, BorderLayout.WEST);
+        }
+
+        revalidate();
+    }
+
+    public void toggleTimer(boolean flag) {
+        if((flag && clock != null) || (!flag && clock == null)) {
+            return;
+        }
+        if(!flag && clock != null) {
+            clock.stop();
+            clock = null;
+
+            player1Banner.toggleClockLabel(flag);
+            player2Banner.toggleClockLabel(flag);
+        }
+        else if(flag && clock == null) {
+            gameBoard.getPlayer("white").setTimeRemaining(1000 * 60 * 1/6);
+            gameBoard.getPlayer("black").setTimeRemaining(1000 * 60 * 1/6);
+
+            clock = new Timer(1000, e -> {
+                long time = gameBoard.getTurn().getTimeRemaining() - 1000;
+                gameBoard.getTurn().setTimeRemaining(time);
+
+                if (gameBoard.gameOver() != 0) {
+                    ((Timer) e.getSource()).stop();
+                    deactivateButtons();
+                    gridJPanel.clearCellHighlighting();
+                    showGameOver();
+                }
+                if (gameBoard.getTurn().getColor().equals("white")) {
+                    player1Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+                }
+                else {
+                    player2Banner.getClockLabel().setText(gameBoard.getTurn().timeToString());
+                }
+            });
+
+            player1Banner.toggleClockLabel(flag);
+            player2Banner.toggleClockLabel(flag);
+
+            clock.start();
+        }
     }
 
     private class EvalBar extends JPanel {
