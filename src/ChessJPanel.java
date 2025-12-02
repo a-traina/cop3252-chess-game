@@ -267,8 +267,8 @@ public class ChessJPanel extends JPanel{
             player2Banner.toggleClockLabel(flag);
         }
         else if(flag && clock == null) {
-            gameBoard.getPlayer("white").setTimeRemaining(1000 * 60 * 1/6);
-            gameBoard.getPlayer("black").setTimeRemaining(1000 * 60 * 1/6);
+            gameBoard.getPlayer("white").setTimeRemaining(1000 * 60 * 10);
+            gameBoard.getPlayer("black").setTimeRemaining(1000 * 60 * 10);
 
             clock = new Timer(1000, e -> {
                 long time = gameBoard.getTurn().getTimeRemaining() - 1000;
