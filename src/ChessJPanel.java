@@ -17,7 +17,7 @@ public class ChessJPanel extends JPanel{
     private MainJFrame mainFrame;
     private final GridJPanel gridJPanel;
 
-    public ChessJPanel(GameBoard gb, MainJFrame mainFrame) {
+    public ChessJPanel(GameBoard gb, MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
         setBorder(new EmptyBorder(15, 15, 15, 15));
 
@@ -60,7 +60,7 @@ public class ChessJPanel extends JPanel{
         scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
         //Grid Panel (Game Board)
-        gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
+        gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this, settings);
         gridJPanel.setOpaque(false);
 
         // Player Banners

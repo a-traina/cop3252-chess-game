@@ -20,7 +20,7 @@ public class GridJPanel extends JPanel {
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
-    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJPanel parentFrame) {
+    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJPanel parentFrame, GameSettings settings) {
         super();
 
         this.gameBoard = gameBoard;
@@ -31,11 +31,11 @@ public class GridJPanel extends JPanel {
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                String color;
+                Color color;
                 if((i + j) % 2 == 0)
-                    color = "white";
+                    color = settings.getLightBoardColor();
                 else
-                    color = "black";
+                    color = settings.getDarkBoardColor();
 
                 add(new SquareJPanel(i, j, color));
             }
@@ -44,16 +44,16 @@ public class GridJPanel extends JPanel {
 
     public void setLightBoardColors(Color c) {
         for (Component comp : getComponents()) {
-            if (comp instanceof SquareJPanel) {
-                ((SquareJPanel) comp).setLightColor(c);
+            if(comp instanceof SquareJPanel square) {
+                square.setLightColor(c);
             }
         }
     }
 
     public void setDarkBoardColors(Color c) {
         for (Component comp : getComponents()) {
-            if (comp instanceof SquareJPanel) {
-                ((SquareJPanel) comp).setDarkColor(c);
+            if(comp instanceof SquareJPanel square) {
+                square.setDarkColor(c);
             }
         }
     }
@@ -61,22 +61,16 @@ public class GridJPanel extends JPanel {
     private class SquareJPanel extends JPanel {
         private final int row;
         private final int col;
-        private final Color lightDefaultColor = new Color(236, 214, 177);
-        private final Color darkDefaultColor = new Color(185, 134, 99);
         private Color lightColor;
         private Color darkColor;
 
-        public SquareJPanel(int i, int j, String squareColor) {
+        public SquareJPanel(int i, int j, Color squareColor) {
             super();
 
             row = i;
             col = j;
 
-            if (squareColor.equals("black")) {
-                setBackground(darkDefaultColor);
-            } else {
-                setBackground(lightDefaultColor);
-            }
+            setBackground(squareColor);
 
             addMouseListener(new MouseAdapter() {
                 @Override
