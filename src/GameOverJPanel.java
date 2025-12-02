@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
@@ -14,12 +15,18 @@ public class GameOverJPanel extends JPanel {
 
         add(Box.createVerticalGlue());
 
-        JLabel gameOverIcon = new JLabel(new ImageIcon(getClass().getResource("/assets/game_over.png")));
+        ImageIcon gameOverImg = new ImageIcon(getClass().getResource("/assets/game_over.png"));
+        JLabel gameOverIcon = new JLabel(gameOverImg);
         add(gameOverIcon);
         gameOverIcon.setAlignmentX(CENTER_ALIGNMENT);
 
-        whiteWinsImg = new ImageIcon(getClass().getResource("/assets/white_wins.png"));
-        blackWinsImg = new ImageIcon(getClass().getResource("/assets/black_wins.png"));
+        int scaledWidth = (int)(gameOverImg.getIconWidth() * 0.5);
+        int scaledHeight = (int)(gameOverImg.getIconHeight() * 0.3);
+
+        whiteWinsImg = new ImageIcon(new ImageIcon(getClass().getResource("/assets/white_wins.png"))
+            .getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH));
+        blackWinsImg = new ImageIcon(new ImageIcon(getClass().getResource("/assets/black_wins.png"))
+            .getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH));
 
         gameResultIcon = new JLabel();
         add(gameResultIcon);

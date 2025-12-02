@@ -200,6 +200,12 @@ public class GridJPanel extends JPanel {
         }
     }
 
+    public void clearCellHighlighting() {
+        selectedPosition = null;
+        highlightedMoves.clear();
+        repaint();
+    }
+
     @Override
     public void doLayout() {
         int size = Math.min(getWidth(), getHeight());

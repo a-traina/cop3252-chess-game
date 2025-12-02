@@ -22,7 +22,6 @@ public class ChessJPanel extends JPanel{
 
         gameBoard = gb;
         this.mainFrame = mainFrame;
-        Box historyBox = Box.createVerticalBox();
 
         //Move History
         DefaultTableModel gameHistoryTable = new DefaultTableModel(new String[]{"Turn", "White", "Black"}, 0);
@@ -59,6 +58,17 @@ public class ChessJPanel extends JPanel{
         scrollPane.getViewport().setBackground(new Color(51, 50, 48));
         scrollPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 
+        //Grid Panel (Game Board)
+        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
+        gridJPanel.setOpaque(false);
+
+        // Player Banners
+        player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
+        player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
+
+        player1Banner.getClockLabel().setForeground(Color.WHITE);
+        player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
+
          // Draw Button
         ImageIcon icon = new ImageIcon(getClass().getResource("assets/drawIcon.png"));
         Image scaledDrawIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
@@ -86,6 +96,7 @@ public class ChessJPanel extends JPanel{
                     gameBoard.setDraw(true);
                     drawButton.setEnabled(false);
                     resignButton.setEnabled(false);
+                    gridJPanel.clearCellHighlighting();
                     if(gameBoard.gameOver() != 0)
                         showGameOver();
                 }
@@ -104,6 +115,7 @@ public class ChessJPanel extends JPanel{
                     gameBoard.setResigned(gameBoard.getTurn().getColor());
                     resignButton.setEnabled(false);
                     drawButton.setEnabled(false);
+                    gridJPanel.clearCellHighlighting();
                     if(gameBoard.gameOver() != 0)
                         showGameOver();
                 }
@@ -116,24 +128,6 @@ public class ChessJPanel extends JPanel{
         buttonPanel.setOpaque(false);
         buttonPanel.add(drawButton);
         buttonPanel.add(resignButton);
-
-        //add move history to box
-        historyBox.add(scrollPane);
-        historyBox.add(Box.createRigidArea(new Dimension(0, 5)));
-        historyBox.add(buttonPanel);
-        // historyBox.setBorder(new EmptyBorder(0, 45, 0, 0));
-
-        //Grid Panel (Game Board)
-        GridJPanel gridJPanel = new GridJPanel(gameBoard, gameHistoryTable, this);
-        gridJPanel.setOpaque(false);
-
-
-        // Player Banners
-        player1Banner = new BannerJPanel(gameBoard.getPlayer("white"));
-        player2Banner = new BannerJPanel(gameBoard.getPlayer("black"));
-
-        player1Banner.getClockLabel().setForeground(Color.WHITE);
-        player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
 
         setLayout(new BorderLayout(20, 20));
         JPanel center = new JPanel();
@@ -165,6 +159,7 @@ public class ChessJPanel extends JPanel{
                 player2Banner.getClockLabel().setForeground(Color.GRAY);
                 player2Banner.getPlayerJLabel().setForeground(Color.GRAY);
                 deactivateButtons();
+                gridJPanel.clearCellHighlighting();
                 showGameOver();
             }
             if (gameBoard.getTurn().getColor().equals("white")) {
