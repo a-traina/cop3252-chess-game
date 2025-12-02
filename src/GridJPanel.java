@@ -20,13 +20,13 @@ import javax.swing.table.DefaultTableModel;
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
     private final DefaultTableModel gameHistory;
-    private final ChessJFrame parentFrame;
+    private final ChessJPanel parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
-    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJFrame parentFrame) {
+    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJPanel parentFrame) {
         super();
 
         this.gameBoard = gameBoard;
@@ -115,6 +115,11 @@ public class GridJPanel extends JPanel {
 
                                     parentFrame.scrollToBottom();
                                     parentFrame.updateClockColors();
+
+                                    if(gameBoard.gameOver() != 0) {
+                                        parentFrame.deactivateButtons();
+                                        parentFrame.showGameOver();
+                                    }
                                 }
                             }
 
@@ -193,6 +198,12 @@ public class GridJPanel extends JPanel {
                 return null;
             }
         }
+    }
+
+    public void clearCellHighlighting() {
+        selectedPosition = null;
+        highlightedMoves.clear();
+        repaint();
     }
 
     @Override

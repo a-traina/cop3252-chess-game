@@ -16,7 +16,7 @@ public class BannerJPanel extends JPanel {
         JPanel topRow = new JPanel();
         topRow.setLayout(new BoxLayout(topRow, BoxLayout.X_AXIS));
         topRow.setAlignmentX(LEFT_ALIGNMENT);
-        topRow.setBackground(Color.DARK_GRAY);
+        topRow.setOpaque(false);
 
         playerJLabel = new JLabel(player.toString() + ":");
         playerJLabel.setForeground(Color.GRAY);
@@ -40,14 +40,14 @@ public class BannerJPanel extends JPanel {
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
 
-        setBackground(Color.DARK_GRAY);
+        setOpaque(false);
     }
 
     private class CapturedPiecesPanel extends JPanel {
         public CapturedPiecesPanel() {
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             setAlignmentX(LEFT_ALIGNMENT);
-            setBackground(Color.DARK_GRAY);
+            setOpaque(false);
             setPreferredSize(new Dimension(2, 30));
         }
 
