@@ -170,6 +170,7 @@ public class ChessJPanel extends JPanel{
             }
         });
         clock.start();
+
     }
 
     public void scrollToBottom() {
@@ -219,18 +220,43 @@ public class ChessJPanel extends JPanel{
 
     private class EvalBar extends JPanel {
         //local variables
-        private int evaluation;
+        private double evaluation;
+        private int targetEvaluation;
         private final int barWidth = 50;
+        private Timer animationClock;
 
         public EvalBar() {
             evaluation = 0;
+            targetEvaluation = 0;
+
             setPreferredSize(new Dimension(barWidth, getHeight()));
             setOpaque(false);
+
+            animationClock = new Timer(16, e ->{
+
+                if (evaluation != targetEvaluation) {
+                    double difference = targetEvaluation - evaluation;
+                    double step = Math.max(0.1, Math.abs(difference) / 10);
+
+                    if (Math.abs(difference) <= step) {
+                        evaluation = targetEvaluation;
+                    }
+                    else {
+                        evaluation += (difference > 0) ? step : -step;
+                    }
+                    repaint();
+                }
+                else {
+                    animationClock.stop();
+                }
+            });
         }
 
         public void setEval(int eval) {
-            evaluation = eval;
-            repaint();
+            targetEvaluation = eval;
+            if (!animationClock.isRunning()) {
+                animationClock.start();
+            }
         }
 
         @Override
@@ -240,7 +266,7 @@ public class ChessJPanel extends JPanel{
 
             int height = getHeight();
             int width = getWidth();
-            int rangedEval = Math.max(-20, Math.min(20, evaluation));
+            double rangedEval = Math.max(-20, Math.min(20, evaluation));
             double percentage = (rangedEval + 20) / 40.0;
 
             int whiteSection = (int) (height * percentage);
@@ -257,19 +283,21 @@ public class ChessJPanel extends JPanel{
             if (evaluation > 0) {
                 g2d.setColor(Color.DARK_GRAY);
                 g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
-                String textEval = "+" + ((Integer) evaluation);
+                String textEval = "+" + ((Integer) (int) evaluation);
                 FontMetrics fm = g2d.getFontMetrics();
                 int textHeight = fm.getDescent();
-                g2d.drawString(textEval, ((int) (width * 0.3)), this.getHeight() - textHeight - 5);
+                int textWidth = fm.stringWidth(textEval);
+                g2d.drawString(textEval, (width - textWidth) / 2, this.getHeight() - textHeight - 5);
             }
 
             if (evaluation < 0) {
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, 15));
-                String textEval = "+" + ((Integer) (evaluation * -1));
+                String textEval = "+" + ((Integer) (int) (evaluation * -1));
                 FontMetrics fm = g2d.getFontMetrics();
                 int textHeight = fm.getAscent();
-                g2d.drawString(textEval, ((int) (width * 0.3)), textHeight + 5);
+                int textWidth = fm.stringWidth(textEval);
+                g2d.drawString(textEval, (width - textWidth) / 2, textHeight + 5);
             }
         }
     }
