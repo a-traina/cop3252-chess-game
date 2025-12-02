@@ -1,10 +1,4 @@
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -48,9 +42,29 @@ public class GridJPanel extends JPanel {
         }
     }
 
+    public void setLightBoardColors(Color c) {
+        for (Component comp : getComponents()) {
+            if (comp instanceof SquareJPanel) {
+                ((SquareJPanel) comp).setLightColor(c);
+            }
+        }
+    }
+
+    public void setDarkBoardColors(Color c) {
+        for (Component comp : getComponents()) {
+            if (comp instanceof SquareJPanel) {
+                ((SquareJPanel) comp).setDarkColor(c);
+            }
+        }
+    }
+
     private class SquareJPanel extends JPanel {
         private final int row;
         private final int col;
+        private final Color lightDefaultColor = new Color(236, 214, 177);
+        private final Color darkDefaultColor = new Color(185, 134, 99);
+        private Color lightColor;
+        private Color darkColor;
 
         public SquareJPanel(int i, int j, String squareColor) {
             super();
@@ -59,9 +73,9 @@ public class GridJPanel extends JPanel {
             col = j;
 
             if (squareColor.equals("black")) {
-                setBackground(new Color(185, 134, 99));
+                setBackground(darkDefaultColor);
             } else {
-                setBackground(new Color(236, 214, 177));
+                setBackground(lightDefaultColor);
             }
 
             addMouseListener(new MouseAdapter() {
@@ -132,6 +146,20 @@ public class GridJPanel extends JPanel {
                     parentFrame.updateEvalBar();
                 }
             });
+        }
+
+        public void setLightColor(Color c) {
+            lightColor = c;
+            if ((row + col) % 2 == 0) {
+                setBackground(lightColor);
+            }
+        }
+
+        public void setDarkColor(Color c) {
+            darkColor = c;
+            if ((row + col) % 2 != 0) {
+                setBackground(darkColor);
+            }
         }
 
         @Override
