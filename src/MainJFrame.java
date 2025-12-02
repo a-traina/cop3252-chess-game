@@ -74,6 +74,16 @@ public class MainJFrame extends JFrame {
                     chessJPanel.setDarkSquares(newColor);
                 }
             );
+
+            JMenuItem defaultColors = new JMenuItem("Reset to Default");
+            defaultColors.addActionListener((e) -> {
+                settings.resetColors();
+                chessJPanel.setLightSquares(settings.getLightBoardColor());
+                chessJPanel.setDarkSquares(settings.getDarkBoardColor());
+            });
+
+            colorMenu.add(defaultColors);
+
             appearanceMenu.add(colorMenu);
 
             JMenu pieceMenu = new JMenu("Piece Skins", true);

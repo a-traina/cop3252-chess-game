@@ -64,5 +64,10 @@ public class GameSettings {
     public boolean getToggleMusic() {
         return toggleMusic;
     }
+
+    public void resetColors() {
+        lightBoardColor = new Color(236, 214, 177);
+        darkBoardColor = new Color(185, 134, 99);
+    }
 }
 
