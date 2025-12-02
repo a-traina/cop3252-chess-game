@@ -1,13 +1,12 @@
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class GameOverJPanel extends JPanel {
-    private String gameOverResult;
-    private final JLabel whiteWinsIcon;
-    private final JLabel blackWinsIcon;
+    private final ImageIcon whiteWinsImg;
+    private final ImageIcon blackWinsImg;
+    private final JLabel gameResultIcon;
     public GameOverJPanel(MainJFrame mainFrame) {
         setOpaque(false);
 
@@ -16,50 +15,45 @@ public class GameOverJPanel extends JPanel {
         add(Box.createVerticalGlue());
 
         JLabel gameOverIcon = new JLabel(new ImageIcon(getClass().getResource("/assets/game_over.png")));
-        gameOverIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(gameOverIcon);
+        gameOverIcon.setAlignmentX(CENTER_ALIGNMENT);
 
-        whiteWinsIcon = new JLabel(new ImageIcon(getClass().getResource("/assets/white_wins.png")));
-        blackWinsIcon = new JLabel(new ImageIcon(getClass().getResource("/assets/black_wins.png")));
+        whiteWinsImg = new ImageIcon(getClass().getResource("/assets/white_wins.png"));
+        blackWinsImg = new ImageIcon(getClass().getResource("/assets/black_wins.png"));
 
-        whiteWinsIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        blackWinsIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(whiteWinsIcon);
-        add(blackWinsIcon);
+        gameResultIcon = new JLabel();
+        add(gameResultIcon);
+        gameResultIcon.setAlignmentX(CENTER_ALIGNMENT);
 
         add(Box.createVerticalGlue());
 
         JButton newGameButton = new JButton("New Game");
-        newGameButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         newGameButton.addActionListener((ActionEvent e) -> mainFrame.resetGame());
         add(newGameButton);
+        newGameButton.setAlignmentX(CENTER_ALIGNMENT);
 
-         JButton quitButton = new JButton("Quit Game");
-        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton quitButton = new JButton("Quit Game");
         quitButton.addActionListener((ActionEvent e) -> System.exit(0));
         add(quitButton);
+        quitButton.setAlignmentX(CENTER_ALIGNMENT);
+
         add(Box.createVerticalGlue());
 
     }
 
     public void setGameResult(String result) {
-        gameOverResult = result;
-        switch(gameOverResult) {
+        switch(result) {
             case "Draw" -> {
-                whiteWinsIcon.setVisible(false);
-                blackWinsIcon.setVisible(false);
+                gameResultIcon.setIcon(null);
             }
             case "White" -> {
-                whiteWinsIcon.setVisible(true);
-                blackWinsIcon.setVisible(false);
+                gameResultIcon.setIcon(whiteWinsImg);
             }
             case "Black" -> {
-                whiteWinsIcon.setVisible(false);
-                blackWinsIcon.setVisible(true);
+                gameResultIcon.setIcon(blackWinsImg);
             }
             default -> {
-                whiteWinsIcon.setVisible(false);
-                blackWinsIcon.setVisible(false);
+                gameResultIcon.setIcon(null);
             }
         }
     }
