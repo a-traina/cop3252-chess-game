@@ -1,11 +1,12 @@
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Line;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class MenuJPanel extends JPanel {
     BufferedImage background;
@@ -25,7 +26,17 @@ public class MenuJPanel extends JPanel {
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         add(titleLabel);
 
+        JLabel subtitleLabel = new JLabel(new ImageIcon(getClass().getResource("/assets/subtitle.png")));
+        subtitleLabel.setAlignmentX(CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(5));
+        add(subtitleLabel);
+
         //add(Box.createVerticalStrut(50));
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setPreferredSize(new Dimension(800, 100));
+        buttonsPanel.setMaximumSize(buttonsPanel.getPreferredSize());
 
         SpriteButton playButton = new SpriteButton("/assets/start_button.png");
         playButton.addMouseListener(new MouseAdapter() {
@@ -37,11 +48,11 @@ public class MenuJPanel extends JPanel {
 
         JPanel playButtonWrapper = new JPanel();
         playButtonWrapper.setOpaque(false);
-        playButtonWrapper.setPreferredSize(new Dimension(250, 70));
+        playButtonWrapper.setPreferredSize(new Dimension(370, 100));
         playButtonWrapper.setMinimumSize(playButtonWrapper.getPreferredSize());
         playButtonWrapper.add(playButton);
 
-        add(playButtonWrapper);
+        buttonsPanel.add(playButtonWrapper);
 
         //add(Box.createVerticalStrut(20));
 
@@ -59,8 +70,10 @@ public class MenuJPanel extends JPanel {
         quitButtonWrapper.setMinimumSize(quitButtonWrapper.getPreferredSize());
         quitButtonWrapper.add(quitButton);
 
-        add(quitButtonWrapper);
+        buttonsPanel.add(quitButtonWrapper);
 
+        add(Box.createVerticalStrut(25));
+        add(buttonsPanel);
         add(Box.createVerticalGlue());
 
     }
