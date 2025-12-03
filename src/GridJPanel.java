@@ -102,7 +102,7 @@ public class GridJPanel extends JPanel {
                             Position target = new Position(row, col);
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
-                                    if (gameBoard.getTurn().getColor().equals("black")) {
+                                    if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
                                         gameHistory.addRow(row);
@@ -124,15 +124,17 @@ public class GridJPanel extends JPanel {
                                         }
                                     }
 
-                                    parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor().equals("white") ? "black" : "white");
-
+                                    parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
+                                    parentFrame.updateEvalBar();
                                     parentFrame.scrollToBottom();
-                                    parentFrame.updateBannerLabels();
 
                                     if(gameBoard.gameOver() != 0) {
                                         parentFrame.deactivateButtons();
                                         parentFrame.showGameOver();
                                     }
+
+                                    gameBoard.switchTurns();
+                                    parentFrame.updateBannerLabels();
                                 }
                             }
 
@@ -142,7 +144,6 @@ public class GridJPanel extends JPanel {
                     }
 
                     GridJPanel.this.repaint();
-                    parentFrame.updateEvalBar();
                 }
             });
         }
