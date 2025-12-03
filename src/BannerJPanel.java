@@ -24,7 +24,12 @@ public class BannerJPanel extends JPanel {
         add(playerJLabel);
         topRow.add(playerJLabel);
 
-        clockLabel = new JLabel(player.timeToString());
+        clockLabel = new JLabel(player.timeToString()) {
+            @Override
+            public void revalidate() {
+                repaint();
+            }
+        };
         clockLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
         clockLabel.setForeground(Color.GRAY);
         clockLabel.setOpaque(true);
