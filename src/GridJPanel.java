@@ -238,7 +238,10 @@ public class GridJPanel extends JPanel {
     @Override
     public void doLayout() {
         int size = Math.min(getWidth(), getHeight());
-        setSize(size, size);
+        if(size >= 200)
+            setSize(size, size);
+        else
+            setSize(200, 200);
         super.doLayout();
     }
 
