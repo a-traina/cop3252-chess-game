@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GameBoard {
     private final Player player1;
@@ -309,7 +310,7 @@ public class GameBoard {
         return 1;
     }
 
-    private String moveRecord(char piece, Position oldPos, Position newPos, boolean isCapture) {
+    private String moveRecord(char piece, Position currPos, Position newPos, boolean isCapture) {
         StringBuilder str = new StringBuilder();
         String cols = "abcdefgh";
 
@@ -317,9 +318,51 @@ public class GameBoard {
             str.append(piece);
         }
 
+        // Handle move ambiguity
+        if(piece == 'N' || piece == 'R' || piece == 'Q' || piece == 'B') {
+            String color = getPieceAt(currPos.getX(), currPos.getY()).getColor();
+            List<Position> ambiguityLst = new ArrayList<>();
+            for(int i = 0; i < 8; i++) {
+                for(int j = 0; j < 8; j++) {
+                    if(i == currPos.getX() && j == currPos.getY()) continue;
+                    Piece p = getPieceAt(i, j);
+                    if(p == null || !p.getColor().equals(color)) continue;
+                    if(p.getChar() != piece) continue;
+
+                    if(p.getAllMoves(new Position(i, j), this).contains(newPos)) {
+                        ambiguityLst.add(new Position(i, j));
+                    }
+                }
+            }
+
+            if(!ambiguityLst.isEmpty()) {
+                boolean isUniqueCol = true;
+                boolean isUniqueRow = true;
+                for(Position p : ambiguityLst) {
+                    if(currPos.getY() == p.getY()) {
+                        isUniqueCol = false;
+                    }
+                    if(currPos.getX() == p.getX()) {
+                        isUniqueRow = false;
+                    }
+                }
+
+                if(isUniqueCol) {
+                    str.append(cols.charAt(currPos.getY()));
+                }
+                else if(isUniqueRow) {
+                    str.append(8 - currPos.getX());
+                }
+                else {
+                    str.append(cols.charAt(currPos.getY())).append(8 - currPos.getX());
+                }
+
+            }
+        }
+
         if(isCapture) {
             if(piece == 'P') {
-                str.append(cols.charAt(oldPos.getY()));
+                str.append(cols.charAt(currPos.getY()));
             }
             str.append('x').append(cols.charAt(newPos.getY())).append(8 - newPos.getX());
         }
@@ -436,6 +479,19 @@ public class GameBoard {
                 }
             }
 
+            // Log move in move history
+            if(currTurn.equals("white")) {
+                String prefix = Integer.toString(moveNumber + 1) + ". ";
+                moveHistory.add(moveNumber, prefix + moveRecord(piece.getChar(), oldPos, newPos, isCapture));
+            }
+
+            if(currTurn.equals("black")) {
+                String prevRecord = moveHistory.get(moveNumber);
+                String updateRecord = prevRecord + " " + moveRecord(piece.getChar(), oldPos, newPos, isCapture);
+                moveHistory.set(moveNumber, updateRecord);
+                moveNumber++;
+            }
+
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
 
@@ -483,19 +539,6 @@ public class GameBoard {
             }
         }
         else return false;
-        
-        // Log move in move history
-        if(currTurn.equals("white")) {
-            String prefix = Integer.toString(moveNumber + 1) + ". ";
-            moveHistory.add(moveNumber, prefix + moveRecord(piece.getChar(), oldPos, newPos, isCapture));
-        }
-
-        if(currTurn.equals("black")) {
-            String prevRecord = moveHistory.get(moveNumber);
-            String updateRecord = prevRecord + " " + moveRecord(piece.getChar(), oldPos, newPos, isCapture);
-            moveHistory.set(moveNumber, updateRecord);
-            moveNumber++;
-        }
 
         // Change current player turn
         currTurn = currTurn.equals("white") ? "black" : "white";
