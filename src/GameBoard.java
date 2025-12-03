@@ -234,6 +234,10 @@ public class GameBoard {
         return p1 - p2;
     }
 
+    public void switchTurns() {
+        currTurn = currTurn.equals("white") ? "black" : "white";
+    }
+
     public boolean isInCheck(Piece[][] board) {
         // Make game board object for board passed in
         GameBoard simulate = new GameBoard(board);
@@ -429,7 +433,6 @@ public class GameBoard {
                             moveHistory.set(moveNumber, updateRecord);
                             moveNumber++;
                         }
-                        currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
 
@@ -456,7 +459,6 @@ public class GameBoard {
                             moveHistory.set(moveNumber, updateRecord);
                             moveNumber++;
                         }
-                        currTurn = currTurn.equals("white") ? "black" : "white";
                         return true;
                     }
                 }
@@ -540,8 +542,6 @@ public class GameBoard {
         }
         else return false;
 
-        // Change current player turn
-        currTurn = currTurn.equals("white") ? "black" : "white";
         return true;
     }
 }

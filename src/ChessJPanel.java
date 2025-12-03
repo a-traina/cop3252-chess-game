@@ -70,6 +70,11 @@ public class ChessJPanel extends JPanel{
         player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
         player1Banner.getClockLabel().setForeground(Color.WHITE);
 
+        player1Banner.setOpaque(true);
+        player1Banner.setBackground(Color.DARK_GRAY);
+        player2Banner.setOpaque(true);
+        player2Banner.setBackground(Color.DARK_GRAY);
+
          // Draw Button
         ImageIcon icon = new ImageIcon(getClass().getResource("assets/drawIcon.png"));
         Image scaledDrawIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
@@ -307,7 +312,8 @@ public class ChessJPanel extends JPanel{
             targetEvaluation = 0;
 
             setPreferredSize(new Dimension(barWidth, getHeight()));
-            setOpaque(false);
+            setOpaque(true);
+            setBackground(Color.DARK_GRAY);
 
             animationClock = new Timer(16, e ->{
 
@@ -321,7 +327,7 @@ public class ChessJPanel extends JPanel{
                     else {
                         evaluation += (difference > 0) ? step : -step;
                     }
-                    repaint();
+                    EvalBar.this.repaint();
                 }
                 else {
                     animationClock.stop();
