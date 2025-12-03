@@ -50,7 +50,8 @@ public class MainJFrame extends JFrame {
             evalBarToggleButton.setSelected(true);
             evalBarToggleButton.addItemListener((ItemEvent e) -> {
                 settings.setToggleEvalBar(!settings.getToggleEvalBar());
-                chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
+                if(chessJPanel != null)
+                    chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
             });
 
            generalSettings.add(evalBarToggleButton);
@@ -59,7 +60,8 @@ public class MainJFrame extends JFrame {
             timerToggleButton.setSelected(true);
             timerToggleButton.addItemListener((ItemEvent e) -> {
                 settings.setToggleTimer(!settings.getToggleTimer());
-                chessJPanel.toggleTimer(settings.getToggleTimer());
+                if(chessJPanel != null)
+                    chessJPanel.toggleTimer(settings.getToggleTimer());
             });
 
             generalSettings.add(timerToggleButton);
@@ -79,16 +81,18 @@ public class MainJFrame extends JFrame {
             whiteColorChooser.setPreviewPanel(new JPanel());
             colorMenu.add(whiteColorChooser);
 
-            JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
-            darkLabel.setEnabled(false);
-            colorMenu.add(darkLabel);
 
             whiteColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = whiteColorChooser.getColor();
                     settings.setLightBoardColor(newColor);
-                    chessJPanel.setLightSquares(newColor);
+                    if(chessJPanel != null)
+                        chessJPanel.setLightSquares(newColor);
                 }
             );
+
+            JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
+            darkLabel.setEnabled(false);
+            colorMenu.add(darkLabel);
 
             JColorChooser blackColorChooser = new JColorChooser();
             panels = blackColorChooser.getChooserPanels();
@@ -103,15 +107,18 @@ public class MainJFrame extends JFrame {
             blackColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = blackColorChooser.getColor();
                     settings.setDarkBoardColor(newColor);
-                    chessJPanel.setDarkSquares(newColor);
+                    if(chessJPanel != null)
+                        chessJPanel.setDarkSquares(newColor);
                 }
             );
 
             JMenuItem defaultColors = new JMenuItem("Reset to Default");
             defaultColors.addActionListener((e) -> {
                 settings.resetColors();
-                chessJPanel.setLightSquares(settings.getLightBoardColor());
-                chessJPanel.setDarkSquares(settings.getDarkBoardColor());
+                if(chessJPanel != null){
+                    chessJPanel.setLightSquares(settings.getLightBoardColor());
+                    chessJPanel.setDarkSquares(settings.getDarkBoardColor());
+                }
             });
 
             colorMenu.add(defaultColors);
