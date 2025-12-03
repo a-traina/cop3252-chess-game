@@ -33,6 +33,7 @@ public class MainJFrame extends JFrame {
         private final JMenu settingsMenu;
         private final JMenu appearanceMenu;
         private final JMenu colorMenu;
+        private final JMenu generalSettings;
 
         public ChessMenuBar() {
             super();
@@ -41,6 +42,7 @@ public class MainJFrame extends JFrame {
             settingsMenu = new JMenu("Settings");
             appearanceMenu = new JMenu("Appearance");
             colorMenu = new JMenu("Board Colors");
+            generalSettings = new JMenu("General");
 
             JRadioButton evalBarToggleButton = new JRadioButton("Toggle Evaluation Bar");
             evalBarToggleButton.setSelected(true);
@@ -49,7 +51,7 @@ public class MainJFrame extends JFrame {
                 chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
             });
 
-            settingsMenu.add(evalBarToggleButton);
+           generalSettings.add(evalBarToggleButton);
 
             JRadioButton timerToggleButton = new JRadioButton("Toggle Timer");
             timerToggleButton.setSelected(true);
@@ -58,7 +60,12 @@ public class MainJFrame extends JFrame {
                 chessJPanel.toggleTimer(settings.getToggleTimer());
             });
 
-            settingsMenu.add(timerToggleButton);
+            generalSettings.add(timerToggleButton);
+            settingsMenu.add(generalSettings);
+
+            JMenuItem lightLabel = new JMenuItem("Light Square Color Selector:");
+            lightLabel.setEnabled(false);
+            colorMenu.add(lightLabel);
 
             JColorChooser whiteColorChooser = new JColorChooser();
             AbstractColorChooserPanel[] panels = whiteColorChooser.getChooserPanels();
@@ -69,6 +76,10 @@ public class MainJFrame extends JFrame {
             }
             whiteColorChooser.setPreviewPanel(new JPanel());
             colorMenu.add(whiteColorChooser);
+
+            JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
+            darkLabel.setEnabled(false);
+            colorMenu.add(darkLabel);
 
             whiteColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = whiteColorChooser.getColor();

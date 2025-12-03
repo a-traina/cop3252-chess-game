@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
+    private final GameSettings settings;
     private final DefaultTableModel gameHistory;
     private final ChessJPanel parentFrame;
     private Position selectedPosition;
@@ -24,6 +25,7 @@ public class GridJPanel extends JPanel {
         super();
 
         this.gameBoard = gameBoard;
+        this.settings = settings;
         this.gameHistory = gameHistory;
         this.parentFrame = parentFrame;
 
@@ -69,6 +71,9 @@ public class GridJPanel extends JPanel {
 
             row = i;
             col = j;
+
+            lightColor = settings.getLightBoardColor();
+            darkColor = settings.getDarkBoardColor();
 
             setBackground(squareColor);
 
@@ -147,6 +152,7 @@ public class GridJPanel extends JPanel {
             if ((row + col) % 2 == 0) {
                 setBackground(lightColor);
             }
+            repaint();
         }
 
         public void setDarkColor(Color c) {
@@ -154,6 +160,7 @@ public class GridJPanel extends JPanel {
             if ((row + col) % 2 != 0) {
                 setBackground(darkColor);
             }
+            repaint();
         }
 
         @Override
@@ -165,7 +172,7 @@ public class GridJPanel extends JPanel {
             if(col == 0) {
                 String rowNum = Integer.toString(8 - row);
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
-                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+                g2d.setColor((row + col) % 2 != 0 ? lightColor : darkColor);
 
                 FontMetrics fontMetrics = g2d.getFontMetrics();
 
@@ -175,7 +182,7 @@ public class GridJPanel extends JPanel {
             if(row == 7) {
                 String colLetters = "abcdefgh";
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
-                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+                g2d.setColor((row + col) % 2 != 0 ? lightColor : darkColor);
 
                 FontMetrics fontMetrics = g2d.getFontMetrics();
 
