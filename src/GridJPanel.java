@@ -79,6 +79,26 @@ public class GridJPanel extends JPanel {
 
             addMouseListener(new MouseAdapter() {
                 @Override
+                public void mouseEntered(MouseEvent e) {
+                    Piece p = gameBoard.getPieceAt(row, col);
+
+                    if (p != null && p.getColor().equals(gameBoard.getTurn().getColor()) && selectedPosition == null 
+                        || selectedPosition != null && highlightedMoves.contains(new Position(row, col))) {
+                        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    } else {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            });
+
+
+            addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     if (gameBoard.gameOver() != 0) {
                         return;

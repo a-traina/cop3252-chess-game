@@ -90,6 +90,7 @@ public class MenuJPanel extends JPanel {
             super();
 
             setOpaque(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             
             try {
                 button = ImageIO.read(getClass().getResource(imagePath));
