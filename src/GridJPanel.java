@@ -122,6 +122,7 @@ public class GridJPanel extends JPanel {
                             Position target = new Position(row, col);
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
+                                    setCursor(Cursor.getDefaultCursor());
                                     if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
