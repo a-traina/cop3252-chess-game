@@ -1,19 +1,63 @@
-## Getting Started
+## COP3252 Chess Term Project
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+- Homework X
+- Code Authors: Alyssa Traina & Ethan Broome
+- Game Implemented: Chess
 
-## Folder Structure
+---
 
-The workspace contains two folders by default, where:
+# Game Rules
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+User should follow standard chess rules when running this application.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Note certain special moves from the standard chess rules are supported:
+- En Passant
+- Castling
+- Pawn Promotion
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+---
 
-## Dependency Management
+## Interface
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
-# cop3252-chess-game
+- Click a piece to select it (only works on the current player's turn).  
+- Click a valid destination square to move the piece.  
+- Invalid moves are automatically prevented by the game logic.  
+- Highlights indicate selected pieces and possible moves.
+
+---
+
+## Running the Project
+
+1. Ensure that you are running Java 24 JDK
+2. 
+
+
+---
+
+# Extra Features
+
+Look for these extra features in this application:
+
+**Game Play Features**
+- Mouse cursor changes to hand cursor when hovering over clickable content (sprite buttons and board pieces)
+- A timer for competitive chess game play
+- An evaluation bar for mid-game player material advantage visuals
+- Option to toggle timer and evaluation bar on/off in the general settings menu
+- Formatted move history according to SAN notation rules
+    - Specifically note that ambiguities are clarified when necessary
+- Player banner dynamically displays captured pieces as they occur during the game
+- Game board maintains square dimensions during resizing of the application for customizability
+- Draw button provided to end game prematurely if both players consent to a draw
+- Resign button provided to end game prematurely if a player desires to resign from the game
+
+**Visual Features**
+- All graphic elements are custom designed by Ethan Broome
+- Evaluation bar implements smooth animations for a clean look and feel
+- Player banner highlights on player's turn
+- Game board colors are fully customizable in the appearance settings (with an option to reset to default if desired)
+- Menu screen and game over screen has sprite buttons that expand on hover for interactivity
+
+**Audio Features**
+- Sound effects are implemented as pieces are moved throughout the game
+- Background music adds ambience when playing the game
+- Option to toggle music/ sound effects on/off are provided in the sound settings menu
