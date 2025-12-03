@@ -8,8 +8,11 @@ public class GameOverJPanel extends JPanel {
     private final ImageIcon whiteWinsImg;
     private final ImageIcon blackWinsImg;
     private final JLabel gameResultIcon;
-    public GameOverJPanel(MainJFrame mainFrame) {
+    private SoundEffect buttonSound;
+    public GameOverJPanel(MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
+
+        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -35,12 +38,20 @@ public class GameOverJPanel extends JPanel {
         add(Box.createVerticalGlue());
 
         JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener((ActionEvent e) -> mainFrame.resetGame());
+        newGameButton.addActionListener((ActionEvent e) -> {
+            if (settings.getToggleSoundFX())
+                buttonSound.play();
+            mainFrame.resetGame();
+        });
         add(newGameButton);
         newGameButton.setAlignmentX(CENTER_ALIGNMENT);
 
         JButton quitButton = new JButton("Quit Game");
-        quitButton.addActionListener((ActionEvent e) -> System.exit(0));
+        quitButton.addActionListener((ActionEvent e) -> {
+            if (settings.getToggleSoundFX())
+                buttonSound.play();
+            System.exit(0);
+        });
         add(quitButton);
         quitButton.setAlignmentX(CENTER_ALIGNMENT);
 

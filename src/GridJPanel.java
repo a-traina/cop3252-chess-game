@@ -18,6 +18,9 @@ public class GridJPanel extends JPanel {
     private final ChessJPanel parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
+    private SoundEffect moveSound;
+    private SoundEffect captureSound;
+    private SoundEffect invalidSound;
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
@@ -28,6 +31,11 @@ public class GridJPanel extends JPanel {
         this.settings = settings;
         this.gameHistory = gameHistory;
         this.parentFrame = parentFrame;
+        moveSound = new SoundEffect(getClass().getResource("/assets/moveSound.wav"));
+        captureSound = new SoundEffect(getClass().getResource("/assets/captureSound.wav"));
+        invalidSound = new SoundEffect(getClass().getResource("/assets/invalidSound.wav"));
+
+
 
         setLayout(new GridLayout(8, 8));
 
@@ -58,6 +66,10 @@ public class GridJPanel extends JPanel {
                 square.setDarkColor(c);
             }
         }
+    }
+
+    public void toggleSoundFx(boolean flag) {
+        settings.setToggleSoundFX(flag);
     }
 
     private class SquareJPanel extends JPanel {
@@ -102,6 +114,12 @@ public class GridJPanel extends JPanel {
                             Position target = new Position(row, col);
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
+
+                                    if(settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && !gameBoard.getIsCaptureMove())
+                                        moveSound.play();
+                                    else if (settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && gameBoard.getIsCaptureMove())
+                                        captureSound.play();
+
                                     if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
@@ -122,6 +140,8 @@ public class GridJPanel extends JPanel {
                                             case "bishop" -> {gameBoard.promotePawn(new Bishop(gameBoard.getPawnPromoteColor()));}
                                             case "rook" -> {gameBoard.promotePawn(new Rook(gameBoard.getPawnPromoteColor()));}
                                         }
+                                        if (settings.getToggleSoundFX())
+                                            moveSound.play();
                                     }
 
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
@@ -136,6 +156,10 @@ public class GridJPanel extends JPanel {
                                     gameBoard.switchTurns();
                                     parentFrame.updateBannerLabels();
                                 }
+                            }
+                            else {
+                                if (settings.getToggleSoundFX())
+                                    invalidSound.play();
                             }
 
                             selectedPosition = null;
