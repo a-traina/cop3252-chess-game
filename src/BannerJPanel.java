@@ -9,7 +9,7 @@ public class BannerJPanel extends JPanel {
     private final CapturedPiecesPanel capturedPiecesPanel;
     private final JLabel clockLabel;
     
-    public BannerJPanel(Player player) {
+    public BannerJPanel(Player player, boolean toggleClock) {
         this.player = player;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -22,6 +22,7 @@ public class BannerJPanel extends JPanel {
         playerJLabel.setForeground(Color.GRAY);
         playerJLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
         add(playerJLabel);
+        topRow.add(playerJLabel);
 
         clockLabel = new JLabel(player.timeToString());
         clockLabel.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -30,10 +31,11 @@ public class BannerJPanel extends JPanel {
         clockLabel.setBackground(new Color(51, 50, 48));
         clockLabel.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)), new EmptyBorder(5, 5, 5, 5)));
 
-
-        topRow.add(playerJLabel);
         topRow.add(Box.createHorizontalGlue());
         topRow.add(clockLabel);
+
+        if(!toggleClock)
+            clockLabel.setVisible(false);
 
         add(topRow);
 
@@ -77,6 +79,11 @@ public class BannerJPanel extends JPanel {
 
     public JLabel getPlayerJLabel() {
         return playerJLabel;
+    }
+
+    public void toggleClockLabel(boolean flag) {
+        clockLabel.setVisible(flag);
+        clockLabel.setText(player.timeToString());
     }
     
 }

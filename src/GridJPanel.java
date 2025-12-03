@@ -1,10 +1,4 @@
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -19,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
+    private final GameSettings settings;
     private final DefaultTableModel gameHistory;
     private final ChessJPanel parentFrame;
     private Position selectedPosition;
@@ -26,10 +21,11 @@ public class GridJPanel extends JPanel {
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
-    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJPanel parentFrame) {
+    public GridJPanel(GameBoard gameBoard, DefaultTableModel gameHistory, ChessJPanel parentFrame, GameSettings settings) {
         super();
 
         this.gameBoard = gameBoard;
+        this.settings = settings;
         this.gameHistory = gameHistory;
         this.parentFrame = parentFrame;
 
@@ -37,13 +33,29 @@ public class GridJPanel extends JPanel {
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                String color;
+                Color color;
                 if((i + j) % 2 == 0)
-                    color = "white";
+                    color = settings.getLightBoardColor();
                 else
-                    color = "black";
+                    color = settings.getDarkBoardColor();
 
                 add(new SquareJPanel(i, j, color));
+            }
+        }
+    }
+
+    public void setLightBoardColors(Color c) {
+        for (Component comp : getComponents()) {
+            if(comp instanceof SquareJPanel square) {
+                square.setLightColor(c);
+            }
+        }
+    }
+
+    public void setDarkBoardColors(Color c) {
+        for (Component comp : getComponents()) {
+            if(comp instanceof SquareJPanel square) {
+                square.setDarkColor(c);
             }
         }
     }
@@ -51,18 +63,19 @@ public class GridJPanel extends JPanel {
     private class SquareJPanel extends JPanel {
         private final int row;
         private final int col;
+        private Color lightColor;
+        private Color darkColor;
 
-        public SquareJPanel(int i, int j, String squareColor) {
+        public SquareJPanel(int i, int j, Color squareColor) {
             super();
 
             row = i;
             col = j;
 
-            if (squareColor.equals("black")) {
-                setBackground(new Color(185, 134, 99));
-            } else {
-                setBackground(new Color(236, 214, 177));
-            }
+            lightColor = settings.getLightBoardColor();
+            darkColor = settings.getDarkBoardColor();
+
+            setBackground(squareColor);
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -114,7 +127,7 @@ public class GridJPanel extends JPanel {
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor().equals("white") ? "black" : "white");
 
                                     parentFrame.scrollToBottom();
-                                    parentFrame.updateClockColors();
+                                    parentFrame.updateBannerLabels();
 
                                     if(gameBoard.gameOver() != 0) {
                                         parentFrame.deactivateButtons();
@@ -134,6 +147,22 @@ public class GridJPanel extends JPanel {
             });
         }
 
+        public void setLightColor(Color c) {
+            lightColor = c;
+            if ((row + col) % 2 == 0) {
+                setBackground(lightColor);
+            }
+            repaint();
+        }
+
+        public void setDarkColor(Color c) {
+            darkColor = c;
+            if ((row + col) % 2 != 0) {
+                setBackground(darkColor);
+            }
+            repaint();
+        }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -143,7 +172,7 @@ public class GridJPanel extends JPanel {
             if(col == 0) {
                 String rowNum = Integer.toString(8 - row);
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
-                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+                g2d.setColor((row + col) % 2 != 0 ? lightColor : darkColor);
 
                 FontMetrics fontMetrics = g2d.getFontMetrics();
 
@@ -153,7 +182,7 @@ public class GridJPanel extends JPanel {
             if(row == 7) {
                 String colLetters = "abcdefgh";
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
-                g2d.setColor((row + col) % 2 != 0 ? new Color(236, 214, 177) : new Color(185, 134, 99));
+                g2d.setColor((row + col) % 2 != 0 ? lightColor : darkColor);
 
                 FontMetrics fontMetrics = g2d.getFontMetrics();
 
