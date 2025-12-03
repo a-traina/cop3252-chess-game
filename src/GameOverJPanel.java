@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -113,6 +114,7 @@ public class GameOverJPanel extends JPanel {
             super();
 
             setOpaque(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             
             try {
                 button = ImageIO.read(getClass().getResource(imagePath));
