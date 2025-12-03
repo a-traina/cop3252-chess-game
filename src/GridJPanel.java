@@ -148,13 +148,16 @@ public class GridJPanel extends JPanel {
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
                                     parentFrame.updateEvalBar();
                                     parentFrame.scrollToBottom();
+                                    gameBoard.switchTurns();
 
                                     if(gameBoard.gameOver() != 0) {
+                                        parentFrame.stopClock();
                                         parentFrame.deactivateButtons();
                                         parentFrame.showGameOver();
+                                        clearCellHighlighting();
+                                        return;
                                     }
 
-                                    gameBoard.switchTurns();
                                     parentFrame.updateBannerLabels();
                                 }
                             }
