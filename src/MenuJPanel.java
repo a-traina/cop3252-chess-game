@@ -4,9 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.Line;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 public class MenuJPanel extends JPanel {
     BufferedImage background;
@@ -35,7 +33,7 @@ public class MenuJPanel extends JPanel {
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
-        buttonsPanel.setPreferredSize(new Dimension(800, 100));
+        buttonsPanel.setPreferredSize(new Dimension(800, 135));
         buttonsPanel.setMaximumSize(buttonsPanel.getPreferredSize());
 
         SpriteButton playButton = new SpriteButton("/assets/start_button.png");
