@@ -27,6 +27,19 @@ public class PieceJOptionPane extends JOptionPane {
             new JRadioButton("Rook", new ImageIcon(getClass().getResource("/assets/Chess_rlt60.png")))
             : new JRadioButton("Rook", new ImageIcon(getClass().getResource("/assets/Chess_rdt60.png")));
 
+        if(color.equals("white")) {
+            queen.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/WhiteQueenSelected.png")));
+            knight.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/WhiteKnightSelected.png")));
+            bishop.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/WhiteBishopSelected.png")));
+            rook.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/WhiteRookSelected.png")));
+        }
+        else {
+            queen.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/BlackQueenSelected.png")));
+            knight.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/BlackKnightSelected.png")));
+            bishop.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/BlackBishopSelected.png")));
+            rook.setSelectedIcon(new ImageIcon(getClass().getResource("/assets/BlackRookSelected.png")));
+        }
+
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(queen);
         buttonGroup.add(knight);
