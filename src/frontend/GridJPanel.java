@@ -103,7 +103,7 @@ public class GridJPanel extends JPanel {
                 public void mouseEntered(MouseEvent e) {
                     Piece p = gameBoard.getPieceAt(row, col);
 
-                    if (p != null && p.getColor().equals(gameBoard.getTurn().getColor()) && selectedPosition == null 
+                    if (p != null && p.getColor().equals(gameBoard.getTurn().getColor())
                         || selectedPosition != null && highlightedMoves.contains(new Position(row, col))) {
                         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     } else {
@@ -115,10 +115,8 @@ public class GridJPanel extends JPanel {
                 public void mouseExited(MouseEvent e) {
                     setCursor(Cursor.getDefaultCursor());
                 }
-            });
 
-            // Add click handling to move pieces
-            addMouseListener(new MouseAdapter() {
+                // Add click handling for moving pieces
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (gameBoard.gameOver() != 0) {
