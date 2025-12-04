@@ -1,4 +1,8 @@
+package backend.pieces;
+
 import java.util.HashSet;
+import util.Position;
+import backend.GameBoard;
 
 public class Knight extends Piece {
 
@@ -10,7 +14,7 @@ public class Knight extends Piece {
     public Knight(String color) {
         this.color = color;
         pointValue = 3;
-        this.imagePath = color.equals("white") ? "/assets/Chess_nlt60.png" : "/assets/Chess_ndt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_nlt60.png" : "/pieces/Chess_ndt60.png";
     }
 
     @Override

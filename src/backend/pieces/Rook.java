@@ -1,4 +1,8 @@
+package backend.pieces;
+
+import backend.GameBoard;
 import java.util.HashSet;
+import util.Position;
 
 public class Rook extends Piece {
     private boolean isFirstMove;
@@ -7,7 +11,7 @@ public class Rook extends Piece {
         pointValue = 5;
         this.color = color;
         isFirstMove = true;
-        this.imagePath = color.equals("white") ? "/assets/Chess_rlt60.png" : "/assets/Chess_rdt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_rlt60.png" : "/pieces/Chess_rdt60.png";
     }
 
     @Override

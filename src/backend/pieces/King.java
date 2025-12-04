@@ -1,4 +1,8 @@
+package backend.pieces;
+
 import java.util.HashSet;
+import util.Position;
+import backend.GameBoard;
 
 public class King extends Piece {
     private boolean isFirstMove;
@@ -7,7 +11,7 @@ public class King extends Piece {
         pointValue = 0;
         this.color = color;
         isFirstMove = true;
-        this.imagePath = color.equals("white") ? "/assets/Chess_klt60.png" : "/assets/Chess_kdt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_klt60.png" : "/pieces/Chess_kdt60.png";
     }
 
     @Override

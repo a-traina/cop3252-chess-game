@@ -1,3 +1,5 @@
+package frontend;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -5,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import util.GameSettings;
+import util.SoundEffect;
 
 public class MenuJPanel extends JPanel {
     BufferedImage background;
@@ -14,20 +18,20 @@ public class MenuJPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         try {
-            background = ImageIO.read(getClass().getResource("/assets/menu_background.jpeg"));
+            background = ImageIO.read(getClass().getResource("/menu/menu_background.jpeg"));
         } catch (IOException e) {
             background = null;
         }
 
-        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
+        buttonSound = new SoundEffect(getClass().getResource("/sounds/buttonPressedSound.wav"));
 
         add(Box.createVerticalGlue());
 
-        JLabel titleLabel = new JLabel(new ImageIcon(getClass().getResource("/assets/title.png")));
+        JLabel titleLabel = new JLabel(new ImageIcon(getClass().getResource("/menu/title.png")));
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         add(titleLabel);
 
-        JLabel subtitleLabel = new JLabel(new ImageIcon(getClass().getResource("/assets/subtitle.png")));
+        JLabel subtitleLabel = new JLabel(new ImageIcon(getClass().getResource("/menu/subtitle.png")));
         subtitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(5));
         add(subtitleLabel);
@@ -37,7 +41,7 @@ public class MenuJPanel extends JPanel {
         buttonsPanel.setPreferredSize(new Dimension(800, 135));
         buttonsPanel.setMaximumSize(buttonsPanel.getPreferredSize());
 
-        SpriteButton playButton = new SpriteButton("/assets/start_button.png");
+        SpriteButton playButton = new SpriteButton("/buttons/start_button.png");
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -55,7 +59,7 @@ public class MenuJPanel extends JPanel {
 
         buttonsPanel.add(playButtonWrapper);
 
-        SpriteButton quitButton = new SpriteButton("/assets/quit_button.png");
+        SpriteButton quitButton = new SpriteButton("/buttons/quit_button.png");
         quitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -85,52 +89,4 @@ public class MenuJPanel extends JPanel {
         if(background != null)
             g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
     }
-
-    private class SpriteButton extends JPanel {
-        BufferedImage button;
-
-        public SpriteButton(String imagePath) {
-            super();
-
-            setOpaque(false);
-            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            
-            try {
-                button = ImageIO.read(getClass().getResource(imagePath));
-            } catch (IOException e) {
-                button = null;
-            }
-
-            Dimension normalSize = new Dimension(350, 90);
-            Dimension hoverSize = new Dimension(365, 96);
-
-            setMaximumSize(normalSize);
-            setPreferredSize(getMaximumSize());
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    setMaximumSize(hoverSize);
-                    setPreferredSize(getMaximumSize());
-                    revalidate();
-                    repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    setMaximumSize(normalSize);
-                    setPreferredSize(getMaximumSize());
-                    revalidate();
-                    repaint();
-                }
-            });
-        }
-
-        @Override
-        public void paintComponent(Graphics g) {
-            if(button != null)
-                g.drawImage(button, 0, 0, getWidth(), getHeight(), null);
-        }
-    }
-    
 }

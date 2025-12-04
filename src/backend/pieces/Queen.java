@@ -1,10 +1,14 @@
+package backend.pieces;
+
 import java.util.HashSet;
+import util.Position;
+import backend.GameBoard;
 
 public class Queen extends Piece {
     public Queen(String color) {
         pointValue = 9;
         this.color = color;
-        this.imagePath = color.equals("white") ? "/assets/Chess_qlt60.png" : "/assets/Chess_qdt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_qlt60.png" : "/pieces/Chess_qdt60.png";
     }
 
     @Override

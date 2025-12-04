@@ -1,16 +1,21 @@
+package frontend;
+
+import backend.GameBoard;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
+import util.GameSettings;
+import util.SoundEffect;
 
 public class MainJFrame extends JFrame {
+    private GameBoard gameBoard;
     private ChessJPanel chessJPanel;
     private final GameOverJPanel gameOverJPanel;
     private final MenuJPanel menuPanel;
-    private GameBoard gameBoard;
     private final GameSettings settings;
-    private SoundEffect gameOverSound;
+    private final SoundEffect gameOverSound;
     private boolean gameOverSoundPlayed;
     protected SoundEffect backgroundMusic;
 
@@ -23,9 +28,9 @@ public class MainJFrame extends JFrame {
 
         gameBoard = new GameBoard();
         settings = new GameSettings();
-        gameOverSound = new SoundEffect(getClass().getResource("/assets/gameOverSound.wav"));
+        gameOverSound = new SoundEffect(getClass().getResource("/sounds/gameOverSound.wav"));
         gameOverSoundPlayed = false;
-        backgroundMusic = new SoundEffect(getClass().getResource("/assets/background_music.wav"));
+        backgroundMusic = new SoundEffect(getClass().getResource("/sounds/background_music.wav"));
 
         menuPanel = new MenuJPanel(this, settings);
         add(menuPanel);
@@ -41,7 +46,6 @@ public class MainJFrame extends JFrame {
     private class ChessMenuBar extends JMenuBar {
         private final JMenu settingsMenu;
         private final JMenu appearanceMenu;
-        private final JMenu colorMenu;
         private final JMenu generalSettings;
 
         public ChessMenuBar() {
@@ -50,7 +54,6 @@ public class MainJFrame extends JFrame {
 
             settingsMenu = new JMenu("Settings");
             appearanceMenu = new JMenu("Appearance");
-            colorMenu = new JMenu("Board Colors");
             generalSettings = new JMenu("General");
 
             JRadioButton evalBarToggleButton = new JRadioButton("Toggle Evaluation Bar");
@@ -74,7 +77,6 @@ public class MainJFrame extends JFrame {
             generalSettings.add(timerToggleButton);
             settingsMenu.add(generalSettings);
 
-            //audio settings
             JMenu audioSettings = new JMenu("Audio Settings");
 
             JRadioButton soundEffects = new JRadioButton("Sound Effects");
@@ -102,7 +104,7 @@ public class MainJFrame extends JFrame {
 
             JMenuItem lightLabel = new JMenuItem("Light Square Color Selector:");
             lightLabel.setEnabled(false);
-            colorMenu.add(lightLabel);
+            appearanceMenu.add(lightLabel);
 
             JColorChooser whiteColorChooser = new JColorChooser();
             AbstractColorChooserPanel[] panels = whiteColorChooser.getChooserPanels();
@@ -112,7 +114,7 @@ public class MainJFrame extends JFrame {
                 }
             }
             whiteColorChooser.setPreviewPanel(new JPanel());
-            colorMenu.add(whiteColorChooser);
+            appearanceMenu.add(whiteColorChooser);
 
 
             whiteColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
@@ -125,7 +127,7 @@ public class MainJFrame extends JFrame {
 
             JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
             darkLabel.setEnabled(false);
-            colorMenu.add(darkLabel);
+            appearanceMenu.add(darkLabel);
 
             JColorChooser blackColorChooser = new JColorChooser();
             panels = blackColorChooser.getChooserPanels();
@@ -135,7 +137,7 @@ public class MainJFrame extends JFrame {
                 }
             }
             blackColorChooser.setPreviewPanel(new JPanel());
-            colorMenu.add(blackColorChooser);
+            appearanceMenu.add(blackColorChooser);
 
             blackColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = blackColorChooser.getColor();
@@ -154,12 +156,7 @@ public class MainJFrame extends JFrame {
                 }
             });
 
-            colorMenu.add(defaultColors);
-
-            appearanceMenu.add(colorMenu);
-
-            JMenu pieceMenu = new JMenu("Piece Skins", true);
-            appearanceMenu.add(pieceMenu);
+            appearanceMenu.add(defaultColors);
 
             add(settingsMenu);
             add(appearanceMenu);
