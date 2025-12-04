@@ -38,14 +38,14 @@ public class GameOverJPanel extends JPanel {
         add(gameResultIcon);
         gameResultIcon.setAlignmentX(CENTER_ALIGNMENT);
 
-        add(Box.createVerticalGlue());
+        add(Box.createVerticalStrut(25));
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setPreferredSize(new Dimension(800, 135));
         buttonsPanel.setMaximumSize(buttonsPanel.getPreferredSize());
 
-        SpriteButton playButton = new SpriteButton("/assets/start_button.png");
+        SpriteButton playButton = new SpriteButton("/assets/new_game_button.png");
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
