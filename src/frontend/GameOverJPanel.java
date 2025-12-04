@@ -16,12 +16,12 @@ public class GameOverJPanel extends JPanel {
     private final ImageIcon drawGameImg;
     private final JLabel gameResultIcon;
     private SoundEffect buttonSound;
+
     public GameOverJPanel(MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         buttonSound = new SoundEffect(getClass().getResource("/sounds/buttonPressedSound.wav"));
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         add(Box.createVerticalGlue());
 
