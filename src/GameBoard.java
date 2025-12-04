@@ -12,6 +12,7 @@ public class GameBoard {
     private final ArrayList<String> moveHistory;
     private PawnPromoteData pawnPromoteData;
     private boolean isDraw;
+    private boolean isCaptureMove;
     private String resigned;
     private class PawnPromoteData {
         public Position pawnPos;
@@ -268,6 +269,14 @@ public class GameBoard {
 
     }
 
+    public void setIsCaptureMove(boolean flag) {
+        isCaptureMove = flag;
+    }
+
+    public boolean getIsCaptureMove() {
+        return isCaptureMove;
+    }
+
     //0 = game on; 1 = draw; 2 = currPlayer is lose
     public int gameOver() {
         if(isDraw) {
@@ -433,6 +442,7 @@ public class GameBoard {
                             moveHistory.set(moveNumber, updateRecord);
                             moveNumber++;
                         }
+                        setIsCaptureMove(isCapture);
                         return true;
                     }
 
@@ -459,6 +469,7 @@ public class GameBoard {
                             moveHistory.set(moveNumber, updateRecord);
                             moveNumber++;
                         }
+                        setIsCaptureMove(isCapture);
                         return true;
                     }
                 }
@@ -541,6 +552,8 @@ public class GameBoard {
             }
         }
         else return false;
+
+        setIsCaptureMove(isCapture);
 
         return true;
     }

@@ -12,6 +12,8 @@ public class BannerJPanel extends JPanel {
     public BannerJPanel(Player player, boolean toggleClock) {
         this.player = player;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setOpaque(true);
+        setBackground(Color.DARK_GRAY);
 
         JPanel topRow = new JPanel();
         topRow.setLayout(new BoxLayout(topRow, BoxLayout.X_AXIS));
@@ -47,7 +49,7 @@ public class BannerJPanel extends JPanel {
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
 
-        setOpaque(false);
+        // setOpaque(false);
     }
 
     private class CapturedPiecesPanel extends JPanel {
@@ -89,6 +91,7 @@ public class BannerJPanel extends JPanel {
     public void toggleClockLabel(boolean flag) {
         clockLabel.setVisible(flag);
         clockLabel.setText(player.timeToString());
+        BannerJPanel.this.revalidate();
     }
     
 }

@@ -10,6 +10,10 @@ public class MainJFrame extends JFrame {
     private final MenuJPanel menuPanel;
     private GameBoard gameBoard;
     private final GameSettings settings;
+    private SoundEffect gameOverSound;
+    private boolean gameOverSoundPlayed;
+    protected SoundEffect backgroundMusic;
+
     public MainJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,11 +23,14 @@ public class MainJFrame extends JFrame {
 
         gameBoard = new GameBoard();
         settings = new GameSettings();
+        gameOverSound = new SoundEffect(getClass().getResource("/assets/gameOverSound.wav"));
+        gameOverSoundPlayed = false;
+        backgroundMusic = new SoundEffect(getClass().getResource("/assets/background_music.wav"));
 
-        menuPanel = new MenuJPanel(this);
+        menuPanel = new MenuJPanel(this, settings);
         add(menuPanel);
 
-        gameOverJPanel = new GameOverJPanel(this);
+        gameOverJPanel = new GameOverJPanel(this, settings);
         gameOverJPanel.setVisible(false);
         setGlassPane(gameOverJPanel);
 
@@ -50,7 +57,8 @@ public class MainJFrame extends JFrame {
             evalBarToggleButton.setSelected(true);
             evalBarToggleButton.addItemListener((ItemEvent e) -> {
                 settings.setToggleEvalBar(!settings.getToggleEvalBar());
-                chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
+                if(chessJPanel != null)
+                    chessJPanel.toggleEvalBar(settings.getToggleEvalBar());
             });
 
            generalSettings.add(evalBarToggleButton);
@@ -59,11 +67,38 @@ public class MainJFrame extends JFrame {
             timerToggleButton.setSelected(true);
             timerToggleButton.addItemListener((ItemEvent e) -> {
                 settings.setToggleTimer(!settings.getToggleTimer());
-                chessJPanel.toggleTimer(settings.getToggleTimer());
+                if(chessJPanel != null)
+                    chessJPanel.toggleTimer(settings.getToggleTimer());
             });
 
             generalSettings.add(timerToggleButton);
             settingsMenu.add(generalSettings);
+
+            //audio settings
+            JMenu audioSettings = new JMenu("Audio Settings");
+
+            JRadioButton soundEffects = new JRadioButton("Sound Effects");
+            soundEffects.setSelected(true);
+            soundEffects.addItemListener((ItemEvent e) -> {
+                settings.setToggleSoundFX(!settings.getToggleSoundFX());
+                chessJPanel.toggleSoundFX(settings.getToggleSoundFX());
+            });
+
+            JRadioButton backgroundMusicButton = new JRadioButton("Background Music");
+            backgroundMusicButton.setSelected(true);
+            backgroundMusicButton.addItemListener((ItemEvent e) -> {
+                settings.setToggleMusic(!settings.getToggleMusic());
+                if (settings.getToggleMusic()) {
+                    backgroundMusic.loop();
+                }
+                else
+                    backgroundMusic.stop();
+            });
+
+            audioSettings.add(soundEffects);
+            audioSettings.add(backgroundMusicButton);
+            settingsMenu.add(audioSettings);
+
 
             JMenuItem lightLabel = new JMenuItem("Light Square Color Selector:");
             lightLabel.setEnabled(false);
@@ -79,16 +114,18 @@ public class MainJFrame extends JFrame {
             whiteColorChooser.setPreviewPanel(new JPanel());
             colorMenu.add(whiteColorChooser);
 
-            JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
-            darkLabel.setEnabled(false);
-            colorMenu.add(darkLabel);
 
             whiteColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = whiteColorChooser.getColor();
                     settings.setLightBoardColor(newColor);
-                    chessJPanel.setLightSquares(newColor);
+                    if(chessJPanel != null)
+                        chessJPanel.setLightSquares(newColor);
                 }
             );
+
+            JMenuItem darkLabel = new JMenuItem("Dark Square Color Selector:");
+            darkLabel.setEnabled(false);
+            colorMenu.add(darkLabel);
 
             JColorChooser blackColorChooser = new JColorChooser();
             panels = blackColorChooser.getChooserPanels();
@@ -103,15 +140,18 @@ public class MainJFrame extends JFrame {
             blackColorChooser.getSelectionModel().addChangeListener((ChangeEvent e) -> {
                     Color newColor = blackColorChooser.getColor();
                     settings.setDarkBoardColor(newColor);
-                    chessJPanel.setDarkSquares(newColor);
+                    if(chessJPanel != null)
+                        chessJPanel.setDarkSquares(newColor);
                 }
             );
 
             JMenuItem defaultColors = new JMenuItem("Reset to Default");
             defaultColors.addActionListener((e) -> {
                 settings.resetColors();
-                chessJPanel.setLightSquares(settings.getLightBoardColor());
-                chessJPanel.setDarkSquares(settings.getDarkBoardColor());
+                if(chessJPanel != null){
+                    chessJPanel.setLightSquares(settings.getLightBoardColor());
+                    chessJPanel.setDarkSquares(settings.getDarkBoardColor());
+                }
             });
 
             colorMenu.add(defaultColors);
@@ -126,10 +166,15 @@ public class MainJFrame extends JFrame {
         }
     }
 
+
     public void showGameOver(boolean flag) {
         String result = gameBoard.getGameOverMsg();
         gameOverJPanel.setGameResult(result);
         gameOverJPanel.setVisible(flag);
+        if (settings.getToggleSoundFX() && flag && !gameOverSoundPlayed) {
+            gameOverSound.play();
+            gameOverSoundPlayed = true;
+        }
     }
 
     public void resetGame() {
@@ -140,6 +185,7 @@ public class MainJFrame extends JFrame {
         add(chessJPanel);
 
         showGameOver(false);
+        gameOverSoundPlayed = false;
 
         revalidate();
     }
@@ -160,5 +206,7 @@ public class MainJFrame extends JFrame {
 
         MainJFrame mainJFrame = new MainJFrame();
         mainJFrame.setVisible(true);
+        if (mainJFrame.settings.getToggleMusic())
+            mainJFrame.backgroundMusic.loop();
     }
 }

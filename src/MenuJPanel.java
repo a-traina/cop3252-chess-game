@@ -8,8 +8,9 @@ import javax.swing.*;
 
 public class MenuJPanel extends JPanel {
     BufferedImage background;
+    SoundEffect buttonSound;
     
-    public MenuJPanel(MainJFrame mainFrame) {
+    public MenuJPanel(MainJFrame mainFrame, GameSettings settings) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         try {
@@ -17,6 +18,8 @@ public class MenuJPanel extends JPanel {
         } catch (IOException e) {
             background = null;
         }
+
+        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
 
         add(Box.createVerticalGlue());
 
@@ -29,8 +32,6 @@ public class MenuJPanel extends JPanel {
         add(Box.createVerticalStrut(5));
         add(subtitleLabel);
 
-        //add(Box.createVerticalStrut(50));
-
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setPreferredSize(new Dimension(800, 135));
@@ -40,6 +41,8 @@ public class MenuJPanel extends JPanel {
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                    buttonSound.play();
                 mainFrame.startGame();
             }
         });
@@ -52,12 +55,12 @@ public class MenuJPanel extends JPanel {
 
         buttonsPanel.add(playButtonWrapper);
 
-        //add(Box.createVerticalStrut(20));
-
         SpriteButton quitButton = new SpriteButton("/assets/quit_button.png");
         quitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                    buttonSound.play();
                 System.exit(0);
             }
         });
@@ -90,6 +93,7 @@ public class MenuJPanel extends JPanel {
             super();
 
             setOpaque(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             
             try {
                 button = ImageIO.read(getClass().getResource(imagePath));
