@@ -25,6 +25,7 @@ public class MainJFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(800, 600));
         getContentPane().setBackground(Color.DARK_GRAY);
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         gameBoard = new GameBoard();
         settings = new GameSettings();
@@ -185,6 +186,7 @@ public class MainJFrame extends JFrame {
         gameOverSoundPlayed = false;
 
         revalidate();
+        repaint();
     }
 
     public void startGame() {
@@ -194,6 +196,7 @@ public class MainJFrame extends JFrame {
         add(chessJPanel);
 
         revalidate();
+        repaint();
     }
 
     public static void main(String[] args) {

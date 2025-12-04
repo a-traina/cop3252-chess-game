@@ -191,6 +191,24 @@ public class ChessJPanel extends JPanel{
 
     }
 
+    @Override
+    public Dimension getMaximumSize() {
+        Container parent = getParent();
+        if (parent == null)
+            return super.getPreferredSize();
+
+        int height = parent.getHeight();
+        int width = parent.getWidth();
+        // limit width if screen gets too large
+        if(width > 1300) {
+            int maxWidth = (int)(height * 1.5);
+            return new Dimension(maxWidth, height);
+        }
+
+        return super.getMaximumSize();
+    }
+
+
     public void scrollToBottom() {
         int rows = moveTable.getRowCount();
         if(rows > 0) {
