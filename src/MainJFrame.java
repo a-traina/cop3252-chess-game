@@ -12,6 +12,7 @@ public class MainJFrame extends JFrame {
     private final GameSettings settings;
     private SoundEffect gameOverSound;
     private boolean gameOverSoundPlayed;
+    protected SoundEffect backgroundMusic;
 
     public MainJFrame() {
         super("Chess");
@@ -24,6 +25,7 @@ public class MainJFrame extends JFrame {
         settings = new GameSettings();
         gameOverSound = new SoundEffect(getClass().getResource("/assets/gameOverSound.wav"));
         gameOverSoundPlayed = false;
+        backgroundMusic = new SoundEffect(getClass().getResource("/assets/background_music.wav"));
 
         menuPanel = new MenuJPanel(this, settings);
         add(menuPanel);
@@ -72,7 +74,6 @@ public class MainJFrame extends JFrame {
 
             //audio settings
             JMenu audioSettings = new JMenu("Audio Settings");
-            settingsMenu.add(audioSettings);
 
             JRadioButton soundEffects = new JRadioButton("Sound Effects");
             soundEffects.setSelected(true);
@@ -80,7 +81,21 @@ public class MainJFrame extends JFrame {
                 settings.setToggleSoundFX(!settings.getToggleSoundFX());
                 chessJPanel.toggleSoundFX(settings.getToggleSoundFX());
             });
+
+            JRadioButton backgroundMusicButton = new JRadioButton("Background Music");
+            backgroundMusicButton.setSelected(true);
+            backgroundMusicButton.addItemListener((ItemEvent e) -> {
+                settings.setToggleMusic(!settings.getToggleMusic());
+                if (settings.getToggleMusic()) {
+                    backgroundMusic.loop();
+                }
+                else
+                    backgroundMusic.stop();
+            });
+
             audioSettings.add(soundEffects);
+            audioSettings.add(backgroundMusicButton);
+            settingsMenu.add(audioSettings);
 
 
             JMenuItem lightLabel = new JMenuItem("Light Square Color Selector:");
@@ -144,6 +159,7 @@ public class MainJFrame extends JFrame {
         }
     }
 
+
     public void showGameOver(boolean flag) {
         String result = gameBoard.getGameOverMsg();
         gameOverJPanel.setGameResult(result);
@@ -183,5 +199,7 @@ public class MainJFrame extends JFrame {
 
         MainJFrame mainJFrame = new MainJFrame();
         mainJFrame.setVisible(true);
+        if (mainJFrame.settings.getToggleMusic())
+            mainJFrame.backgroundMusic.loop();
     }
 }

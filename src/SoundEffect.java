@@ -37,4 +37,22 @@ public class SoundEffect {
         }
     }
 
+    public boolean  getIsRunning() {
+        if (soundClip != null)
+            return soundClip.isRunning();
+        else
+            return false;
+    }
+
+    public void setFrame(int f) {
+        soundClip.setFramePosition(f);
+    }
+
+    public void loop() {
+        if (soundClip != null) {
+            soundClip.setFramePosition(0);
+            soundClip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+
 }
