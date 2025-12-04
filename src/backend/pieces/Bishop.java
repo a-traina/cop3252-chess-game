@@ -1,11 +1,15 @@
+package backend.pieces;
+
 import java.util.HashSet;
+import util.Position;
+import backend.GameBoard;
 
 public class Bishop extends Piece {
 
     public Bishop(String color) {
         pointValue = 3;
         this.color = color;
-        this.imagePath = color.equals("white") ? "/assets/Chess_blt60.png" : "/assets/Chess_bdt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_blt60.png" : "/pieces/Chess_bdt60.png";
     }
 
     @Override
