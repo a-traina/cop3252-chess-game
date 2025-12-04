@@ -1,10 +1,8 @@
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
-import javax.sound.sampled.*;
 
 public class MainJFrame extends JFrame {
     private ChessJPanel chessJPanel;
