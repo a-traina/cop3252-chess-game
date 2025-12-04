@@ -1,3 +1,7 @@
+package frontend;
+
+import backend.GameBoard;
+import backend.pieces.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,17 +14,22 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import util.GameSettings;
+import util.Position;
+import util.SoundEffect;
 
 public class GridJPanel extends JPanel {
     private final GameBoard gameBoard;
     private final GameSettings settings;
     private final DefaultTableModel gameHistory;
     private final ChessJPanel parentFrame;
+
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
-    private SoundEffect moveSound;
-    private SoundEffect captureSound;
-    private SoundEffect invalidSound;
+
+    private final SoundEffect moveSound;
+    private final SoundEffect captureSound;
+    private final SoundEffect invalidSound;
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
@@ -31,11 +40,9 @@ public class GridJPanel extends JPanel {
         this.settings = settings;
         this.gameHistory = gameHistory;
         this.parentFrame = parentFrame;
-        moveSound = new SoundEffect(getClass().getResource("/assets/moveSound.wav"));
-        captureSound = new SoundEffect(getClass().getResource("/assets/captureSound.wav"));
-        invalidSound = new SoundEffect(getClass().getResource("/assets/invalidSound.wav"));
-
-
+        moveSound = new SoundEffect(getClass().getResource("/sounds/moveSound.wav"));
+        captureSound = new SoundEffect(getClass().getResource("/sounds/captureSound.wav"));
+        invalidSound = new SoundEffect(getClass().getResource("/sounds/invalidSound.wav"));
 
         setLayout(new GridLayout(8, 8));
 
@@ -72,6 +79,7 @@ public class GridJPanel extends JPanel {
         settings.setToggleSoundFX(flag);
     }
 
+    // Nested Square Panel class definition
     private class SquareJPanel extends JPanel {
         private final int row;
         private final int col;
@@ -89,6 +97,7 @@ public class GridJPanel extends JPanel {
 
             setBackground(squareColor);
 
+            // Change cursor to hand cursor on valid pieces
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -108,7 +117,7 @@ public class GridJPanel extends JPanel {
                 }
             });
 
-
+            // Add click handling to move pieces
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -118,6 +127,7 @@ public class GridJPanel extends JPanel {
 
                     Piece clickedPiece = gameBoard.getPieceAt(row, col);
 
+                    // First click selects the piece to move and highlights valid moves
                     if (selectedPosition == null) {
                         if(clickedPiece == null || !clickedPiece.getColor().equals(gameBoard.getTurn().getColor())) {
                             return;
@@ -125,22 +135,33 @@ public class GridJPanel extends JPanel {
                         selectedPosition = new Position(row, col);
                         highlightedMoves = clickedPiece.getValidMoves(selectedPosition, gameBoard);
                     }
+
+                    // Second click
                     else {
+                        // If a piece to move is selected and the clicked piece is the current player's piece
+                        // Change the player's choice of piece to move
                         if (clickedPiece != null && clickedPiece.getColor().equals(gameBoard.getTurn().getColor())) {
                             selectedPosition = new Position(row, col);
                             highlightedMoves = clickedPiece.getValidMoves(selectedPosition, gameBoard);
                         }
+                        // Check if selected square is a valid move for the piece
                         else {
                             Position target = new Position(row, col);
+
+                            // If second click is valid piece move, make the move in the game board
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
 
+                                    // Play sound effects
                                     if(settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && !gameBoard.getIsCaptureMove())
                                         moveSound.play();
                                     else if (settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && gameBoard.getIsCaptureMove())
                                         captureSound.play();
 
+                                    // Reset current square to default cursor to switch to opponent's perspective
                                     setCursor(Cursor.getDefaultCursor());
+
+                                    // Update move history table
                                     if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
@@ -152,6 +173,7 @@ public class GridJPanel extends JPanel {
                                         gameHistory.setValueAt(row[2], lastIndex, 2);
                                     }
 
+                                    // If move is pawn promotion, display dialog for user to select piece
                                     if(gameBoard.canPawnPromote()) {
                                         String choice = new PieceJOptionPane(gameBoard.getPawnPromoteColor()).showDialog(GridJPanel.this);
 
@@ -161,15 +183,21 @@ public class GridJPanel extends JPanel {
                                             case "bishop" -> {gameBoard.promotePawn(new Bishop(gameBoard.getPawnPromoteColor()));}
                                             case "rook" -> {gameBoard.promotePawn(new Rook(gameBoard.getPawnPromoteColor()));}
                                         }
+
+                                        // Play sound after promotion is completed
                                         if (settings.getToggleSoundFX())
                                             moveSound.play();
                                     }
 
+                                    // Update chess panel elements
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
                                     parentFrame.updateEvalBar();
                                     parentFrame.scrollToBottom();
+
+                                    // Switch turns to validate game over status
                                     gameBoard.switchTurns();
 
+                                    // If game is over, turn off game tracking components and show game over screen
                                     if(gameBoard.gameOver() != 0) {
                                         parentFrame.stopClock();
                                         parentFrame.deactivateButtons();
@@ -178,19 +206,24 @@ public class GridJPanel extends JPanel {
                                         return;
                                     }
 
+                                    // If game continues, highlight player banner's turn
                                     parentFrame.updateBannerLabels();
                                 }
                             }
+
+                            // On invalid move, play invalid sound effect
                             else {
                                 if (settings.getToggleSoundFX())
                                     invalidSound.play();
                             }
 
+                            // Reset board highlighting after move is made for next player to begin
                             selectedPosition = null;
                             highlightedMoves.clear();
                         }
                     }
 
+                    // Repaint board updates
                     GridJPanel.this.repaint();
                 }
             });
@@ -218,6 +251,7 @@ public class GridJPanel extends JPanel {
 
             Graphics2D g2d = (Graphics2D) g;
 
+            // Display row numbers in first column
             if(col == 0) {
                 String rowNum = Integer.toString(8 - row);
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
@@ -228,6 +262,7 @@ public class GridJPanel extends JPanel {
                 g2d.drawString(rowNum, 1, fontMetrics.getAscent());
             }
 
+            // Display column letters in bottom row
             if(row == 7) {
                 String colLetters = "abcdefgh";
                 g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, getHeight() / 4));
@@ -239,17 +274,20 @@ public class GridJPanel extends JPanel {
                 g2d.drawString(letter, getWidth() - fontMetrics.stringWidth(letter) - 1, getHeight() - fontMetrics.getDescent());
             }
 
+            // Highlight cell if it is a move option
             if (highlightedMoves.contains(new Position(row, col))) {
                 g2d.setColor(new Color(0, 255, 0, 120));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
 
+            // Outline cell if it is the selected piece
             if (selectedPosition != null && selectedPosition.getX() == row && selectedPosition.getY() == col) {
                 g2d.setColor(new Color(255, 215, 0, 180)); 
                 g2d.setStroke(new BasicStroke(10));
                 g2d.drawRect(0, 0, getWidth(), getHeight());
             }
 
+            // Display piece images in the cell
             Piece piece = gameBoard.getPieceAt(row, col);
             if (piece != null) {
                 BufferedImage pieceImage = loadPieceImage(piece.getImagePath());
@@ -259,6 +297,7 @@ public class GridJPanel extends JPanel {
             }
         }
 
+        // Cache piece images for quick updates
         private BufferedImage loadPieceImage(String path) {
             if (imageCache.containsKey(path)) {
                 return imageCache.get(path);
@@ -284,6 +323,7 @@ public class GridJPanel extends JPanel {
         repaint();
     }
 
+    // Maintain square board on resizing
     @Override
     public void doLayout() {
         int size = Math.min(getWidth(), getHeight());

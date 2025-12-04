@@ -1,4 +1,8 @@
+package backend.pieces;
+
+import backend.GameBoard;
 import java.util.HashSet;
+import util.Position;
 
 public abstract class Piece {
     protected int pointValue;
@@ -49,5 +53,9 @@ public abstract class Piece {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public int getPointValue() { 
+        return pointValue; 
     }
 }

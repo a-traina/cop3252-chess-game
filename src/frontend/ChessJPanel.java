@@ -1,15 +1,19 @@
+package frontend;
+
+import backend.GameBoard;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import util.GameSettings;
 
 public class ChessJPanel extends JPanel{
+    private final GameBoard gameBoard;
     private final JTable moveTable;
     private final BannerJPanel player1Banner;
     private final BannerJPanel player2Banner;
-    private final GameBoard gameBoard;
     private final JButton drawButton;
     private final JButton resignButton;
     private Timer clock;
@@ -20,6 +24,7 @@ public class ChessJPanel extends JPanel{
     public ChessJPanel(GameBoard gb, MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
         setBorder(new EmptyBorder(15, 15, 15, 15));
+        setLayout(new BorderLayout(20, 20));
 
         gameBoard = gb;
         this.mainFrame = mainFrame;
@@ -70,25 +75,21 @@ public class ChessJPanel extends JPanel{
         player1Banner.getPlayerJLabel().setForeground(Color.WHITE);
         player1Banner.getClockLabel().setForeground(Color.WHITE);
 
-        player1Banner.setOpaque(true);
-        player1Banner.setBackground(Color.DARK_GRAY);
-        player2Banner.setOpaque(true);
-        player2Banner.setBackground(Color.DARK_GRAY);
-
-         // Draw Button
-        ImageIcon icon = new ImageIcon(getClass().getResource("assets/drawIcon.png"));
+        // Draw Button
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/drawIcon.png"));
         Image scaledDrawIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-        final ImageIcon drawIcon = new ImageIcon(scaledDrawIcon);
+        ImageIcon drawIcon = new ImageIcon(scaledDrawIcon);
 
         drawButton = new JButton("Offer Draw");
 
         // Resign Button
-        icon = new ImageIcon(getClass().getResource("assets/resignIcon.png"));
+        icon = new ImageIcon(getClass().getResource("/icons/resignIcon.png"));
         Image scaledResignIcon = icon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
-        final ImageIcon resignIcon = new ImageIcon(scaledResignIcon);
+        ImageIcon resignIcon = new ImageIcon(scaledResignIcon);
 
         resignButton = new JButton("Resign");
 
+        // Button action listeners
         drawButton.addActionListener((ActionEvent e) -> {
                 int result = JOptionPane.showConfirmDialog(ChessJPanel.this, 
                     "Confirm Draw", 
@@ -139,7 +140,7 @@ public class ChessJPanel extends JPanel{
         buttonPanel.add(drawButton);
         buttonPanel.add(resignButton);
 
-        setLayout(new BorderLayout(20, 20));
+        // Center panel - Game board and player banners
         JPanel center = new JPanel();
         center.setLayout(new BorderLayout(5, 5));
         center.add(gridJPanel, BorderLayout.CENTER);
@@ -148,12 +149,14 @@ public class ChessJPanel extends JPanel{
         center.setOpaque(false);
         add(center, BorderLayout.CENTER);
 
+        // East panel - move history and draw/resign buttons
         JPanel east = new JPanel(new BorderLayout());
         east.add(scrollPane, BorderLayout.CENTER);
         east.add(buttonPanel, BorderLayout.SOUTH);
         east.setOpaque(false);
         add(east, BorderLayout.EAST);
 
+        // West panel - eval bar
         if(settings.getToggleEvalBar()) {
             evalBar = new EvalBar();
             add(evalBar, BorderLayout.WEST);
@@ -161,6 +164,7 @@ public class ChessJPanel extends JPanel{
         else 
             evalBar = null;
     
+        // Set clock object
         if(settings.getToggleTimer()) {
             clock = new Timer(1000, e -> {
                 long time = gameBoard.getTurn().getTimeRemaining() - 1000;
@@ -185,14 +189,6 @@ public class ChessJPanel extends JPanel{
             clock = null;
         }
 
-    }
-
-    public void setLightSquares(Color c) {
-        gridJPanel.setLightBoardColors(c);
-    }
-
-    public void setDarkSquares(Color c) {
-        gridJPanel.setDarkBoardColors(c);
     }
 
     public void scrollToBottom() {
@@ -250,6 +246,14 @@ public class ChessJPanel extends JPanel{
     public void updateEvalBar() {
         if(evalBar != null)
             evalBar.setEval(gameBoard.calculateEval());
+    }
+
+    public void setLightSquares(Color c) {
+        gridJPanel.setLightBoardColors(c);
+    }
+
+    public void setDarkSquares(Color c) {
+        gridJPanel.setDarkBoardColors(c);
     }
 
     public void toggleEvalBar(boolean flag) {
@@ -313,6 +317,7 @@ public class ChessJPanel extends JPanel{
         gridJPanel.toggleSoundFx(flag);
     }
 
+    // Eval Bar class definition
     private class EvalBar extends JPanel {
         //local variables
         private double evaluation;

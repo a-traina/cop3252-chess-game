@@ -1,11 +1,15 @@
+package backend.pieces;
+
 import java.util.HashSet;
+import util.Position;
+import backend.GameBoard;
 
 public class Pawn extends Piece{
 
     //unique data members
-    boolean isFirstMove;
-    boolean canPromote;
-    boolean enPassantable;
+    private boolean isFirstMove;
+    private boolean canPromote;
+    private boolean enPassantable;
 
     private boolean realSquare(int v1, int v2) {
         return v1 >= 0 && v1 <= 7 && v2 >= 0 && v2 <= 7;
@@ -20,6 +24,10 @@ public class Pawn extends Piece{
         return canPromote;
     }
 
+    public void setEnPassantable(boolean flag) {
+        enPassantable = flag;
+    }
+
     public void setCanPromote(boolean canPromote) {
         this.canPromote = canPromote;
     }
@@ -30,7 +38,7 @@ public class Pawn extends Piece{
         isFirstMove = true;
         canPromote = false;
         enPassantable = false;
-        this.imagePath = color.equals("white") ? "/assets/Chess_plt60.png" : "/assets/Chess_pdt60.png";
+        this.imagePath = color.equals("white") ? "/pieces/Chess_plt60.png" : "/pieces/Chess_pdt60.png";
     }
 
     @Override
