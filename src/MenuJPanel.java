@@ -32,8 +32,6 @@ public class MenuJPanel extends JPanel {
         add(Box.createVerticalStrut(5));
         add(subtitleLabel);
 
-        //add(Box.createVerticalStrut(50));
-
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setPreferredSize(new Dimension(800, 135));
@@ -56,8 +54,6 @@ public class MenuJPanel extends JPanel {
         playButtonWrapper.add(playButton);
 
         buttonsPanel.add(playButtonWrapper);
-
-        //add(Box.createVerticalStrut(20));
 
         SpriteButton quitButton = new SpriteButton("/assets/quit_button.png");
         quitButton.addMouseListener(new MouseAdapter() {
@@ -97,6 +93,7 @@ public class MenuJPanel extends JPanel {
             super();
 
             setOpaque(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             
             try {
                 button = ImageIO.read(getClass().getResource(imagePath));

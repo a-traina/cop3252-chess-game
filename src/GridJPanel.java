@@ -91,6 +91,26 @@ public class GridJPanel extends JPanel {
 
             addMouseListener(new MouseAdapter() {
                 @Override
+                public void mouseEntered(MouseEvent e) {
+                    Piece p = gameBoard.getPieceAt(row, col);
+
+                    if (p != null && p.getColor().equals(gameBoard.getTurn().getColor()) && selectedPosition == null 
+                        || selectedPosition != null && highlightedMoves.contains(new Position(row, col))) {
+                        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    } else {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            });
+
+
+            addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     if (gameBoard.gameOver() != 0) {
                         return;
@@ -120,6 +140,7 @@ public class GridJPanel extends JPanel {
                                     else if (settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && gameBoard.getIsCaptureMove())
                                         captureSound.play();
 
+                                    setCursor(Cursor.getDefaultCursor());
                                     if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
@@ -147,13 +168,16 @@ public class GridJPanel extends JPanel {
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
                                     parentFrame.updateEvalBar();
                                     parentFrame.scrollToBottom();
+                                    gameBoard.switchTurns();
 
                                     if(gameBoard.gameOver() != 0) {
+                                        parentFrame.stopClock();
                                         parentFrame.deactivateButtons();
                                         parentFrame.showGameOver();
+                                        clearCellHighlighting();
+                                        return;
                                     }
 
-                                    gameBoard.switchTurns();
                                     parentFrame.updateBannerLabels();
                                 }
                             }

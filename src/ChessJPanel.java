@@ -103,8 +103,10 @@ public class ChessJPanel extends JPanel{
                     drawButton.setEnabled(false);
                     resignButton.setEnabled(false);
                     gridJPanel.clearCellHighlighting();
-                    if(gameBoard.gameOver() != 0)
+                    if(gameBoard.gameOver() != 0){
+                        stopClock();
                         showGameOver();
+                    }
                 }
             }
         );
@@ -122,8 +124,10 @@ public class ChessJPanel extends JPanel{
                     resignButton.setEnabled(false);
                     drawButton.setEnabled(false);
                     gridJPanel.clearCellHighlighting();
-                    if(gameBoard.gameOver() != 0)
+                    if(gameBoard.gameOver() != 0){
+                        stopClock();
                         showGameOver();
+                    }
                 }
             }
         );
@@ -202,6 +206,10 @@ public class ChessJPanel extends JPanel{
     public void showGameOver() {
         mainFrame.showGameOver(true);
 
+    }
+
+    public void stopClock() {
+        if(clock != null) clock.stop();
     }
 
     public void updatedCapturedPieces(String color) {
