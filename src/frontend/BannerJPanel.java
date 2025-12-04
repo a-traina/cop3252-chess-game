@@ -2,7 +2,6 @@ package frontend;
 
 import backend.Player;
 import backend.pieces.Piece;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -16,6 +15,7 @@ public class BannerJPanel extends JPanel {
     
     public BannerJPanel(Player player, boolean toggleClock) {
         this.player = player;
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(true);
         setBackground(Color.DARK_GRAY);
@@ -28,8 +28,9 @@ public class BannerJPanel extends JPanel {
         playerJLabel = new JLabel(player.toString() + ":");
         playerJLabel.setForeground(Color.GRAY);
         playerJLabel.setFont(new Font("Monospaced", Font.BOLD, 15));
-        add(playerJLabel);
         topRow.add(playerJLabel);
+
+        topRow.add(Box.createHorizontalGlue());
 
         clockLabel = new JLabel(player.timeToString()) {
             @Override
@@ -42,8 +43,6 @@ public class BannerJPanel extends JPanel {
         clockLabel.setOpaque(true);
         clockLabel.setBackground(new Color(51, 50, 48));
         clockLabel.setBorder(new CompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(30, 30, 30)), new EmptyBorder(5, 5, 5, 5)));
-
-        topRow.add(Box.createHorizontalGlue());
         topRow.add(clockLabel);
 
         if(!toggleClock)
@@ -53,8 +52,6 @@ public class BannerJPanel extends JPanel {
 
         capturedPiecesPanel = new CapturedPiecesPanel();
         add(capturedPiecesPanel);
-
-        // setOpaque(false);
     }
 
     private class CapturedPiecesPanel extends JPanel {
