@@ -17,17 +17,17 @@ public class PieceJOptionPane extends JOptionPane {
 
     public PieceJOptionPane(String color) {
         queen = color.equals("white") ? 
-            new JRadioButton("backend.pieces.Queen", new ImageIcon(getClass().getResource("/pieces/Chess_qlt60.png")))
-            : new JRadioButton("backend.pieces.Queen", new ImageIcon(getClass().getResource("/pieces/Chess_qdt60.png")));
+            new JRadioButton("Queen", new ImageIcon(getClass().getResource("/pieces/Chess_qlt60.png")))
+            : new JRadioButton("Queen", new ImageIcon(getClass().getResource("/pieces/Chess_qdt60.png")));
         knight = color.equals("white") ? 
-            new JRadioButton("backend.pieces.Knight", new ImageIcon(getClass().getResource("/pieces/Chess_nlt60.png")))
-            : new JRadioButton("backend.pieces.Knight", new ImageIcon(getClass().getResource("/pieces/Chess_ndt60.png")));
+            new JRadioButton("Knight", new ImageIcon(getClass().getResource("/pieces/Chess_nlt60.png")))
+            : new JRadioButton("Knight", new ImageIcon(getClass().getResource("/pieces/Chess_ndt60.png")));
         bishop = color.equals("white") ? 
-            new JRadioButton("backend.pieces.Bishop", new ImageIcon(getClass().getResource("/pieces/Chess_blt60.png")))
-            : new JRadioButton("backend.pieces.Bishop", new ImageIcon(getClass().getResource("/pieces/Chess_bdt60.png")));
+            new JRadioButton("Bishop", new ImageIcon(getClass().getResource("/pieces/Chess_blt60.png")))
+            : new JRadioButton("Bishop", new ImageIcon(getClass().getResource("/pieces/Chess_bdt60.png")));
         rook = color.equals("white") ? 
-            new JRadioButton("backend.pieces.Rook", new ImageIcon(getClass().getResource("/pieces/Chess_rlt60.png")))
-            : new JRadioButton("backend.pieces.Rook", new ImageIcon(getClass().getResource("/pieces/Chess_rdt60.png")));
+            new JRadioButton("Rook", new ImageIcon(getClass().getResource("/pieces/Chess_rlt60.png")))
+            : new JRadioButton("Rook", new ImageIcon(getClass().getResource("/pieces/Chess_rdt60.png")));
 
         if(color.equals("white")) {
             queen.setSelectedIcon(new ImageIcon(getClass().getResource("/pieces/selected/WhiteQueenSelected.png")));

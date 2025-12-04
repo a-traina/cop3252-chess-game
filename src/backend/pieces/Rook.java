@@ -1,8 +1,8 @@
 package backend.pieces;
 
+import backend.GameBoard;
 import java.util.HashSet;
 import util.Position;
-import backend.GameBoard;
 
 public class Rook extends Piece {
     private boolean isFirstMove;
@@ -98,7 +98,7 @@ public class Rook extends Piece {
 
         if(isFirstMove) {
 
-            //backend.pieces.Queen side castle
+            //Queen side castle
             if (y < kingy) {
 
                 //check for clear path
@@ -156,7 +156,7 @@ public class Rook extends Piece {
                 return true;
             }
 
-            //backend.pieces.King side castle
+            //King side castle
             else {
 
                 //check for clear path
