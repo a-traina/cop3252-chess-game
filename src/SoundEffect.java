@@ -9,7 +9,6 @@ public class SoundEffect {
 
     public SoundEffect(URL url) {
 
-        new Thread(() -> {
             try {
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
                 soundClip = AudioSystem.getClip();
@@ -19,11 +18,13 @@ public class SoundEffect {
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 e.printStackTrace();
             }
-        }).start();
     }
 
     public void play() {
         if (soundClip != null && loaded) {
+            if (soundClip.isRunning()) {
+                soundClip.stop();
+            }
             soundClip.setFramePosition(0);
             soundClip.start();
         }
