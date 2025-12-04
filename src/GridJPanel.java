@@ -18,6 +18,9 @@ public class GridJPanel extends JPanel {
     private final ChessJPanel parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
+    private SoundEffect moveSound;
+    private SoundEffect captureSound;
+    private SoundEffect invalidSound;
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
@@ -28,6 +31,11 @@ public class GridJPanel extends JPanel {
         this.settings = settings;
         this.gameHistory = gameHistory;
         this.parentFrame = parentFrame;
+        moveSound = new SoundEffect(getClass().getResource("/assets/moveSound.wav"));
+        captureSound = new SoundEffect(getClass().getResource("/assets/captureSound.wav"));
+        invalidSound = new SoundEffect(getClass().getResource("/assets/invalidSound.wav"));
+
+
 
         setLayout(new GridLayout(8, 8));
 
@@ -60,6 +68,10 @@ public class GridJPanel extends JPanel {
         }
     }
 
+    public void toggleSoundFx(boolean flag) {
+        settings.setToggleSoundFX(flag);
+    }
+
     private class SquareJPanel extends JPanel {
         private final int row;
         private final int col;
@@ -76,6 +88,26 @@ public class GridJPanel extends JPanel {
             darkColor = settings.getDarkBoardColor();
 
             setBackground(squareColor);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    Piece p = gameBoard.getPieceAt(row, col);
+
+                    if (p != null && p.getColor().equals(gameBoard.getTurn().getColor()) && selectedPosition == null 
+                        || selectedPosition != null && highlightedMoves.contains(new Position(row, col))) {
+                        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    } else {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            });
+
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -102,6 +134,13 @@ public class GridJPanel extends JPanel {
                             Position target = new Position(row, col);
                             if (highlightedMoves.contains(target)) {
                                 if (gameBoard.makeMove(selectedPosition, target)) {
+
+                                    if(settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && !gameBoard.getIsCaptureMove())
+                                        moveSound.play();
+                                    else if (settings.getToggleSoundFX() && !gameBoard.canPawnPromote() && gameBoard.getIsCaptureMove())
+                                        captureSound.play();
+
+                                    setCursor(Cursor.getDefaultCursor());
                                     if (gameBoard.getTurn().getColor().equals("white")) {
                                         String move = gameBoard.getMoveHistory().get(gameBoard.getMoveNumber());
                                         String[] row = move.split(" ");
@@ -122,20 +161,29 @@ public class GridJPanel extends JPanel {
                                             case "bishop" -> {gameBoard.promotePawn(new Bishop(gameBoard.getPawnPromoteColor()));}
                                             case "rook" -> {gameBoard.promotePawn(new Rook(gameBoard.getPawnPromoteColor()));}
                                         }
+                                        if (settings.getToggleSoundFX())
+                                            moveSound.play();
                                     }
 
                                     parentFrame.updatedCapturedPieces(gameBoard.getTurn().getColor());
                                     parentFrame.updateEvalBar();
                                     parentFrame.scrollToBottom();
+                                    gameBoard.switchTurns();
 
                                     if(gameBoard.gameOver() != 0) {
+                                        parentFrame.stopClock();
                                         parentFrame.deactivateButtons();
                                         parentFrame.showGameOver();
+                                        clearCellHighlighting();
+                                        return;
                                     }
 
-                                    gameBoard.switchTurns();
                                     parentFrame.updateBannerLabels();
                                 }
+                            }
+                            else {
+                                if (settings.getToggleSoundFX())
+                                    invalidSound.play();
                             }
 
                             selectedPosition = null;

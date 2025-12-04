@@ -1,15 +1,24 @@
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GameOverJPanel extends JPanel {
     private final ImageIcon whiteWinsImg;
     private final ImageIcon blackWinsImg;
     private final JLabel gameResultIcon;
-    public GameOverJPanel(MainJFrame mainFrame) {
+    private SoundEffect buttonSound;
+    public GameOverJPanel(MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
+
+        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -32,17 +41,49 @@ public class GameOverJPanel extends JPanel {
         add(gameResultIcon);
         gameResultIcon.setAlignmentX(CENTER_ALIGNMENT);
 
-        add(Box.createVerticalGlue());
+        add(Box.createVerticalStrut(25));
 
-        JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener((ActionEvent e) -> mainFrame.resetGame());
-        add(newGameButton);
-        newGameButton.setAlignmentX(CENTER_ALIGNMENT);
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.setPreferredSize(new Dimension(800, 135));
+        buttonsPanel.setMaximumSize(buttonsPanel.getPreferredSize());
 
-        JButton quitButton = new JButton("Quit Game");
-        quitButton.addActionListener((ActionEvent e) -> System.exit(0));
-        add(quitButton);
-        quitButton.setAlignmentX(CENTER_ALIGNMENT);
+        SpriteButton playButton = new SpriteButton("/assets/new_game_button.png");
+        playButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                  buttonSound.play();
+                mainFrame.resetGame();
+            }
+        });
+
+        JPanel playButtonWrapper = new JPanel();
+        playButtonWrapper.setOpaque(false);
+        playButtonWrapper.setPreferredSize(new Dimension(370, 100));
+        playButtonWrapper.setMinimumSize(playButtonWrapper.getPreferredSize());
+        playButtonWrapper.add(playButton);
+
+        buttonsPanel.add(playButtonWrapper);
+
+        SpriteButton quitButton = new SpriteButton("/assets/quit_button.png");
+        quitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                  buttonSound.play();
+                System.exit(0);
+            }
+        });
+
+        JPanel quitButtonWrapper = new JPanel();
+        quitButtonWrapper.setOpaque(false);
+        quitButtonWrapper.setPreferredSize(new Dimension(370, 100));
+        quitButtonWrapper.setMinimumSize(quitButtonWrapper.getPreferredSize());
+        quitButtonWrapper.add(quitButton);
+
+        buttonsPanel.add(quitButtonWrapper);
+        add(buttonsPanel);
 
         add(Box.createVerticalGlue());
 
@@ -71,5 +112,52 @@ public class GameOverJPanel extends JPanel {
 
         g.setColor(new Color(0,0,0,190));
         g.fillRect(0,0, getWidth(), getHeight());
+    }
+
+    private class SpriteButton extends JPanel {
+        BufferedImage button;
+
+        public SpriteButton(String imagePath) {
+            super();
+
+            setOpaque(false);
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            
+            try {
+                button = ImageIO.read(getClass().getResource(imagePath));
+            } catch (IOException e) {
+                button = null;
+            }
+
+            Dimension normalSize = new Dimension(350, 90);
+            Dimension hoverSize = new Dimension(365, 96);
+
+            setMaximumSize(normalSize);
+            setPreferredSize(getMaximumSize());
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    setMaximumSize(hoverSize);
+                    setPreferredSize(getMaximumSize());
+                    revalidate();
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setMaximumSize(normalSize);
+                    setPreferredSize(getMaximumSize());
+                    revalidate();
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            if(button != null)
+                g.drawImage(button, 0, 0, getWidth(), getHeight(), null);
+        }
     }
 }
