@@ -1,19 +1,14 @@
 package frontend;
 
-import util.GameSettings;
-import util.SoundEffect;
-
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import util.GameSettings;
+import util.SoundEffect;
 
 public class GameOverJPanel extends JPanel {
     private final ImageIcon whiteWinsImg;
@@ -120,52 +115,5 @@ public class GameOverJPanel extends JPanel {
 
         g.setColor(new Color(0,0,0,190));
         g.fillRect(0,0, getWidth(), getHeight());
-    }
-
-    private class SpriteButton extends JPanel {
-        BufferedImage button;
-
-        public SpriteButton(String imagePath) {
-            super();
-
-            setOpaque(false);
-            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            
-            try {
-                button = ImageIO.read(getClass().getResource(imagePath));
-            } catch (IOException e) {
-                button = null;
-            }
-
-            Dimension normalSize = new Dimension(350, 90);
-            Dimension hoverSize = new Dimension(365, 96);
-
-            setMaximumSize(normalSize);
-            setPreferredSize(getMaximumSize());
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    setMaximumSize(hoverSize);
-                    setPreferredSize(getMaximumSize());
-                    revalidate();
-                    repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    setMaximumSize(normalSize);
-                    setPreferredSize(getMaximumSize());
-                    revalidate();
-                    repaint();
-                }
-            });
-        }
-
-        @Override
-        public void paintComponent(Graphics g) {
-            if(button != null)
-                g.drawImage(button, 0, 0, getWidth(), getHeight(), null);
-        }
     }
 }
