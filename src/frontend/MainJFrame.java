@@ -1,20 +1,19 @@
 package frontend;
 
 import backend.GameBoard;
-import util.GameSettings;
-import util.SoundEffect;
-
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
+import util.GameSettings;
+import util.SoundEffect;
 
 public class MainJFrame extends JFrame {
+    private GameBoard gameBoard;
     private ChessJPanel chessJPanel;
     private final GameOverJPanel gameOverJPanel;
     private final MenuJPanel menuPanel;
-    private GameBoard gameBoard;
     private final GameSettings settings;
     private final SoundEffect gameOverSound;
     private boolean gameOverSoundPlayed;
@@ -78,7 +77,6 @@ public class MainJFrame extends JFrame {
             generalSettings.add(timerToggleButton);
             settingsMenu.add(generalSettings);
 
-            //audio settings
             JMenu audioSettings = new JMenu("Audio Settings");
 
             JRadioButton soundEffects = new JRadioButton("Sound Effects");
