@@ -1,7 +1,6 @@
 package backend;
 
 import backend.pieces.Piece;
-
 import java.util.LinkedList;
 
 public class Player {
@@ -22,6 +21,13 @@ public class Player {
         return "Player " + capitalizeFirst(color);
     }
 
+    private static String capitalizeFirst(String s) {
+        if (s == null || s.isEmpty())
+            return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    // Getters
     public String getColor() {
         return color;
     }
@@ -34,6 +40,16 @@ public class Player {
         return capturedPieces;
     }
 
+    public long getTimeRemaining() {
+        return timeRemaining;
+    }
+
+    //Setters
+    public void setTimeRemaining(long t) {
+        timeRemaining = t;
+    }
+
+    // Piece handling
     public void initializePieces(LinkedList<Piece> lst) {
         pieces.clear();
         pieces.addAll(lst);
@@ -51,20 +67,7 @@ public class Player {
         capturedPieces.add(p);
     }
 
-    public static String capitalizeFirst(String s) {
-        if (s == null || s.isEmpty())
-            return s;
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    public long getTimeRemaining() {
-        return timeRemaining;
-    }
-
-    public void setTimeRemaining(long t) {
-        timeRemaining = t;
-    }
-
+    // Time string
     public String timeToString() {
         long totalSeconds = timeRemaining / 1000;
         long minutes = totalSeconds / 60;

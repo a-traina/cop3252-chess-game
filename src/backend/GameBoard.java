@@ -1,31 +1,35 @@
 package backend;
 
 import backend.pieces.*;
-import util.Position;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import util.Position;
 
 public class GameBoard {
+
     private final Player player1;
     private final Player player2;
     private final Piece[][] board = new Piece[8][8];
+
     private String currTurn;
     private int moveNumber;
     private final ArrayList<String> moveHistory;
-    private PawnPromoteData pawnPromoteData;
+
     private boolean isDraw;
     private boolean isCaptureMove;
     private String resigned;
+    private String gameOverMsg; 
+
     private class PawnPromoteData {
         public Position pawnPos;
         public String pawnColor;
         public Pawn pawn;
     }
-    private String gameOverMsg;
-
+    private PawnPromoteData pawnPromoteData;
+    
+    // Constructors
     public GameBoard() {
         player1 = new Player("white");
         player2 = new Player("black");
@@ -89,6 +93,7 @@ public class GameBoard {
 
     }
 
+    // GameBoard setup
     private void initializePieces(Player p) {
         LinkedList<Piece> piecelst = new LinkedList<>();
 
@@ -149,6 +154,7 @@ public class GameBoard {
         }
     }
 
+    // Getters
     public Piece getPieceAt(int x, int y) {
         return board[x][y];
     }
@@ -198,20 +204,33 @@ public class GameBoard {
         return moveHistory;
     }
 
-    public boolean canPawnPromote() {
-        return pawnPromoteData != null;
-    }
-
     public String getPawnPromoteColor() {
         return pawnPromoteData.pawnColor;
     }
 
+    public boolean getIsCaptureMove() {
+        return isCaptureMove;
+    }
+
+    // Setters
     public void setDraw(boolean drawStatus) {
         isDraw = drawStatus;
     }
 
+    public void setIsCaptureMove(boolean flag) {
+        isCaptureMove = flag;
+    }
+
     public void setResigned(String resignee) {
         resigned = resignee;
+    }
+
+    public void switchTurns() {
+        currTurn = currTurn.equals("white") ? "black" : "white";
+    }
+
+    public boolean canPawnPromote() {
+        return pawnPromoteData != null;
     }
 
     public void promotePawn(Piece piece) {
@@ -238,10 +257,6 @@ public class GameBoard {
         }
 
         return p1 - p2;
-    }
-
-    public void switchTurns() {
-        currTurn = currTurn.equals("white") ? "black" : "white";
     }
 
     public boolean isInCheck(Piece[][] board) {
@@ -272,14 +287,6 @@ public class GameBoard {
         // backend.Player not in check
         return false;
 
-    }
-
-    public void setIsCaptureMove(boolean flag) {
-        isCaptureMove = flag;
-    }
-
-    public boolean getIsCaptureMove() {
-        return isCaptureMove;
     }
 
     //0 = game on; 1 = draw; 2 = currPlayer is lose
@@ -510,11 +517,11 @@ public class GameBoard {
                 moveNumber++;
             }
 
+            // Update board
             board[newPos.getX()][newPos.getY()] = piece;
             board[i][j] = null;
 
-
-
+            // En Passant logic
             Player tempPlayer = currTurn.equals("white") ? player1 : player2;
             for (Piece x : tempPlayer.getPieces()) {
                 if (x.getChar() == 'P') {
