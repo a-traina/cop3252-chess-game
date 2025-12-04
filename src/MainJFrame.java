@@ -10,7 +10,7 @@ public class MainJFrame extends JFrame {
     private final MenuJPanel menuPanel;
     private GameBoard gameBoard;
     private final GameSettings settings;
-    private SoundEffect gameOverSound;
+    private final SoundEffect gameOverSound;
     private boolean gameOverSoundPlayed;
     protected SoundEffect backgroundMusic;
 

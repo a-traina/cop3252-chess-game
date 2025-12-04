@@ -18,9 +18,9 @@ public class GridJPanel extends JPanel {
     private final ChessJPanel parentFrame;
     private Position selectedPosition;
     private HashSet<Position> highlightedMoves = new HashSet<>();
-    private SoundEffect moveSound;
-    private SoundEffect captureSound;
-    private SoundEffect invalidSound;
+    private final SoundEffect moveSound;
+    private final SoundEffect captureSound;
+    private final SoundEffect invalidSound;
 
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
 
