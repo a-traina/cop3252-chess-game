@@ -10,6 +10,10 @@ public class MainJFrame extends JFrame {
     private final MenuJPanel menuPanel;
     private GameBoard gameBoard;
     private final GameSettings settings;
+    private SoundEffect gameOverSound;
+    private boolean gameOverSoundPlayed;
+    protected SoundEffect backgroundMusic;
+
     public MainJFrame() {
         super("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,11 +23,14 @@ public class MainJFrame extends JFrame {
 
         gameBoard = new GameBoard();
         settings = new GameSettings();
+        gameOverSound = new SoundEffect(getClass().getResource("/assets/gameOverSound.wav"));
+        gameOverSoundPlayed = false;
+        backgroundMusic = new SoundEffect(getClass().getResource("/assets/background_music.wav"));
 
-        menuPanel = new MenuJPanel(this);
+        menuPanel = new MenuJPanel(this, settings);
         add(menuPanel);
 
-        gameOverJPanel = new GameOverJPanel(this);
+        gameOverJPanel = new GameOverJPanel(this, settings);
         gameOverJPanel.setVisible(false);
         setGlassPane(gameOverJPanel);
 
@@ -66,6 +73,32 @@ public class MainJFrame extends JFrame {
 
             generalSettings.add(timerToggleButton);
             settingsMenu.add(generalSettings);
+
+            //audio settings
+            JMenu audioSettings = new JMenu("Audio Settings");
+
+            JRadioButton soundEffects = new JRadioButton("Sound Effects");
+            soundEffects.setSelected(true);
+            soundEffects.addItemListener((ItemEvent e) -> {
+                settings.setToggleSoundFX(!settings.getToggleSoundFX());
+                chessJPanel.toggleSoundFX(settings.getToggleSoundFX());
+            });
+
+            JRadioButton backgroundMusicButton = new JRadioButton("Background Music");
+            backgroundMusicButton.setSelected(true);
+            backgroundMusicButton.addItemListener((ItemEvent e) -> {
+                settings.setToggleMusic(!settings.getToggleMusic());
+                if (settings.getToggleMusic()) {
+                    backgroundMusic.loop();
+                }
+                else
+                    backgroundMusic.stop();
+            });
+
+            audioSettings.add(soundEffects);
+            audioSettings.add(backgroundMusicButton);
+            settingsMenu.add(audioSettings);
+
 
             JMenuItem lightLabel = new JMenuItem("Light Square Color Selector:");
             lightLabel.setEnabled(false);
@@ -133,10 +166,15 @@ public class MainJFrame extends JFrame {
         }
     }
 
+
     public void showGameOver(boolean flag) {
         String result = gameBoard.getGameOverMsg();
         gameOverJPanel.setGameResult(result);
         gameOverJPanel.setVisible(flag);
+        if (settings.getToggleSoundFX() && flag && !gameOverSoundPlayed) {
+            gameOverSound.play();
+            gameOverSoundPlayed = true;
+        }
     }
 
     public void resetGame() {
@@ -147,6 +185,7 @@ public class MainJFrame extends JFrame {
         add(chessJPanel);
 
         showGameOver(false);
+        gameOverSoundPlayed = false;
 
         revalidate();
     }
@@ -167,5 +206,7 @@ public class MainJFrame extends JFrame {
 
         MainJFrame mainJFrame = new MainJFrame();
         mainJFrame.setVisible(true);
+        if (mainJFrame.settings.getToggleMusic())
+            mainJFrame.backgroundMusic.loop();
     }
 }

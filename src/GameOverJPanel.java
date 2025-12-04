@@ -14,8 +14,11 @@ public class GameOverJPanel extends JPanel {
     private final ImageIcon whiteWinsImg;
     private final ImageIcon blackWinsImg;
     private final JLabel gameResultIcon;
-    public GameOverJPanel(MainJFrame mainFrame) {
+    private SoundEffect buttonSound;
+    public GameOverJPanel(MainJFrame mainFrame, GameSettings settings) {
         setOpaque(false);
+
+        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -49,6 +52,8 @@ public class GameOverJPanel extends JPanel {
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                  buttonSound.play();
                 mainFrame.resetGame();
             }
         });
@@ -65,6 +70,8 @@ public class GameOverJPanel extends JPanel {
         quitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                  buttonSound.play();
                 System.exit(0);
             }
         });

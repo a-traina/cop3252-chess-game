@@ -8,8 +8,9 @@ import javax.swing.*;
 
 public class MenuJPanel extends JPanel {
     BufferedImage background;
+    SoundEffect buttonSound;
     
-    public MenuJPanel(MainJFrame mainFrame) {
+    public MenuJPanel(MainJFrame mainFrame, GameSettings settings) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         try {
@@ -17,6 +18,8 @@ public class MenuJPanel extends JPanel {
         } catch (IOException e) {
             background = null;
         }
+
+        buttonSound = new SoundEffect(getClass().getResource("/assets/buttonPressedSound.wav"));
 
         add(Box.createVerticalGlue());
 
@@ -38,6 +41,8 @@ public class MenuJPanel extends JPanel {
         playButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                    buttonSound.play();
                 mainFrame.startGame();
             }
         });
@@ -54,6 +59,8 @@ public class MenuJPanel extends JPanel {
         quitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (settings.getToggleSoundFX())
+                    buttonSound.play();
                 System.exit(0);
             }
         });

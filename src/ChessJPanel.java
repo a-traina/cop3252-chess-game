@@ -205,6 +205,7 @@ public class ChessJPanel extends JPanel{
 
     public void showGameOver() {
         mainFrame.showGameOver(true);
+
     }
 
     public void stopClock() {
@@ -306,6 +307,10 @@ public class ChessJPanel extends JPanel{
 
             clock.start();
         }
+    }
+
+    public void toggleSoundFX(boolean flag) {
+        gridJPanel.toggleSoundFx(flag);
     }
 
     private class EvalBar extends JPanel {
