@@ -58,7 +58,7 @@ Look for these extra features in this application:
 
 **Visual Features**
 - All graphic elements are custom designed by Ethan Broome
-    - Includes: Menu Screen, Sprite Buttons, Pieces
+    - Includes: Menu Screen, Sprite Buttons, Pieces, and Icons
 - Evaluation bar implements smooth animations for a clean look and feel
 - Player banner highlights on player's turn
 - Game board colors are fully customizable in the appearance settings (with an option to reset to default if desired)
