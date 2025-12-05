@@ -1,2 +1,1 @@
 Main-class: frontend.MainJFrame
-Class-Path: bin/ assets/
