@@ -37,6 +37,17 @@ Other things to note:
 1. Ensure that you are running Java 24 JDK
 2. Run "java -jar hwx.jar" or double-click on the application to run.
 
+**If you must create the runnable jar from this repository**
+1. Compile the src code:
+    find src -name "*.java" > sources.txt               
+    javac -d bin @sources.txt
+2. Create the runnable jar using the provided manifest.txt file:
+    jar cfm hwx.jar manifest.txt README.txt src -C bin .
+3. Add the assets to the jar file:
+    jar uf hwx.jar assets .
+4. Run the jar
+    java -jar hwx.jar
+
 
 ---
 
@@ -73,3 +84,4 @@ Look for these extra features in this application:
     - Game over victory sound
 - Background music adds ambience when playing the game
 - Option to toggle music/ sound effects on/off are provided in the sound settings menu
+
