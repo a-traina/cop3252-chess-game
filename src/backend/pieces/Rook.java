@@ -109,7 +109,7 @@ public class Rook extends Piece {
                 }
 
                 //check if king moves through attack
-                for (int k = 1; k < 3; k++) {
+                for (int k = 0; k < 3; k++) {
 
                     Piece[][] board = new Piece[8][8];
 
@@ -167,7 +167,7 @@ public class Rook extends Piece {
                 }
 
                 //check if king moves through attack
-                for (int k = 1; k < 3; k++) {
+                for (int k = 0; k < 3; k++) {
 
                     Piece[][] board = new Piece[8][8];
 

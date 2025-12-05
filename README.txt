@@ -35,7 +35,7 @@ Other things to note:
 ## Running the Project
 
 1. Ensure that you are running Java 24 JDK
-2. 
+2. Run "java -jar hwx.jar" or double-click on the application to run.
 
 
 ---
